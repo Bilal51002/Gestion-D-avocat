@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+  <head>
+   <meta charset="utf-8" />
+        <title>الصفحة الشخصية</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+        <meta content="Themesbrand" name="author" />
+        <!-- App favicon -->
+        <link rel="shortcut icon" href="/assets/images/favicon.ico">
+
+        <!-- Bootstrap Css -->
+        
+        <link href="/assets/css/bootstrap.rtl.min.css" id="bootstrap-style" rel="stylesheet" />
+        
+        <link href="/assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" />
+        <!-- Icons Css -->
+        <link href="/assets/css/icons.min.css" rel="stylesheet"  />
+        <!-- App Css-->
+        <link href="/assets/css/app.min.css" id="app-style" rel="stylesheet"  />
+    <meta charset="UTF-8">
+    <title>الدردشة مع السكرتير</title>
+    <style>
+      /* Styles pour le chat */
+      #chat-box {
+        border: 1px solid #ccc;
+        height: 300px;
+        overflow-y: scroll;
+        padding: 10px;
+      }
+      #message-input {
+        width: 90%;
+        padding: 10px;
+      }
+      #send-button {
+        margin-top: 10px;
+        padding: 10px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>الدردشة مع السكرتير</h1>
+    <div id="chat-box">
+      <p>مرحبا، كيف يمكنني مساعدتك؟</p>
+    </div>
+    <form id="message-form">
+      <input type="text" id="message-input" placeholder="اكتب رسالتك هنا...">
+      <button type="submit" id="send-button">إرسال</button>
+    </form>
+    <script>
+      // Code JavaScript pour ajouter des messages au chat
+      const chatBox = document.getElementById('chat-box');
+      const messageForm = document.getElementById('message-form');
+      const messageInput = document.getElementById('message-input');
+
+      messageForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const messageText = messageInput.value;
+        const messageElement = document.createElement('p');
+        messageElement.textContent = "العميل : " + messageText;
+        chatBox.appendChild(messageElement);
+        messageInput.value = '';
+        // Appel AJAX pour la réponse du secrétaire
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', 'https://api.example.com/secretaire-reponse?message=' + encodeURIComponent(messageText));
+        xhr.onload = () => {
+          const responseText = xhr.responseText;
+          const responseElement = document.createElement('p');
+          responseElement.textContent = "السكرتير : " + responseText;
+          chatBox.appendChild(responseElement);
+        };
+        xhr.send();
+      });
+    </script>
+  </body>
+</html>
