@@ -10,7 +10,7 @@
 <h2 class="text-center mb-4">قائمة مكاتب المحاماة</h2>
 
 <!-- Formulaire de recherche -->
-<form th:action="@{/bureau/liste}" method="get" class="row mb-4">
+<form th:action="@{/templates/Admin/AdminAvocat/bureau/liste}" method="get" class="row mb-4">
   <div class="col-md-8">
     <input type="text" name="query" class="form-control" placeholder="ابحث باسم المكتب">
   </div>
@@ -47,7 +47,7 @@
 
 <!-- Lien vers formulaire d'ajout -->
 <div class="text-center mt-4">
-  <a class="btn btn-success" th:href="@{/bureau/nouveau}">إضافة مكتب جديد</a>
+  <a class="btn btn-success" th:href="@{/templates/Admin/AdminAvocat/bureau/nouveau}">إضافة مكتب جديد</a>
 </div>
 
 </body>

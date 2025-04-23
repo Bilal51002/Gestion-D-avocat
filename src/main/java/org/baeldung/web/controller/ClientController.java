@@ -2,6 +2,8 @@
 package org.baeldung.web.controller;
 
 import java.sql.Date;
+
+import org.baeldung.persistence.dao.pfe.ClientRepository;
 import org.springframework.ui.Model;
 import java.util.Base64;
 import java.util.List;
@@ -43,17 +45,24 @@ public class ClientController {
 	@Autowired
 	BureauAvocatService bureauAvocatService;
 	@Autowired
+	private ClientService clientService;  // Injection du service
+
+	@Autowired
+	private BureauAvocatRepository bureauAvocatRepository;
+	@Autowired
 	AvocatService avocatService;
 	@Autowired
 	UserService userService;
 	@Autowired
 	DossierService dossierService;
 	@Autowired
-	ClientService clientService;
-	@Autowired
 	TypeDossierService typeDossierService;
 	@Autowired
-	SecretaireService secretaireService;
+	SecretaireService secretaireService;;
+	@Autowired
+	TypeDossierRepository typeDossierRepository;
+	@Autowired
+	private ClientRepository clientRepository;
 
 	@RequestMapping(value = "/Admin/AdminAvocat/Client/clients")
 	public ModelAndView wxAutoLogin8(HttpServletRequest request, HttpServletResponse response, Model model,
@@ -496,10 +505,6 @@ public class ClientController {
 		return "redirect:/Admin/AdminAvocat/Avocat/dossier-list";
 	}
 
-	@Autowired
-	TypeDossierRepository typeDossierRepository;
-	@Autowired
-	BureauAvocatRepository bureauAvocatRepository;
 	@GetMapping(value = "/Admin/AdminAvocat/Avocat/cherchedossierc")
 	public ModelAndView wxAutoLogin0116(HttpServletRequest request, HttpServletResponse response, Model model,
 			@RequestParam(name = "query", defaultValue = "") String mc,
@@ -1079,10 +1084,6 @@ public class ClientController {
 
 		Encoder encoder = Base64.getEncoder();
 		System.out.println(avocats.size());
-		/*
-		 * System.out.println(encoder.encodeToStringavocats.get(0).getImguser().getBytes
-		 * ()));
-		 */
 		model.addAttribute("avocats", avocat);
 		model.addAttribute("barreaux", barreaux);
 		model.addAttribute("barreaux1", barreaux1);
@@ -1117,4 +1118,6 @@ public class ClientController {
 		System.out.println("test1");
 		return "Client/index";
 	}
+
+
 }

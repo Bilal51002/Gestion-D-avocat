@@ -76,12 +76,4 @@ public class BureauAvocatService implements BureauAvocatServiceInterface {
 	public List<Ville> findAllVilles() {
 		return villeRepository.findAll();
 	}
-
-
-
-	/*
-	 * @Override public List<Avocat> findByName() {
-	 *
-	 * return avocatRepository.findAll(); }
-	 */
 }

@@ -416,50 +416,12 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
                                 </a>
                                 <ul class="sub-menu" aria-expanded="false">
 								<li><a th:href="@{/Admin/AdminAvocat/Avocat/employees(user=${user.id})}">جميع المحامين</a></li>
-								<li><a th:href="@{/rdv/list}">المواعيد</a></li>
+								<li><a th:href="@{/Secretaire/rdv/list}">المواعيد</a></li>
 								<li><a href="leaves.html">لوحة التحكم <span class="badge rounded-pill bg-primary float-end"></span></a></li>
                                 <li><a  th:href="@{/leaves-employee}">إجازة محامين</a></li>
-                                <!--    <li><a href="crypto-wallet.html" key="t-wallet">Wallet</a></li>
-                                    <li><a href="crypto-buy-sell.html" key="t-buy">Buy/Sell</a></li>
-                                    <li><a href="crypto-exchange.html" key="t-exchange">Exchange</a></li>
-                                    <li><a href="crypto-lending.html" key="t-lending">Lending</a></li>
-                                    <li><a href="crypto-orders.html" key="t-orders">Orders</a></li>-->
                                    
                                 </ul>
                             </li>
-
-                         <!--   <li>
-                                <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                    <i class="bx bx-envelope"></i>
-                                    <span key="t-email">Email</span>
-                                </a>
-                                <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="email-inbox.html" key="t-inbox">Inbox</a></li>
-                                    <li><a href="email-read.html" key="t-read-email">Read Email</a></li>
-                                    <li>
-                                        <a href="javascript: void(0);">
-                                            <span class="badge rounded-pill badge-soft-success float-end" key="t-new">New</span>
-                                            <span key="t-email-templates">Templates</span>
-                                        </a>
-                                        <ul class="sub-menu" aria-expanded="true">
-                                            <li><a href="email-template-basic.html" key="t-basic-action">Basic Action</a></li>
-                                            <li><a href="email-template-alert.html" key="t-alert-email">Alert Email</a></li>
-                                            <li><a href="email-template-billing.html" key="t-bill-email">Billing Email</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </li>
-
-                            <li>
-                                <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                    <i class="bx bx-receipt"></i>
-                                    <span key="t-invoices">Invoices</span>
-                                </a>
-                                <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="invoices-list.html" key="t-invoice-list">Invoice List</a></li>
-                                    <li><a href="invoices-detail.html" key="t-invoice-detail">Invoice Detail</a></li>
-                                </ul>
-                            </li>-->
 
                             <li>
                                 
@@ -479,17 +441,6 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
                         </li>
 						 <li><a th:href="@{/Admin/AdminAvocat/Avocat/AddFolder(user=${user.id})}"><i class="fa fa-plus"></i> <span>اضافة ملف
 								جديد</span></a></li>
-                           <!-- <li>
-                                <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                    <i class="bx bx-task"></i>
-                                    <span key="t-tasks">Tasks</span>
-                                </a>
-                                <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="tasks-list.html" key="t-task-list">Task List</a></li>
-                                    <li><a href="tasks-kanban.html" key="t-kanban-board">Kanban Board</a></li>
-                                    <li><a href="tasks-create.html" key="t-create-task">Create Task</a></li>
-                                </ul>
-                            </li>-->
 
                             <li>
                                 <a href="javascript: void(0);" class="has-arrow waves-effect">
@@ -526,14 +477,9 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
                                 </a>
                                 <ul class="sub-menu" aria-expanded="false">
                                     <li><a  th:href="@{/login}">تسجيل الدخول</a></li>
-                                   <!-- <li><a href="auth-login-2.html" key="t-login-2">Login 2</a></li>-->
                                     <li><a th:href="@{/registration}"> التسجيل </a></li>
-                                   <!-- <li><a href="auth-register-2.html" key="t-register-2">Register 2</a></li>-->
                                     <li><a th:href="@{/Admin/AdminAvocat/Avocat/resetPassword}" key="t-recover-password">استعادة كلمة السر</a></li>
-                                   <!-- <li><a href="auth-recoverpw-2.html" key="t-recover-password-2">Recover Password 2</a></li>-->
-                                    <li><a href="auth-lock-screen.html" key="t-lock-screen">اقفل الشاشة</a></li>
-                                   <!-- <li><a href="auth-lock-screen-2.html" key="t-lock-screen-2">Lock Screen 2</a></li>-->
-                                    
+                                    <li><a th:href="@{/logout}" key="t-lock-screen">اقفل الشاشة</a></li>
                                 </ul>
                             </li>
 
@@ -593,12 +539,12 @@ float:left;}</style>
         border: 4px solid black;
         padding: 10px;
         width: 20%;
-        text-align=left;
-       direction=ltr;
+        text-align:left;
+       direction:ltr;
 
         
     }</style>
-											<a href=""> <img  th:src="${'data:image/jpeg;base64,'+{client.imguser}}"
+											<a href=""> <img  th:src="'data:image/jpeg;base64,'+${client.imguser}"
 												alt="" class="mam">
 											</a>
 										</div>
@@ -735,7 +681,7 @@ float:left;}</style>
   height: auto;				height: auto;
                                           
 		                                                          }</style>
-                                                                    <img th:src="${'data:image/jpeg;base64,'+{avocat.imguser}}" alt="" class="lali">
+                                                                    <img th:src="'data:image/jpeg;base64,'+${avocat.imguser}" alt="" class="lali">
                                                                 </div><br/>
                                                                   <a href="/Admin/Avocat/profile-AdminAvo.html" th:text="${avocat.firstName}+' '+${avocat.lastName}" ></a>
                                                             </div>

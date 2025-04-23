@@ -362,11 +362,9 @@ xmlns: layout="http://www.ultraq.net.nz/thymeleaf/layout">
                                 </a>
                                 <ul class="sub-menu" aria-expanded="false">
                                     <li><a th:href="@{/login}" key="t-login">تسجيل الدخول</a></li>
-                                    <li><a href="registration.html" key="t-register">التسجيل</a></li>
+                                    <li><a th:href="@{/registration}"> التسجيل </a></li>
                                     <li><a th:href="@{/Admin/AdminAvocat/Avocat/resetPassword}" key="t-recover-password">استعادة كلمة السر</a></li>
-                                    <li><a href="#" onclick="lockScreen()">اقفل الشاشة</a></li>
-
-
+                                    <li><a th:href="@{/logout}" key="t-lock-screen">اقفل الشاشة</a></li>
                                 </ul>
                             </li>
 

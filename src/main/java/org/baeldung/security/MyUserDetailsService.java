@@ -57,11 +57,44 @@ public class MyUserDetailsService implements UserDetailsService {
         }
     }
 
-    // UTIL
+        private final Collection<? extends GrantedAuthority> getAuthorities(final Collection<Role> roles) {
+            final List<String> privileges = new ArrayList<String>();
+            final List<Privilege> collection = new ArrayList<Privilege>();
 
-    private final Collection<? extends GrantedAuthority> getAuthorities(final Collection<Role> roles) {
-        return getGrantedAuthorities(getPrivileges(roles));
-    }
+            // Convertir les rôles en format attendu par hasRole()
+            for (final Role role : roles) {
+                // Extraire le nom du rôle sans le préfixe ROLE_ s'il existe déjà
+                String roleName = role.getName();
+                if (roleName.startsWith("ROLE_")) {
+                    privileges.add(roleName); // Déjà au bon format
+                } else {
+                    // Si le nom est au format XXX_PRIVILEGE, extraire le rôle
+                    if (roleName.endsWith("_PRIVILEGE")) {
+                        String baseRole = roleName.replace("_PRIVILEGE", "");
+                        privileges.add("ROLE_" + baseRole);
+                    } else {
+                        // Sinon, ajouter simplement le préfixe ROLE_
+                        privileges.add("ROLE_" + roleName);
+                    }
+                }
+
+                // Ajouter également les privilèges (optionnel selon votre besoin)
+                collection.addAll(role.getPrivileges());
+            }
+
+            // Si vous voulez aussi garder les privilèges originaux (optionnel)
+            for (final Privilege item : collection) {
+                privileges.add(item.getName());
+            }
+
+            // Ajouter des logs pour déboguer
+            System.out.println("Autorités générées:");
+            for (String priv : privileges) {
+                System.out.println("- " + priv);
+            }
+
+            return getGrantedAuthorities(privileges);
+        }
 
     private final List<String> getPrivileges(final Collection<Role> roles) {
         final List<String> privileges = new ArrayList<String>();

@@ -1,21 +1,20 @@
-
 package org.baeldung.service;
+
 import java.io.IOException;
 import java.sql.Date;
 import java.util.Base64;
 import java.util.List;
-
 import org.baeldung.persistence.dao.pfe.AvocatRepository;
-import org.baeldung.persistence.dao.pfe.BarreauRepository;
-import org.baeldung.persistence.dao.pfe.ClientRepository;
-import org.baeldung.persistence.dao.pfe.VilleRepository;
 import org.baeldung.persistence.model.pfe.Avocat;
-import org.baeldung.persistence.model.pfe.Barreau;
-import org.baeldung.persistence.model.pfe.Client;
-import org.baeldung.persistence.model.pfe.Ville;
 import org.baeldung.service.pfe.AvocatServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.baeldung.persistence.dao.pfe.BarreauRepository;
+import org.baeldung.persistence.dao.pfe.ClientRepository;
+import org.baeldung.persistence.dao.pfe.VilleRepository;
+import org.baeldung.persistence.model.pfe.Barreau;
+import org.baeldung.persistence.model.pfe.Client;
+import org.baeldung.persistence.model.pfe.Ville;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 

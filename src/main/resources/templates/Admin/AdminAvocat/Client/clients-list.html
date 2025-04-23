@@ -326,77 +326,7 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
                                     <i class="bx bx-home-circle"></i><span class="badge rounded-pill bg-info float-end"></span>
                                     <span key="t-dashboards">الصفحة الرئيسية</span>
                                 </a>
-                             <!--   <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="index.html" key="t-default">Default</a></li>
-                                    <li><a href="dashboard-saas.html" key="t-saas">Saas</a></li>
-                                    <li><a href="dashboard-crypto.html" key="t-crypto">Crypto</a></li>
-                                    <li><a href="dashboard-blog.html" key="t-blog">Blog</a></li>
-                                </ul>>
-                            </li>
-
                             <li>
-                                <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                    <i class="bx bx-layout"></i>
-                                    <span key="t-layouts">تخطيطات</span>
-                                </a>
-                                <ul class="sub-menu" aria-expanded="true">
-                                    <li>
-                                        <a href="javascript: void(0);" class="has-arrow" key="t-vertical">عمودي</a>
-                                        <ul class="sub-menu" aria-expanded="true">
-                                            <li><a href="layouts-light-sidebar.html" key="t-light-sidebar">Light Sidebar</a></li>
-                                            <li><a href="layouts-compact-sidebar.html" key="t-compact-sidebar">Compact Sidebar</a></li>
-                                            <li><a href="layouts-icon-sidebar.html" key="t-icon-sidebar">Icon Sidebar</a></li>
-                                            <li><a href="layouts-boxed.html" key="t-boxed-width">Boxed Width</a></li>
-                                            <li><a href="layouts-preloader.html" key="t-preloader">Preloader</a></li>
-                                            <li><a href="layouts-colored-sidebar.html" key="t-colored-sidebar">Colored Sidebar</a></li>
-                                            <li><a href="layouts-scrollable.html" key="t-scrollable">Scrollable</a></li>
-                                        </ul>
-                                    </li>
-
-                                    <li>
-                                        <a href="javascript: void(0);" class="has-arrow" key="t-horizontal">أفقي</a>
-                                        <ul class="sub-menu" aria-expanded="true">
-                                            <li><a href="layouts-horizontal.html" key="t-horizontal">Horizontal</a></li>
-                                            <li><a href="layouts-hori-topbar-light.html" key="t-topbar-light">Topbar light</a></li>
-                                            <li><a href="layouts-hori-boxed-width.html" key="t-boxed-width">Boxed width</a></li>
-                                            <li><a href="layouts-hori-preloader.html" key="t-preloader">Preloader</a></li>
-                                            <li><a href="layouts-hori-colored-header.html" key="t-colored-topbar">Colored Header</a></li>
-                                            <li><a href="layouts-hori-scrollable.html" key="t-scrollable">Scrollable</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </li>
-
-                            <li class="menu-title" key="t-apps">تطبيقات</li>
-
-                
-
-                            <li>
-                                <a href="javascript: void(0);" class="waves-effect">
-                                    <i class="bx bx-calendar"></i><span class="badge rounded-pill bg-success float-end">New</span>
-                                    <span key="t-dashboards">اليومية</span>
-                                </a>
-                                <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="calendar.html" key="t-tui-calendar">TUI Calendar</a></li>
-                                    <li><a href="calendar-full.html" key="t-full-calendar">Full Calendar</a></li>
-                                </ul>
-                            </li>
-
-                            <li>
-                                <a href="chat.html" class="waves-effect">
-                                    <i class="bx bx-chat"></i>
-                                    <span key="t-chat">محادثة</span>
-                                </a>
-                            </li>
-<!--<li class="active"><a href="clients.html"><i
-								class="bx bx-file"></i> <span>حول</span></a></li>-->
-                            <li>
-                              <!--  <a href="clients.html" class="waves-effect">
-                                    <i class="bx bx-file"></i>
-                                    <span class="badge rounded-pill bg-success float-end" key="t-new">New</span>
-                                    <span key="t-file-manager"> حول</span>
-                                </a>
-                            </li>-->
 
                             <li>
                                 <a href="javascript: void(0);" class="has-arrow waves-effect">
@@ -421,7 +351,7 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
                                 </a>
                                 <ul class="sub-menu" aria-expanded="false">
 								<li><a th:href="@{/Admin/AdminAvocat/Avocat/employees(user=${user.id})}">جميع المحامين</a></li>
-								<li><a th:href="@{/rdv/list}">المواعيد</a></li>
+								<li><a th:href="@{/Secretaire/rdv/list}">المواعيد</a></li>
 								<li><a href="leaves.html">لوحة التحكم <span class="badge rounded-pill bg-primary float-end"></span></a></li>
                                 <li><a  th:href="@{/leaves-employee}">إجازة محامين</a></li>
                                 <!--    <li><a href="crypto-wallet.html" key="t-wallet">Wallet</a></li>
@@ -530,15 +460,10 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
                                     <span key="t-authentication">المصادقة</span>
                                 </a>
                                 <ul class="sub-menu" aria-expanded="false">
-                                    <li><a  th:href="@{/login}">تسجيل الدخول</a></li>
-                                   <!-- <li><a href="auth-login-2.html" key="t-login-2">Login 2</a></li>-->
+                                    <li><a th:href="@{/login}" key="t-login">تسجيل الدخول</a></li>
                                     <li><a th:href="@{/registration}"> التسجيل </a></li>
-                                   <!-- <li><a href="auth-register-2.html" key="t-register-2">Register 2</a></li>-->
                                     <li><a th:href="@{/Admin/AdminAvocat/Avocat/resetPassword}" key="t-recover-password">استعادة كلمة السر</a></li>
-                                   <!-- <li><a href="auth-recoverpw-2.html" key="t-recover-password-2">Recover Password 2</a></li>-->
-                                    <li><a href="auth-lock-screen.html" key="t-lock-screen">اقفل الشاشة</a></li>
-                                   <!-- <li><a href="auth-lock-screen-2.html" key="t-lock-screen-2">Lock Screen 2</a></li>-->
-                                    
+                                    <li><a th:href="@{/logout}" key="t-lock-screen">اقفل الشاشة</a></li>
                                 </ul>
                             </li>
 
@@ -693,7 +618,7 @@ float:left;}</style>
                                    
                                         <td>
                                             <h2 class="table-avatar">
-                                                <a href="profile.html" class="avatar"><img alt="" th:src="${'data:image/jpeg;base64,'+{client.imguser}}"width="100" height="100" style=" border-radius:60%"></a>
+                                                <a href="profile.html" class="avatar"><img alt="" th:src="'data:image/jpeg;base64,'+${client.imguser}"width="100" height="100" style=" border-radius:60%"></a>
                                                 <a href="profile.html" th:text="${client.firstName}+'  '+${client.lastName}">John Doe <span>Web Designer</span></a>
                                             </h2>
                                         </td>

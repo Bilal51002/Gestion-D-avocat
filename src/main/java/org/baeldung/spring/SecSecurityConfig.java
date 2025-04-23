@@ -46,8 +46,8 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomWebAuthenticationDetailsSource authenticationDetailsSource;
 
-    @Autowired
-    private UserRepository userRepository;
+//    @Autowired
+//    private UserRepository userRepository;
 
     public SecSecurityConfig() {
         super();
@@ -74,17 +74,17 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/Admin/**").hasAuthority("ADMIN_PRIVILEGE")
-                .antMatchers("/Secretaire/**").hasAuthority("SECRETAIRE_PRIVILEGE")
-                .antMatchers("/Avocat/**").hasAuthority("AVOCAT_PRIVILEGE")
-                .antMatchers("/super_admin/**").hasAuthority("USER_PRIVILEGE")
-                .antMatchers("/Client/**").hasAuthority("CLIENT_PRIVILEGE")
+                .antMatchers("/Admin/**").hasRole("ADMIN")
+                .antMatchers("/Secretaire/**").hasRole("SECRETAIRE")
+                .antMatchers("/Avocat/**").hasRole("AVOCAT")
+                .antMatchers("/super_admin/**").hasRole("USER")
+                .antMatchers("/Client/**").hasRole("CLIENT")
                 .antMatchers("/portfolio", "/services", "/about-us", "/contact-us", "/index", "/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/Client/index", true)  // Redirige vers l'index du client après une connexion réussie
+                .defaultSuccessUrl("/Client/index", true)
                 .failureUrl("/login?error=true")
                 .successHandler(myAuthenticationSuccessHandler)
                 .failureHandler(authenticationFailureHandler)
@@ -92,7 +92,7 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .sessionManagement()
-                .invalidSessionUrl("/invalidSession.html")  // URL de la page d'erreur de session
+                .invalidSessionUrl("/invalidSession.html")
                 .maximumSessions(1).sessionRegistry(sessionRegistry())
                 .and()
                 .sessionFixation().none()
@@ -100,7 +100,7 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .logoutSuccessHandler(myLogoutSuccessHandler)
                 .invalidateHttpSession(false)
-                .logoutSuccessUrl("/logout.html?logSucc=true")
+                .logoutSuccessUrl("/login.html?logSucc=true")
                 .deleteCookies("JSESSIONID")
                 .permitAll()
                 .and()
@@ -108,7 +108,6 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
                 .rememberMeServices(rememberMeServices())
                 .key("theKey");
     }
-
     // Beans
 
     @Bean

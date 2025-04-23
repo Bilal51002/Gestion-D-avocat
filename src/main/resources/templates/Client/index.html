@@ -2,10 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns: layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
-    
+
 <!-- Mirrored from themesbrand.com/skote-cakephp/layouts/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 24 Mar 2023 16:08:22 GMT -->
 <head>
-        
+
         <meta charset="utf-8" />
         <title>الصفحة الرئيسية</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,15 +15,15 @@
         <link rel="shortcut icon" href="/assets/images/favicon.ico">
 
         <!-- Bootstrap Css -->
-        
 
-        
+
+
 <!--        <link href="/assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" />-->
         <!-- Icons Css -->
         <link href="/assets/css/icons.min.css" rel="stylesheet"  />
         <!-- App Css-->
 <!--        <link href="/assets/css/app.min.css" id="app-style" rel="stylesheet"  />-->
-		
+
 		 <link rel="shortcut icon" href="/assets/images/favicon.ico">
 
         <!-- Bootstrap Css -->
@@ -38,7 +38,7 @@
  <!-- <style>
     body {
   direction: rtl;
-  
+
 
 }
 </style>-->
@@ -53,7 +53,7 @@ body{
         <!-- Begin page -->
         <div id="layout-wrapper">
 
-            
+
             <header id="page-topbar">
                 <div class="navbar-header">
                     <div class="d-flex">
@@ -175,7 +175,7 @@ body{
                                 </div>
                                 <div class="p-2 border-top d-grid">
                                     <a class="btn btn-sm btn-link font-size-14 text-center" href="javascript:void(0)">
-                                        <i class="mdi mdi-arrow-right-circle me-1"></i> <span key="t-view-more">عرض المزيد..</span> 
+                                        <i class="mdi mdi-arrow-right-circle me-1"></i> <span key="t-view-more">عرض المزيد..</span>
                                     </a>
                                 </div>
                             </div>
@@ -187,21 +187,6 @@ body{
                                 <span class="bx bx-search-alt"></span>
                             </div>
                         </form>
-						                           
-              <!--  <li class="nav-item dropdown has-arrow main-drop">
-                    <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
-<span class="user-img"> <img  alt=""   th:src="${'data:image/jpeg;base32,'+{user.imguser}}" width="50" height="50"/></span>
-<span class="status online"></span>
-<span th:text="${user.firstName}+' '+${user.lastName}">Admin</span>
-</a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" th:href="@{/Admin/AdminAvocat/Avocat/profile-AdminAvo(user=${user.id})}">الصفحة الشخصية</a>
-                        <a class="dropdown-item" th:href="@{/settings}">إعدادات</a>
-                        <a class="dropdown-item" th:href="@{/login}">تسجيل خروج</a>
-                        
-                    </div>
-                </li>
-            </ul>-->
 			<button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img class="rounded-circle header-profile-user" src="/assets/images/users/avatar-1.jpg"
@@ -211,17 +196,17 @@ body{
                             </button>
                             <div class="dropdown-menu dropdown-menu-end">
                                 <!-- item-->
-								
+
                                 <a class="dropdown-item" th:href="@{/Admin/AdminAvocat/Avocat/profile-AdminAvo(user=${user.id})}"><i class="bx bx-user font-size-16 align-middle me-1"></i> <span key="t-profile">الصفحة الشخصية</span></a>
                                  <a class="dropdown-item d-block" th:href="@{/settings}" ><span class="badge bg-success float-end">11</span><i class="bx bx-wrench font-size-16 align-middle me-1"></i> <span key="t-settings">إعدادات</span></a>
-                            
+
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item text-danger"th:href="@{/login}" ><i class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> <span key="t-logout">تسجيل خروج</span></a>
                             </div>
                         </div>
-						
 
-                       
+
+
                                         </div>
             </header>
                                     </div>
@@ -240,7 +225,7 @@ body{
                             </button>
                             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
                                 aria-labelledby="page-header-search-dropdown">
-        
+
                                 <form class="p-3">
                                     <div class="form-group m-0">
                                         <div class="input-group">
@@ -345,7 +330,7 @@ body{
                             </button>
                         </div>
 
-                
+
 
                    <div class="dropdown d-inline-block">
                             <button type="button" class="btn header-item noti-icon right-bar-toggle waves-effect">
@@ -373,77 +358,7 @@ body{
                                     <i class="bx bx-home-circle"></i><span class="badge rounded-pill bg-info float-end"></span>
                                     <span key="t-dashboards">الصفحة الرئيسية</span>
                                 </a>
-                             <!--   <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="index.html" key="t-default">Default</a></li>
-                                    <li><a href="dashboard-saas.html" key="t-saas">Saas</a></li>
-                                    <li><a href="dashboard-crypto.html" key="t-crypto">Crypto</a></li>
-                                    <li><a href="dashboard-blog.html" key="t-blog">Blog</a></li>
-                                </ul>>
-                            </li>
-
                             <li>
-                                <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                    <i class="bx bx-layout"></i>
-                                    <span key="t-layouts">تخطيطات</span>
-                                </a>
-                                <ul class="sub-menu" aria-expanded="true">
-                                    <li>
-                                        <a href="javascript: void(0);" class="has-arrow" key="t-vertical">عمودي</a>
-                                        <ul class="sub-menu" aria-expanded="true">
-                                            <li><a href="layouts-light-sidebar.html" key="t-light-sidebar">Light Sidebar</a></li>
-                                            <li><a href="layouts-compact-sidebar.html" key="t-compact-sidebar">Compact Sidebar</a></li>
-                                            <li><a href="layouts-icon-sidebar.html" key="t-icon-sidebar">Icon Sidebar</a></li>
-                                            <li><a href="layouts-boxed.html" key="t-boxed-width">Boxed Width</a></li>
-                                            <li><a href="layouts-preloader.html" key="t-preloader">Preloader</a></li>
-                                            <li><a href="layouts-colored-sidebar.html" key="t-colored-sidebar">Colored Sidebar</a></li>
-                                            <li><a href="layouts-scrollable.html" key="t-scrollable">Scrollable</a></li>
-                                        </ul>
-                                    </li>
-
-                                    <li>
-                                        <a href="javascript: void(0);" class="has-arrow" key="t-horizontal">أفقي</a>
-                                        <ul class="sub-menu" aria-expanded="true">
-                                            <li><a href="layouts-horizontal.html" key="t-horizontal">Horizontal</a></li>
-                                            <li><a href="layouts-hori-topbar-light.html" key="t-topbar-light">Topbar light</a></li>
-                                            <li><a href="layouts-hori-boxed-width.html" key="t-boxed-width">Boxed width</a></li>
-                                            <li><a href="layouts-hori-preloader.html" key="t-preloader">Preloader</a></li>
-                                            <li><a href="layouts-hori-colored-header.html" key="t-colored-topbar">Colored Header</a></li>
-                                            <li><a href="layouts-hori-scrollable.html" key="t-scrollable">Scrollable</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </li>
-
-                            <li class="menu-title" key="t-apps">تطبيقات</li>
-
-                
-
-                            <li>
-                                <a href="javascript: void(0);" class="waves-effect">
-                                    <i class="bx bx-calendar"></i><span class="badge rounded-pill bg-success float-end">New</span>
-                                    <span key="t-dashboards">اليومية</span>
-                                </a>
-                                <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="calendar.html" key="t-tui-calendar">TUI Calendar</a></li>
-                                    <li><a href="calendar-full.html" key="t-full-calendar">Full Calendar</a></li>
-                                </ul>
-                            </li>
-
-                            <li>
-                                <a href="chat.html" class="waves-effect">
-                                    <i class="bx bx-chat"></i>
-                                    <span key="t-chat">محادثة</span>
-                                </a>
-                            </li>
-<!--<li class="active"><a href="clients.html"><i
-								class="bx bx-file"></i> <span>حول</span></a></li>-->
-                            <li>
-                              <!--  <a href="clients.html" class="waves-effect">
-                                    <i class="bx bx-file"></i>
-                                    <span class="badge rounded-pill bg-success float-end" key="t-new">New</span>
-                                    <span key="t-file-manager"> حول</span>
-                                </a>
-                            </li>-->
 
                             <li>
                                 <a href="javascript: void(0);" class="has-arrow waves-effect">
@@ -456,8 +371,8 @@ body{
 										الإلكترونية</a></li>
                                     <li><a href="https://najiz.sa/applications/landing/verification-services" key="t-orders">خدمات
 										التحقق</a></li>
-                                   
-                                   
+
+
                                 </ul>
                             </li>
 
@@ -468,57 +383,18 @@ body{
                                 </a>
                                 <ul class="sub-menu" aria-expanded="false">
 								<li><a th:href="@{/Admin/AdminAvocat/Avocat/employees(user=${user.id})}">جميع المحامين</a></li>
-								<li><a th:href="@{/rdv/list}">المواعيد</a></li>
+								<li><a th:href="@{/Secretaire/rdv/list}">المواعيد</a></li>
 								<li><a href="leaves.html">لوحة التحكم <span class="badge rounded-pill bg-primary float-end">1</span></a></li>
                                 <li><a  th:href="@{/leaves-employee}">إجازة محامين</a></li>
-                                <!--    <li><a href="crypto-wallet.html" key="t-wallet">Wallet</a></li>
-                                    <li><a href="crypto-buy-sell.html" key="t-buy">Buy/Sell</a></li>
-                                    <li><a href="crypto-exchange.html" key="t-exchange">Exchange</a></li>
-                                    <li><a href="crypto-lending.html" key="t-lending">Lending</a></li>
-                                    <li><a href="crypto-orders.html" key="t-orders">Orders</a></li>-->
-                                   
-                                </ul>
-                            </li>
-
-                         <!--   <li>
-                                <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                    <i class="bx bx-envelope"></i>
-                                    <span key="t-email">Email</span>
-                                </a>
-                                <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="email-inbox.html" key="t-inbox">Inbox</a></li>
-                                    <li><a href="email-read.html" key="t-read-email">Read Email</a></li>
-                                    <li>
-                                        <a href="javascript: void(0);">
-                                            <span class="badge rounded-pill badge-soft-success float-end" key="t-new">New</span>
-                                            <span key="t-email-templates">Templates</span>
-                                        </a>
-                                        <ul class="sub-menu" aria-expanded="true">
-                                            <li><a href="email-template-basic.html" key="t-basic-action">Basic Action</a></li>
-                                            <li><a href="email-template-alert.html" key="t-alert-email">Alert Email</a></li>
-                                            <li><a href="email-template-billing.html" key="t-bill-email">Billing Email</a></li>
-                                        </ul>
-                                    </li>
                                 </ul>
                             </li>
 
                             <li>
-                                <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                    <i class="bx bx-receipt"></i>
-                                    <span key="t-invoices">Invoices</span>
-                                </a>
-                                <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="invoices-list.html" key="t-invoice-list">Invoice List</a></li>
-                                    <li><a href="invoices-detail.html" key="t-invoice-detail">Invoice Detail</a></li>
-                                </ul>
-                            </li>-->
 
-                            <li>
-                                
-                                    
+
 									 <li>
                             <a th:href="@{/Admin/users(user=${user.id})}"><i class="bx bx-briefcase-alt-2" ></i> <span>ادارة المستخدمين</span></a></li>
-                        
+
  <li>
                             <a th:href="@{/Admin/AdminAvocat/Client/clients(user=${user.id})}"><i class="fa fa-user"></i> <span><b>الزبائن</b></span></a>
                         </li>
@@ -531,17 +407,6 @@ body{
                         </li>
 						 <li><a th:href="@{/Admin/AdminAvocat/Avocat/AddFolder(user=${user.id})}"><i class="fa fa-plus"></i> <span>اضافة ملف
 								جديد</span></a></li>
-                           <!-- <li>
-                                <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                    <i class="bx bx-task"></i>
-                                    <span key="t-tasks">Tasks</span>
-                                </a>
-                                <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="tasks-list.html" key="t-task-list">Task List</a></li>
-                                    <li><a href="tasks-kanban.html" key="t-kanban-board">Kanban Board</a></li>
-                                    <li><a href="tasks-create.html" key="t-create-task">Create Task</a></li>
-                                </ul>
-                            </li>-->
 
                             <li>
                                 <a href="javascript: void(0);" class="has-arrow waves-effect">
@@ -568,7 +433,7 @@ body{
                                 </ul>
                             </li>
 
-                            
+
 
                             <li>
                                 <a href="javascript: void(0);" class="waves-effect">
@@ -577,27 +442,21 @@ body{
                                     <span key="t-authentication">المصادقة</span>
                                 </a>
                                 <ul class="sub-menu" aria-expanded="false">
-                                    <li><a  th:href="@{/login}">تسجيل الدخول</a></li>
-                                   <!-- <li><a href="auth-login-2.html" key="t-login-2">Login 2</a></li>-->
+                                    <li><a th:href="@{/login}" key="t-login">تسجيل الدخول</a></li>
                                     <li><a th:href="@{/registration}"> التسجيل </a></li>
-                                   <!-- <li><a href="auth-register-2.html" key="t-register-2">Register 2</a></li>-->
-                                    <li><a href="auth-recoverpw.html" key="t-recover-password">استعادة كلمة السر</a></li>
-                                   <!-- <li><a href="auth-recoverpw-2.html" key="t-recover-password-2">Recover Password 2</a></li>-->
-                                    <li><a href="auth-lock-screen.html" key="t-lock-screen">اقفل الشاشة</a></li>
-                                   <!-- <li><a href="auth-lock-screen-2.html" key="t-lock-screen-2">Lock Screen 2</a></li>-->
-                                    
+                                    <li><a th:href="@{/Admin/AdminAvocat/Avocat/resetPassword}" key="t-recover-password">استعادة كلمة السر</a></li>
+                                    <li><a th:href="@{/logout}" key="t-lock-screen">اقفل الشاشة</a></li>
                                 </ul>
                             </li>
+                         </ul>
 
-                            <li>
-                               
                     </div>
                     <!-- Sidebar -->
                 </div>
             </div>
             <!-- Left Sidebar End -->
 
-            
+
 
             <!-- ============================================================== -->
             <!-- Start right Content here -->
@@ -617,22 +476,21 @@ float:left;}</style>
                     <div class="row">
 					<h2 style="text-align:center"> <b>مكتبة المحاماة</b></h2>
                         <div class="col-sm-12">
-                           <!--  <h3 class="page-title">Welcome Admin!</h3> 
+                           <!--  <h3 class="page-title">Welcome Admin!</h3>
                            <h1 style="text-align:center">مكتبة أستاد حمزة حمزاوي</h1>-->
                            <div class="col-lg-9">
                 <h2 style="text-align:right"> <b>إدارة المحامات</b></h2>
 				<br/>
-              <!--  <p>مرحبا بكم في موقع <strong>إدارة المحامات </strong><!--  يمكنكم تنظيم جلساتكم  بكل سهولة  </p>-->
 			   <h3 style="text-align:right">مرحبا بكم في موقع إدارة المحامات  يمكنكم تنظيم جلساتكم  بكل سهولة </h3>
             </div>
-                           
+
                             <ul class="breadcrumb">
                                 <li class="breadcrumb-item active" style="text-align:right">المشرف</li>
                             </ul>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="row">
                   <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
                         <div class="card dash-widget" style="background-color:#F0F8FF;">
@@ -690,26 +548,22 @@ float:left;}</style>
                             </div>
                         </div>
                     </div>
-                    
-                      
+
+
                      <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3" >
                         <div class="card dash-widget"  style=" background-color: #F0F8FF;">
                             <div class="card-body" style="border-style: inset;">
                                 <span class="dash-widget-icon"><i class="fa fa-cubes"></i></span>
                                 <div class="dash-widget-info">
-                                    <h3>3</h3> 
-                                  
+                                    <h3>3</h3>
+
                             <span class="m-xs">عدد جلسات الاسبوع</span>
-                           <!--  <h6 class="font-bold" style="padding-right: 7px;">2021 / 09 / 08</h6> -->
-                           <!--  <br>
-                            <span class="font-bold"> المحكمة: </span><h5>المحكمة الابتدائية - بركان</h5><br>
-                            <span class="font-bold"> الملاحظة: </span><h5>المتهم في حالة سراح نظراً لعدة اسباب</h5> -->
-                            
+
                         </div>
                                 </div>
                             </div>
                         </div>
-                      
+
                        <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3" >
                         <div  style="background-color:#F0F8FF;"    class="card dash-widget"    onclick="window.open('http://www.justice.gov.ma/', '_blank');"  >
                             <div class="card-body" style="border-style: inset;">
@@ -717,7 +571,7 @@ float:left;}</style>
                                 <div class="dash-widget-info">
                                     <h3></h3>
                                     <span>موقع وزارة العدل</span>
-                                   
+
                                 </div>
                             </div>
                         </div>
@@ -729,18 +583,18 @@ float:left;}</style>
                                 <div class="dash-widget-info">
                                     <h3></h3>
                                     <span>موقع محاكم </span>
-                                   
+
                                 </div>
                             </div>
                         </div>
                     </div>
-                      
+
                     </div>
                 </div>
                 <div class="row">
                  <div class="">
                         <div class="card card-table flex-fill">
-					
+
                             <div class="card-header">
                                 <h3 class="card-title mb-0">لائحة المحاماة</h3>
                             </div>
@@ -765,7 +619,7 @@ float:left;}</style>
 	                                            	img {
 	                                           		max-width: 70%;
 		                                            	height: auto;
-														
+
 		                                                          }
                                                                	</style>
 																<style>a.so{
@@ -780,28 +634,7 @@ float:left;}</style>
                                                 <td><a href="/cdn-cgi/l/email-protection" th:text="${avocat.email}" ></a></td>
                                                   <td><a href="#" th:text="${avocat.telfixe}" ></a></td>
                                                   <td><a href="#"  th:text="${avocat.DateCreation}">dddd/ddd/dd</a></td>
-                                               
-                                   
-                                                <!--  <td>
-                                                    <div class="dropdown action-label">
-                                                        <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-<i class="fa fa-dot-circle-o text-danger"></i>غير نشيط
-</a>
-                                                        <div class="dropdown-menu dropdown-menu-right">
-                                                            <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-success"></i>نشيط</a>
-                                                            <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-danger"></i> غير نشيط</a>
-                                                        </div>
-                                                    </div>
-                                                </td> -->
-												<!--<style>
-												th.test-in{
-												border:4px solide blue;
-												 padding: 10px;
-                                                  width: 60%;
-												}
-												
-												</style>-->
-												
+
                                                 <td class="test-in">
                                             <span  > <b style="color:blue;"> محامي </b></span>
                                         </td>
@@ -811,15 +644,6 @@ float:left;}</style>
                                                         <div class="dropdown-menu dropdown-menu-right">
                                                             <a class="dropdown-item" href="javascript:void(0)"><i class="fa fa-pencil m-r-5"></i> تعديل</a>
                                                             <a class="dropdown-item" href="javascript:void(0)"><i class="fa fa-trash-o m-r-5"></i> حذف</a>
-														<!--	<td> <button onclick="supprimerLigne(this)">حذف</button></td>
-															<script>
-                                                              function supprimerLigne(button) {
-                                                             // Récupère la ligne parente du bouton
-                                                              var row = button.parentNode.parentNode;
-                                                               // Supprime la ligne
-                                                                  row.parentNode.removeChild(row);
-                                                                                              }
-                                                                                        </script>-->
                                                         </div>
                                                     </div>
                                                 </td>
@@ -839,183 +663,12 @@ float:left;}</style>
         </div>
 
     </div>
-
-
-    
-    
-                        <!-- end page title -->
-	
-						<!--  <div class="col-auto float-end ms-auto">
-                            <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_client"><i class="fa fa-plus"></i> Add Client</a>
-                            <div class="view-icons">
-                                <a href="clients.html" class="grid-view btn btn-link active"><i class="fa fa-th"></i></a>
-                                <a href="clients-list.html" class="list-view btn btn-link"><i class="fa fa-bars"></i></a>
-                            </div>
-                        </div> -->
 					</div>
 				</div>
 
-
-
-
-				<!-- <div th:each="user:${users}" class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-						<div class="profile-widget">
-							<div class="profile-img"> enctype="multipart/form-data"
-	
-								<a th:href="@{admin-dashboard(user=${user.id})}" class="avatar"><img alt=""   th:src="${'data:image/jpeg;base64,'+{user.imguser}}"></a>
-							</div>  
-							                                                       
-							<div class="dropdown profile-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_client"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_client"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                </div>
-                            </div>
-							<h4 class="user-name m-t-10 mb-0 text-ellipsis">
-								<a th:href="@{client-profile}" th:text="${user.firstName}">Global Technologies</a>
-							</h4>
-							<h5 class="user-name m-t-10 mb-0 text-ellipsis">
-								<a th:href="@{client-profile} " th:text="${user.email}">Barry Cuda</a>
-							</h5>
-							<div class="small text-muted" th:text="${user.telfixe}">CEO</div>
-							                            <a th:href="@{chat}" class="btn btn-white btn-sm m-t-10">رسالة</a>
-
-							<a th:href="@{client-profile(user=${user.id})}"
-								class="btn btn-white btn-sm m-t-10">مزيد من المعلومات</a>
-						</div>
-					</div> -->
-					
-					<!--  <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                        <div class="profile-widget">
-                            <div class="profile-img">
-                                <a th:href="@{client-profile}" class="avatar"><img alt="" src="assets/img/profiles/avatar-29.jpg"></a>
-                            </div>
-                            <!-- <div class="dropdown profile-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_client"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_client"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                </div>
-                            </div> -->
-					<!--   <h4 class="user-name m-t-10 mb-0 text-ellipsis"><a th:href="@{client-profile}">Delta Infotech</a></h4>
-                            <h5 class="user-name m-t-10 mb-0 text-ellipsis"><a th:href="@{client-profile}">Tressa Wexler</a></h5>
-                            <div class="small text-muted">Manager</div>
-                            <a th:href="@{chat}" class="btn btn-white btn-sm m-t-10">رسالة</a>
-                            <a th:href="@{client-profile}" class="btn btn-white btn-sm m-t-10">مزيد من المعلومات</a>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                        <div class="profile-widget">
-                            <div class="profile-img">
-                                <a th:href="@{client-profile}" class="avatar"><img src="assets/img/profiles/avatar-07.jpg" alt=""></a>
-                            </div> -->
-					<!-- <div class="dropdown profile-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_client"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_client"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                </div>
-                            </div> -->
-					<!--  <h4 class="user-name m-t-10 mb-0 text-ellipsis"><a th:href="@{client-profile}">Cream Inc</a></h4>
-                            <h5 class="user-name m-t-10 mb-0 text-ellipsis"><a th:href="@{client-profile}">Ruby Bartlett</a></h5>
-                            <div class="small text-muted">CEO</div>
-                           <a th:href="@{chat}" class="btn btn-white btn-sm m-t-10">رسالة</a>
-                            <a th:href="@{client-profile}" class="btn btn-white btn-sm m-t-10">مزيد من المعلومات</a>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                        <div class="profile-widget">
-                            <div class="profile-img">
-                                <a th:href="@{client-profile}" class="avatar"><img src="assets/img/profiles/avatar-06.jpg" alt=""></a>
-                            </div>
-                            <div class="dropdown profile-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_client"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_client"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                </div>
-                            </div>
-                            <h4 class="user-name m-t-10 mb-0 text-ellipsis"><a th:href="@{client-profile}">Wellware Company</a></h4>
-                            <h5 class="user-name m-t-10 mb-0 text-ellipsis"><a th:href="@{client-profile}">Misty Tison</a></h5>
-                            <div class="small text-muted">CEO</div>
-                           <a th:href="@{chat}" class="btn btn-white btn-sm m-t-10">رسالة</a>
-                            <a th:href="@{client-profile}" class="btn btn-white btn-sm m-t-10">مزيد من المعلومات</a>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                        <div class="profile-widget">
-                            <div class="profile-img">
-                                <a th:href="@{client-profile}" class="avatar"><img alt="" src="assets/img/profiles/avatar-14.jpg"></a>
-                            </div>
-                            <div class="dropdown profile-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_client"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_client"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                </div>
-                            </div>
-                            <h4 class="user-name m-t-10 mb-0 text-ellipsis"><a th:href="@{client-profile}">Mustang Technologies</a></h4>
-                            <h5 class="user-name m-t-10 mb-0 text-ellipsis"><a th:href="@{client-profile}">Daniel Deacon</a></h5>
-                            <div class="small text-muted">CEO</div>
-                            <a th:href="@{chat}" class="btn btn-white btn-sm m-t-10">رسالة</a>
-                            <a th:href="@{client-profile}" class="btn btn-white btn-sm m-t-10">مزيد من المعلومات</a>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                        <div class="profile-widget">
-                            <div class="profile-img">
-                                <a th:href="@{client-profile}" class="avatar"><img alt="" src="assets/img/profiles/avatar-18.jpg"></a>
-                            </div> -->
-					
-					<!-- <h4 class="user-name m-t-10 mb-0 text-ellipsis"><a th:href="@{client-profile}">International Software</a></h4>
-                            <h5 class="user-name m-t-10 mb-0 text-ellipsis"><a th:href="@{client-profile}">Walter Weaver</a></h5>
-                            <div class="small text-muted">CEO</div>
-                            <a th:href="@{chat}" class="btn btn-white btn-sm m-t-10">رسالة</a>
-                            <a th:href="@{client-profile}" class="btn btn-white btn-sm m-t-10">مزيد من المعلومات</a>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                        <div class="profile-widget">
-                            <div class="profile-img">
-                                <a th:href="@{client-profile}" class="avatar"><img alt="" src="assets/img/profiles/avatar-28.jpg"></a>
-                            </div>
-                            <div class="dropdown profile-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_client"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_client"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                </div>
-                            </div>
-                            <h4 class="user-name m-t-10 mb-0 text-ellipsis"><a th:href="@{client-profile}">Mercury Software Inc</a></h4>
-                            <h5 class="user-name m-t-10 mb-0 text-ellipsis"><a th:href="@{client-profile}">Amanda Warren</a></h5>
-                            <div class="small text-muted">CEO</div>
-                           <a th:href="@{chat}" class="btn btn-white btn-sm m-t-10">رسالة</a>
-                            <a th:href="@{client-profile}" class="btn btn-white btn-sm m-t-10">مزيد من المعلومات</a>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-                        <div class="profile-widget">
-                            <div class="profile-img">
-                                <a th:href="@{client-profile}" class="avatar"><img alt="" src="assets/img/profiles/avatar-13.jpg"></a>
-                            </div> -->z
-					
 				</div>
 			</div>
-                       
-                                <!-- end row -->
 
-                               
-                        <!-- end row -->
-
-                      
-
-                <!-- subscribeModal -->
-             
-                <!-- end modal -->
-
-              
-            <!-- end main content-->
 
         </div>
         <!-- END layout-wrapper -->
@@ -1024,7 +677,7 @@ float:left;}</style>
         <div class="right-bar">
             <div data-simplebar class="h-100">
                 <div class="rightbar-title d-flex align-items-center px-3 py-4">
-            
+
                     <h5 class="m-0 me-2">Settings</h5>
 
                     <a href="javascript:void(0);" class="right-bar-toggle ms-auto">
@@ -1045,7 +698,7 @@ float:left;}</style>
                         <input class="form-check-input theme-choice" type="checkbox" id="light-mode-switch" checked>
                         <label class="form-check-label" for="light-mode-switch">Light Mode</label>
                     </div>
-    
+
                     <div class="mb-2">
                         <img src="/assets/images/layouts/layout-2.jpg" class="img-thumbnail" alt="layout images">
                     </div>
@@ -1053,7 +706,7 @@ float:left;}</style>
                         <input class="form-check-input theme-choice" type="checkbox" id="dark-mode-switch">
                         <label class="form-check-label" for="dark-mode-switch">Dark Mode</label>
                     </div>
-    
+
                     <div class="mb-2">
                         <img src="/assets/images/layouts/layout-3.jpg" class="img-thumbnail" alt="layout images">
                     </div>
@@ -1070,7 +723,7 @@ float:left;}</style>
                         <label class="form-check-label" for="dark-rtl-mode-switch">Dark RTL Mode</label>
                     </div>
 
-            
+
                 </div>
 
             </div> <!-- end slimscroll-menu-->
@@ -1109,7 +762,7 @@ float:left;}</style>
     <script src="assets/js/chart.js"></script>
 
     <script src="assets/js/app.js"></script>
-	
+
 	<script src="/assets/libs/jquery/jquery.min.js"></script>
         <script src="/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
         <script src="/assets/libs/metismenu/metisMenu.min.js"></script>

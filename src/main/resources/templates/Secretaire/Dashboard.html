@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - سكرتارية</title>
+    <!-- Bootstrap RTL CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
+    <!-- Google Font: Cairo - Excellent Arabic font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            background-color: #2c3e50;
+            min-height: 100vh;
+            color: white;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: inherit;
+            z-index: 100;
+        }
+        .sidebar-header {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            background-color: #1a2530;
+        }
+        .sidebar-header h4 {
+            margin: 0;
+            font-weight: 700;
+            color: #ecf0f1;
+        }
+        .sidebar-header p {
+            margin: 10px 0 0;
+            opacity: 0.8;
+            font-size: 14px;
+        }
+        .sidebar ul {
+            padding: 20px 0;
+            margin: 0;
+        }
+        .sidebar ul li {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li a {
+            color: #ecf0f1;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: block;
+            padding: 15px 20px;
+            border-right: 4px solid transparent;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .sidebar ul li a i {
+            margin-left: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        .sidebar ul li a:hover {
+            background-color: rgba(255,255,255,0.1);
+            border-right-color: #3498db;
+        }
+        .sidebar ul li.active a {
+            background-color: rgba(255,255,255,0.15);
+            color: #fff;
+            border-right-color: #3498db;
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-right: 16.666667%;
+            padding: 30px;
+        }
+        .page-title {
+            margin-bottom: 30px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        .page-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 60px;
+            height: 3px;
+            background-color: #3498db;
+        }
+
+        /* Stat Cards */
+        .stat-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.05);
+            padding: 20px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+        }
+        .stat-card-icon {
+            position: absolute;
+            left: 20px;
+            bottom: 20px;
+            font-size: 4em;
+            opacity: 0.15;
+            color: #2c3e50;
+        }
+        .stat-card-value {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 5px;
+            text-align: right;
+        }
+        .stat-card-label {
+            font-size: 1em;
+            color: #7f8c8d;
+            text-align: right;
+        }
+        .stat-card-primary {
+            border-top: 4px solid #3498db;
+        }
+        .stat-card-success {
+            border-top: 4px solid #2ecc71;
+        }
+        .stat-card-warning {
+            border-top: 4px solid #f39c12;
+        }
+        .stat-card-danger {
+            border-top: 4px solid #e74c3c;
+        }
+
+        /* Appointments Table */
+        .table-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        .table-header {
+            background-color: #3498db;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .table-header h5 {
+            margin: 0;
+            font-weight: 600;
+        }
+        .btn-add-rdv {
+            background-color: white;
+            color: #3498db;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s;
+        }
+        .btn-add-rdv i {
+            margin-left: 8px;
+        }
+        .btn-add-rdv:hover {
+            background-color: #f8f9fa;
+            transform: translateY(-2px);
+        }
+        .table {
+            margin-bottom: 0;
+        }
+        .table thead {
+            background-color: #f8f9fa;
+        }
+        .table thead th {
+            border-bottom: 2px solid #e9ecef;
+            font-weight: 600;
+            color: #34495e;
+        }
+        .table td, .table th {
+            padding: 15px;
+            vertical-align: middle;
+            text-align: right;
+        }
+        .table tbody tr {
+            transition: background-color 0.3s;
+        }
+        .table tbody tr:hover {
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+        .table tbody tr:not(:last-child) {
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        /* Action Buttons */
+        .btn-action {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 3px;
+            color: white;
+            transition: all 0.3s;
+        }
+        .btn-view {
+            background-color: #3498db;
+        }
+        .btn-edit {
+            background-color: #f39c12;
+        }
+        .btn-delete {
+            background-color: #e74c3c;
+        }
+        .btn-action:hover {
+            transform: scale(1.1);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+            color: white;
+        }
+
+        /* Empty State */
+        .empty-state {
+            padding: 40px;
+            text-align: center;
+            color: #7f8c8d;
+        }
+        .empty-state i {
+            font-size: 3em;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        /* Responsive */
+        @media (max-width: 991.98px) {
+            .sidebar {
+                position: static;
+                min-height: auto;
+            }
+            .main-content {
+                margin-right: 0;
+            }
+        }
+
+        /* RTL specific adjustments */
+        .dropdown-menu {
+            text-align: right;
+        }
+        .dropdown-item i {
+            margin-left: 10px;
+            margin-right: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-lg-2 p-0">
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <h4>مكتب المحاماة</h4>
+                    <p th:text="${secretaire != null ? secretaire.firstName + ' ' + secretaire.lastName : ''}"></p>
+                </div>
+                <ul>
+                    <li class="active"><a href="#"><i class="fas fa-tachometer-alt"></i> لوحة التحكم</a></li>
+                    <li><a th:href="@{/Secretaire/rdv/list}"><i class="fas fa-calendar-alt"></i> المواعيد</a></li>
+                    <li><a href="#"><i class="fas fa-users"></i> العملاء</a></li>
+                    <li><a href="#"><i class="fas fa-balance-scale"></i> المحامون</a></li>
+                    <li><a href="#"><i class="fas fa-folder"></i> الملفات</a></li>
+                    <li><a th:href="@{/logout}"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-lg-10">
+            <div class="main-content">
+                <h2 class="page-title">لوحة التحكم</h2>
+
+                <!-- Stats Row -->
+                <div class="row">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="stat-card stat-card-primary">
+                            <div class="stat-card-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <div class="stat-card-value" th:text="${rdvs != null ? rdvs.size() : 0}">0</div>
+                            <div class="stat-card-label">المواعيد الإجمالية</div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="stat-card stat-card-warning">
+                            <div class="stat-card-icon">
+                                <i class="fas fa-calendar-day"></i>
+                            </div>
+                            <div class="stat-card-value">5</div>
+                            <div class="stat-card-label">مواعيد اليوم</div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="stat-card stat-card-success">
+                            <div class="stat-card-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-card-value">28</div>
+                            <div class="stat-card-label">العملاء</div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="stat-card stat-card-danger">
+                            <div class="stat-card-icon">
+                                <i class="fas fa-balance-scale"></i>
+                            </div>
+                            <div class="stat-card-value">6</div>
+                            <div class="stat-card-label">المحامون</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Appointments -->
+                <div class="table-container">
+                    <div class="table-header">
+                        <h5>المواعيد الأخيرة</h5>
+                        <a th:href="@{/Secretaire/rdv/create}" class="btn-add-rdv">
+                            <i class="fas fa-plus"></i>
+                            موعد جديد
+                        </a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>المعرف</th>
+                                <th>التاريخ</th>
+                                <th>الوقت</th>
+                                <th>العميل</th>
+                                <th>المحامي</th>
+                                <th>الموضوع</th>
+                                <th>الحالة</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="rdv : ${rdvs}">
+                                <td th:text="${rdv.id}"></td>
+                                <td th:text="${rdv.date != null ? #temporals.format(rdv.date, 'dd/MM/yyyy') : '-'}"></td>
+                                <td th:text="${rdv.heur != null ? rdv.heur : '-'}"></td>
+                                <td th:text="${rdv.client != null ? (rdv.client.firstName != null ? rdv.client.firstName : '') + ' ' + (rdv.client.lastName != null ? rdv.client.lastName : '') : '-'}"></td>
+                                <td th:text="${rdv.bureau != null ? (rdv.bureau.nom != null ? rdv.bureau.nom : '-') : '-'}"></td>
+                                <td th:text="${rdv.sujet != null ? rdv.sujet : '-'}"></td>
+                                <!-- Version corrigée de la partie statut avec th:class -->
+                                <!-- Version alternative simplifiée pour le statut -->
+                                <td>
+                                    <span th:if="${rdv.statut == 'مؤكد' || rdv.statut == 'تم التأكيد'}" class="badge bg-success" th:text="${rdv.statut}"></span>
+                                    <span th:if="${rdv.statut == 'قيد الانتظار' || rdv.statut == 'معلق'}" class="badge bg-warning" th:text="${rdv.statut}"></span>
+                                    <span th:if="${rdv.statut == 'ملغى'}" class="badge bg-danger" th:text="${rdv.statut}"></span>
+                                    <span th:if="${rdv.statut != null && rdv.statut != 'مؤكد' && rdv.statut != 'تم التأكيد' && rdv.statut != 'قيد الانتظار' && rdv.statut != 'معلق' && rdv.statut != 'ملغى'}" class="badge bg-secondary" th:text="${rdv.statut}"></span>
+                                    <span th:if="${rdv.statut == null}">-</span>
+                                </td>
+                                <td class="text-center">
+                                    <a th:href="@{/Secretaire/rdv/details/{id}(id=${rdv.id})}" class="btn-action btn-view" title="عرض التفاصيل">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a th:href="@{/Secretaire/rdv/edit/{id}(id=${rdv.id})}" class="btn-action btn-edit" title="تعديل">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a th:href="@{/Secretaire/rdv/delete/{id}(id=${rdv.id})}" class="btn-action btn-delete"
+                                       title="حذف"
+                                       onclick="return confirm('هل أنت متأكد من حذف هذا الموعد؟')">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr th:if="${rdvs == null || rdvs.isEmpty()}">
+                                <td colspan="8">
+                                    <div class="empty-state">
+                                        <i class="fas fa-calendar-times"></i>
+                                        <h5>لا توجد مواعيد</h5>
+                                        <p>لم يتم العثور على أي مواعيد. يمكنك إضافة موعد جديد من خلال النقر على زر "موعد جديد".</p>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Quick Summary Section -->
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="table-container">
+                            <div class="table-header">
+                                <h5>الأحداث القادمة</h5>
+                            </div>
+                            <div class="p-4">
+                                <div class="d-flex align-items-center justify-content-between mb-3 p-3 bg-light rounded">
+                                    <div>
+                                        <h6 class="mb-1">اجتماع مع المحامين</h6>
+                                        <small>اليوم - 14:00</small>
+                                    </div>
+                                    <span class="badge bg-primary">قريباً</span>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-between mb-3 p-3 bg-light rounded">
+                                    <div>
+                                        <h6 class="mb-1">مراجعة الملفات الجديدة</h6>
+                                        <small>غداً - 10:30</small>
+                                    </div>
+                                    <span class="badge bg-info">مجدول</span>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-between p-3 bg-light rounded">
+                                    <div>
+                                        <h6 class="mb-1">اجتماع إدارة المكتب</h6>
+                                        <small>بعد غد - 11:00</small>
+                                    </div>
+                                    <span class="badge bg-warning">تأكيد</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="table-container">
+                            <div class="table-header">
+                                <h5>نظرة عامة حول الأداء</h5>
+                            </div>
+                            <div class="p-4">
+                                <div class="mb-4">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <span>المواعيد المكتملة</span>
+                                        <span>75%</span>
+                                    </div>
+                                    <div class="progress" style="height: 10px;">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <span>المواعيد المعلقة</span>
+                                        <span>15%</span>
+                                    </div>
+                                    <div class="progress" style="height: 10px;">
+                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <span>المواعيد الملغاة</span>
+                                        <span>10%</span>
+                                    </div>
+                                    <div class="progress" style="height: 10px;">
+                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
+
+<script>
+    // Pour les notifications/alertes qui disparaissent automatiquement
+    $(document).ready(function() {
+        // Ajouter une classe active au menu actuel
+        const currentLocation = window.location.pathname;
+        $('.sidebar ul li').each(function() {
+            const link = $(this).find('a').attr('href');
+            if (currentLocation.includes(link) && link !== '#') {
+                $(this).addClass('active');
+                $(this).siblings().removeClass('active');
+            }
+        });
+
+        // Animation pour les cartes statistiques
+        $('.stat-card').each(function(index) {
+            $(this).delay(index * 100).animate({ opacity: 1, top: 0 }, 500);
+        });
+    });
+</script>
+</body>
+</html>

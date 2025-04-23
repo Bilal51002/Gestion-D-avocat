@@ -44,7 +44,7 @@
         	expired-url="/login" session-registry-alias="sessionRegistry"/>
         </session-management>
         
-        <logout invalidate-session="false" logout-success-url="/logoutPage?logSucc=true" delete-cookies="JSESSIONID"/>
+        <logout invalidate-session="false" logout-success-url="/login.html?logSucc=true" delete-cookies="JSESSIONID"/>
     </http>
 
     <authentication-manager>

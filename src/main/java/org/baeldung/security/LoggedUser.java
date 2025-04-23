@@ -32,10 +32,39 @@ public class LoggedUser implements HttpSessionBindingListener {
 
     @Override
     public void valueUnbound(HttpSessionBindingEvent event) {
-        List<String> users = activeUserStore.getUsers();
-        LoggedUser user = (LoggedUser) event.getValue();
-        if (users.contains(user.getUsername())) {
-            users.remove(user.getUsername());
+        if (event == null || event.getValue() == null) {
+            System.out.println("Event ou event.getValue() est null dans valueUnbound");
+            return;
+        }
+
+        try {
+            List<String> users = activeUserStore.getUsers();
+            if (users == null) {
+                System.out.println("La liste des utilisateurs actifs est null");
+                return;
+            }
+
+            LoggedUser user = (LoggedUser) event.getValue();
+            if (user == null) {
+                System.out.println("L'utilisateur connecté est null");
+                return;
+            }
+
+            String username = user.getUsername();
+            if (username == null) {
+                System.out.println("Le nom d'utilisateur est null");
+                return;
+            }
+
+            if (users.contains(username)) {
+                users.remove(username);
+                System.out.println("Utilisateur " + username + " supprimé de la liste des utilisateurs actifs");
+            } else {
+                System.out.println("L'utilisateur " + username + " n'est pas dans la liste des utilisateurs actifs");
+            }
+        } catch (Exception e) {
+            System.err.println("Exception dans valueUnbound: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 

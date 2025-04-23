@@ -35,6 +35,8 @@ public class Client {
 	private String imguser;
 
 	private String image;
+	@ManyToMany(mappedBy = "clients")
+	private Collection<BureauAvocat> bureauAvocats;
 
 	@ToString.Exclude
 	@ManyToMany(mappedBy = "clients", cascade = CascadeType.REMOVE)

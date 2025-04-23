@@ -89,39 +89,38 @@ public class MySimpleUrlAuthenticationSuccessHandler implements AuthenticationSu
         boolean isAvocat = false;
         boolean isClient = false;
 
-
+        System.out.println("Autorités de l'utilisateur authentifié :");
         final Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         for (final GrantedAuthority grantedAuthority : authorities) {
-            if (grantedAuthority.getAuthority().equals("USER_PRIVILEGE")) {
+            String authority = grantedAuthority.getAuthority();
+            System.out.println("- " + authority);
+
+            // Chercher les autorités avec le préfixe ROLE_
+            if (authority.equals("ROLE_USER")) {
                 isUser = true;
-            } else if (grantedAuthority.getAuthority().equals("ADMIN_PRIVILEGE")) {
+            } else if (authority.equals("ROLE_ADMIN")) {
                 isAdmin = true;
                 isUser = false;
-                break;
-            }
-            else if (grantedAuthority.getAuthority().equals("SECRETAIRE_PRIVILEGE")) {
+            } else if (authority.equals("ROLE_SECRETAIRE")) {
                 isSecretaire = true;
                 isUser = false;
                 isAdmin = false;
-                break;
-            }
-            else if (grantedAuthority.getAuthority().equals("AVOCAT_PRIVILEGE")) {
+            } else if (authority.equals("ROLE_AVOCAT")) {
                 isAvocat = true;
                 isSecretaire = false;
                 isUser = false;
                 isAdmin = false;
-
-                break;
-            }
-            else if (grantedAuthority.getAuthority().equals("CLIENT_PRIVILEGE")) {
+            } else if (authority.equals("ROLE_CLIENT")) {
                 isClient = true;
                 isUser = false;
                 isAdmin = false;
                 isSecretaire = false;
-                break;
             }
-
         }
+
+        System.out.println("Rôles identifiés : Admin=" + isAdmin + ", Secretaire=" + isSecretaire +
+                ", Avocat=" + isAvocat + ", Client=" + isClient + ", User=" + isUser);
+
         if (isClient) {
             return "/Client/index";
         }
@@ -129,30 +128,27 @@ public class MySimpleUrlAuthenticationSuccessHandler implements AuthenticationSu
             return "/Avocat/employee";
         }
         if (isSecretaire) {
-            return "/Secretaire/secretaires";
+            return "/Secretaire/Dashboard";
         } else if (isAdmin) {
             String username;
             if (authentication.getPrincipal() instanceof User) {
                 username = ((User)authentication.getPrincipal()).getEmail();
-            }
-            else {
+            } else {
                 username = authentication.getName();
             }
-            return "/Admin/index.html?user="+username;//"/console.html";
-        }
-        else if (isUser) {
+            return "/Admin/index.html?user="+username;
+        } else if (isUser) {
             String username;
             if (authentication.getPrincipal() instanceof User) {
                 username = ((User)authentication.getPrincipal()).getEmail();
-            }
-            else {
+            } else {
                 username = authentication.getName();
             }
-
             return "/super_admin/index";
-        }
-        else {
-            throw new IllegalStateException();
+        } else {
+            // Redirection vers une page par défaut si aucun rôle reconnu
+            System.err.println("Aucun rôle reconnu. Redirection vers la page d'accueil.");
+            return "/login?error=insufficient_privileges";
         }
     }
 

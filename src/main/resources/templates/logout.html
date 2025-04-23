@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" dir="rtl" lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تسجيل الخروج</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.rtl.min.css">
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Cairo', sans-serif;
+    }
+    .logout-container {
+      max-width: 500px;
+      margin: 100px auto;
+      padding: 30px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    .icon-logout {
+      font-size: 60px;
+      color: #dc3545;
+      margin-bottom: 20px;
+    }
+    .btn-primary {
+      background-color: #0d6efd;
+      border: none;
+      padding: 10px 25px;
+    }
+    .btn-secondary {
+      background-color: #6c757d;
+      border: none;
+      padding: 10px 25px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="logout-container">
+    <i class="fas fa-sign-out-alt icon-logout"></i>
+    <h2>تأكيد تسجيل الخروج</h2>
+    <p class="mb-4">هل أنت متأكد أنك تريد تسجيل الخروج من النظام؟</p>
+
+    <form th:action="@{/logout}" method="post">
+      <div class="d-flex justify-content-center gap-3">
+        <button type="submit" class="btn btn-primary">تأكيد تسجيل الخروج</button>
+        <a th:href="@{/}" class="btn btn-secondary">العودة للصفحة الرئيسية</a>
+      </div>
+    </form>
+
+    <div class="mt-4">
+      <small class="text-muted">في حال تسجيل الخروج، سيتعين عليك إدخال بيانات الدخول مرة أخرى للوصول إلى حسابك.</small>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

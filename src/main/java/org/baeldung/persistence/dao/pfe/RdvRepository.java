@@ -11,4 +11,7 @@ public interface RdvRepository extends JpaRepository<RDV,Long> {
     @Override
     List<RDV> findAll();
     //List<RDV> findRDVByRdvName(String rdvName);
+    List<RDV> findByClientId(Long clientId); // Récupérer les RDV d'un client par son ID
+
+    List<RDV> findByBureauId(Long bureauId);
 }

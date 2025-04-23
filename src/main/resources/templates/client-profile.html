@@ -37,7 +37,7 @@ body{direction:rtl;}
             <header id="page-topbar">
                 <div class="navbar-header">
                     <div class="d-flex">
-                        <!--         <!-- LOGO -->
+                        <!-- LOGO -->
                            <div class="navbar-brand-box">
                             <a href="index.html" class="logo logo-dark">
                                 <span class="logo-sm">
@@ -354,15 +354,10 @@ body{direction:rtl;}
                                     <span key="t-authentication">المصادقة</span>
                                 </a>
                                 <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="login.html" key="t-login">تسجيل الدخول</a></li>
-                                   <!-- <li><a href="auth-login-2.html" key="t-login-2">Login 2</a></li>-->
-                                    <li><a href="registration.html" key="t-register">التسجيل</a></li>
-                                   <!-- <li><a href="auth-register-2.html" key="t-register-2">Register 2</a></li>-->
-                                    <li><a href="auth-recoverpw.html" key="t-recover-password">استعادة كلمة السر</a></li>
-                                   <!-- <li><a href="auth-recoverpw-2.html" key="t-recover-password-2">Recover Password 2</a></li>-->
-                                    <li><a href="auth-lock-screen.html" key="t-lock-screen">اقفل الشاشة</a></li>
-                                   <!-- <li><a href="auth-lock-screen-2.html" key="t-lock-screen-2">Lock Screen 2</a></li>-->
-                                    
+                                    <li><a th:href="@{/login}" key="t-login">تسجيل الدخول</a></li>
+                                    <li><a th:href="@{/registration}"> التسجيل </a></li>
+                                    <li><a th:href="@{/Admin/AdminAvocat/Avocat/resetPassword}" key="t-recover-password">استعادة كلمة السر</a></li>
+                                    <li><a th:href="@{/logout}" key="t-lock-screen">اقفل الشاشة</a></li>
                                 </ul>
                             </li>
 
@@ -434,7 +429,7 @@ float:left;}</style>
 										
 										</style>
 											<a href=""> <img alt=""
-												th:src="${'data:image/jpeg;base64,'+{bureau.image}}" class="image">
+												th:src="'data:image/jpeg;base64,'+${bureau.image}" class="image">
 											</a>
 										</div>
 									</div>
@@ -456,26 +451,10 @@ float:left;}</style>
 											</div>
 											<div class="col-md-7">
 												<ul class="personal-info">
-													<h3><span class="title">الهاتف:</span> <span
-														class="text"><a href="" th:text="${bureau.tel}"></a></span>
-													</h3>
-													<h3><span class="title"> الهاتف الثابت:</span> <span
-														class="text"><a href=""
-															th:text="${bureau.telfex}"></span></h3>
-													<h3><span class="title" style="direction:rtl;">البريد الالكتروني:</span> <span
-														class="text"><a href="" th:text="${bureau.email}"
-															th:value="${bureau.email}"><span class="__cf_email__"
-																data-cfemail="debcbfacaca7bdabbabf9ebba6bfb3aeb2bbf0bdb1b3">[email&#160;protected]</span></a>
-													</span></h3>
-
-													<h3><span class="title">عنوان:</span> <span
-														class="text"><a href="" th:text="${bureau.adresse}"
-															th:value="${bureau.adresse}"></a> 36020</span></h3>
-													<!--   <li>
-                                                    th:text="${bureau.HAYA_AVOCAT}" th:value="${bureau.HAYA_AVOCAT}"
-                                                        <span class="title" >الهاتف:</span>
-                                                        <span class="text" th:text="${bureau.tel}" >Male</span>
-                                                    </li> -->
+													<h3><span class="title">الهاتف:</span> <span class="text"><a href="" th:text="${bureau.tel}"></a></span></h3>
+													<h3><span class="title"> الهاتف الثابت:</span> <span class="text"><a href="" th:text="${bureau.telfex}"></a></span></h3>
+													<h3><span class="title" style="direction:rtl;">البريد الالكتروني:</span> <span class="text"><a href="" th:text="${bureau.email}" th:value="${bureau.email}"><span class="__cf_email__" data-cfemail="debcbfacaca7bdabbabf9ebba6bfb3aeb2bbf0bdb1b3">[email&#160;protected]</span></a></span></h3>
+                                                    <h3><span class="title">عنوان:</span> <span class="text"><a href="" th:text="${bureau.adresse}" th:value="${bureau.adresse}"></a> 36020</span></h3>
 												</ul>
 											</div>
 										</div>
@@ -543,7 +522,7 @@ float:left;}</style>
 													المهنة</p>
 													<br/>
 												<p>المساهمة في تقريب المحامي من
-													موكليه وذلك بالاستفادة من وسائل الاتصال الحديثة<p>
+                                                    موكليه وذلك بالاستفادة من وسائل الاتصال الحديثة<p></p></h3>
 
 										
 
