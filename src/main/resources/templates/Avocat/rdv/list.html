@@ -1,457 +1,570 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>قائمة المواعيد - مكتب المحاماة</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.rtl.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/solid.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/fontawesome.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>قائمة المواعيد</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
     <style>
-        body {
-            font-family: 'Cairo', sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
-            text-align: right;
-            font-size: 15px;
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
+
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --accent-color: #3498db;
+            --light-accent: #e0f7fa;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --text-color: #444444;
+            --light-text: #95a5a6;
+            --background-color: #ecf0f1;
+            --card-bg: #ffffff;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
         }
-        .sidebar {
-            background-color: #2c3e50;
-            min-height: 100vh;
-            color: white;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-            position: fixed;
-            width: inherit;
-            z-index: 100;
-        }
-        .sidebar-header {
-            padding: 15px;
-            text-align: center;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            background-color: #1a2530;
-        }
-        .sidebar-header h4 {
+
+        * {
             margin: 0;
-            font-weight: 700;
-            color: #ecf0f1;
-            font-size: 19px;
-        }
-        .sidebar-header p {
-            margin: 5px 0 0;
-            opacity: 0.8;
-            font-size: 15px;
-        }
-        .sidebar ul {
-            padding: 10px 0;
-            margin: 0;
-        }
-        .sidebar ul li {
-            list-style: none;
             padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
         }
-        .sidebar ul li a {
-            color: #ecf0f1;
-            text-decoration: none;
-            transition: all 0.3s;
-            display: block;
-            padding: 12px 15px;
-            border-right: 4px solid transparent;
-            font-size: 15px;
-            font-weight: 500;
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            direction: rtl;
         }
-        .sidebar ul li a i {
-            margin-left: 10px;
-            width: 20px;
-            text-align: center;
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
-        .sidebar ul li a:hover {
-            background-color: rgba(255,255,255,0.1);
-            border-right-color: #3498db;
-        }
-        .sidebar ul li.active a {
-            background-color: rgba(255,255,255,0.15);
-            color: #fff;
-            border-right-color: #3498db;
-            font-weight: 600;
-        }
-        .main-content {
-            margin-right: 0;
-            padding: 15px;
-            width: 100%;
-        }
-        .page-title {
-            margin-bottom: 15px;
-            position: relative;
-            padding-bottom: 10px;
-            font-size: 22px;
-            font-weight: 600;
-            border-bottom: 1px solid #eee;
-        }
-        .page-title:after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            right: 0;
-            width: 60px;
-            height: 3px;
-            background-color: #3498db;
-        }
-        .table-container {
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-            overflow: hidden;
-            width: 100%;
-        }
-        .table-header {
-            background-color: #3498db;
-            color: white;
-            padding: 12px 15px;
+
+        /* Header */
+        header {
+            background-color: var(--primary-color);
+            padding: 20px;
+            border-radius: var(--border-radius);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 30px;
         }
-        .table-header h5 {
-            margin: 0;
-            font-weight: 600;
-            font-size: 18px;
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
         }
-        .btn-add-rdv {
-            background-color: white;
-            color: #3498db;
-            border: none;
-            border-radius: 5px;
-            padding: 8px 15px;
-            font-weight: 600;
-            display: inline-flex;
+
+        .user-info {
+            display: flex;
             align-items: center;
-            transition: all 0.3s;
-            font-size: 15px;
+            gap: 15px;
         }
-        .btn-add-rdv i {
-            margin-left: 8px;
-        }
-        .btn-add-rdv:hover {
-            background-color: #f8f9fa;
-            transform: translateY(-2px);
-        }
-        .table {
-            margin-bottom: 0;
-            width: 100%;
-            table-layout: fixed;
-        }
-        .table thead {
-            background-color: #f8f9fa;
-        }
-        .table thead th {
-            border-bottom: 1px solid #e9ecef;
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-weight: 600;
-            color: #34495e;
-            padding: 12px 10px;
-            font-size: 15px;
         }
-        .table td, .table th {
-            padding: 12px 10px;
-            vertical-align: middle;
-            text-align: right;
-            white-space: nowrap;
+
+        .user-details {
+            color: white;
+        }
+
+        .user-name {
+            font-weight: 600;
+        }
+
+        .user-email {
+            font-size: 12px;
+            color: #bdc3c7;
+        }
+
+        .logout-btn {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 8px 15px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .logout-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+
+
+        /* Tab Navigation */
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
             overflow: hidden;
-            text-overflow: ellipsis;
-            font-size: 15px;
         }
-        .table tbody tr {
-            transition: background-color 0.3s;
+
+        .tab {
+            padding: 15px 20px;
+            flex: 1;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            color: var(--text-color);
+            position: relative;
+            text-decoration: none;
         }
-        .table tbody tr:hover {
-            background-color: rgba(52,152,219,0.05);
+
+        .tab:hover {
+            background-color: #f5f5f5;
         }
-        .table tbody tr:not(:last-child) {
-            border-bottom: 1px solid #f0f0f0;
+
+        .tab.active {
+            color: var(--accent-color);
         }
-        .btn-action {
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--accent-color);
+        }
+
+        /* Page title */
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: var(--text-color);
+            position: relative;
+            padding-right: 15px;
+        }
+
+        .page-title::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 5px;
+            height: 25px;
+            background-color: var(--accent-color);
+            border-radius: 3px;
+        }
+
+        /* Card */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .card-header {
+            padding: 15px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-title {
+            font-weight: 600;
+        }
+
+        .card-icon {
+            font-size: 24px;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        /* Filters */
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-select {
+            min-width: 200px;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+        }
+
+        /* Table */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: right;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: var(--secondary-color);
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        /* Status badges */
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .status-pending {
+            background-color: var(--warning-color);
+        }
+
+        .status-accepted {
+            background-color: var(--success-color);
+        }
+
+        .status-rejected {
+            background-color: var(--danger-color);
+        }
+
+        /* Actions */
+        .actions {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 8px 15px;
+            border-radius: var(--border-radius);
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .btn-icon {
             width: 36px;
             height: 36px;
             border-radius: 50%;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            margin: 0 2px;
-            color: white;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
+
         .btn-view {
-            background-color: #3498db;
+            background-color: var(--accent-color);
+            color: white;
         }
+
         .btn-edit {
-            background-color: #f39c12;
-        }
-        .btn-delete {
-            background-color: #e74c3c;
-        }
-        .btn-action:hover {
-            transform: scale(1.1);
-            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+            background-color: var(--warning-color);
             color: white;
         }
-        .empty-state {
-            padding: 30px;
-            text-align: center;
-            color: #7f8c8d;
-        }
-        .empty-state i {
-            font-size: 3em;
-            margin-bottom: 15px;
-            opacity: 0.5;
-        }
-        @media (max-width: 991.98px) {
-            .sidebar {
-                position: static;
-                min-height: auto;
-            }
-            .main-content {
-                margin-right: 0;
-            }
-        }
-        .status-badge {
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-weight: 500;
-            display: inline-block;
-            color: white;
-            font-size: 14px;
-            white-space: nowrap;
-        }
-        .status-accepted {
-            background-color: #2ecc71;
-        }
-        .status-pending {
-            background-color: #5D666F;
-        }
-        .status-rejected {
-            background-color: #e74c3c;
-        }
-        .pagination-container {
-            display: flex;
-            justify-content: center;
-            padding: 15px;
-            background-color: #fff;
-            border-top: 1px solid #f0f0f0;
-        }
+
+        /* Pagination */
         .pagination {
             display: flex;
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .pagination .page-item {
-            margin: 0 3px;
-        }
-        .pagination .page-link {
-            display: flex;
-            align-items: center;
             justify-content: center;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            border: 1px solid #e9ecef;
-            color: #3498db;
-            font-weight: 600;
+            gap: 5px;
+            margin-top: 20px;
+        }
+
+        .pagination a {
+            display: inline-block;
+            padding: 8px 12px;
+            border-radius: var(--border-radius);
             text-decoration: none;
-            transition: all 0.3s;
-            font-size: 14px;
+            background-color: white;
+            color: var(--text-color);
+            transition: var(--transition);
         }
-        .pagination .page-link:hover {
-            background-color: #f8f9fa;
-            border-color: #3498db;
-        }
-        .pagination .page-item.active .page-link {
-            background-color: #3498db;
-            border-color: #3498db;
+
+        .pagination a:hover, .pagination a.active {
+            background-color: var(--accent-color);
             color: white;
         }
-        .pagination .page-item.disabled .page-link {
-            color: #adb5bd;
+
+        .pagination a.disabled {
+            opacity: 0.5;
             pointer-events: none;
-            cursor: default;
         }
-        .pagination-info {
+
+        /* Empty state */
+        .empty-state {
             text-align: center;
-            color: #6c757d;
-            font-size: 14px;
-            margin-top: 5px;
+            padding: 50px 0;
+            color: var(--light-text);
         }
 
-        /* Styles modifiés pour que le tableau prenne tout l'espace */
-        .table-responsive {
-            overflow-x: auto;
-            width: 100%;
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 15px;
         }
 
-        /* Ajuster les largeurs des colonnes pour ressembler à l'image */
-        .id-column {
-            width: 5%;
-        }
-        .date-column {
-            width: 10%;
-        }
-        .time-column {
-            width: 8%;
-        }
-        .subject-column {
-            width: 15%;
-        }
-        .client-column {
-            width: 15%;
-        }
-        .office-column {
-            width: 20%;
-        }
-        .status-column {
-            width: 12%;
-        }
-        .action-column {
-            width: 15%;
-            text-align: center;
+        /* Alerts */
+        .alert {
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
         }
 
-        /* Réduire les marges et paddings pour maximiser l'espace utilisable */
-        .container-fluid {
-            padding-left: 0;
-            padding-right: 0;
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border-right: 4px solid #28a745;
         }
-        .row {
-            margin-left: 0;
-            margin-right: 0;
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-right: 4px solid #dc3545;
         }
-        .col-lg-10 {
-            padding-left: 0;
-            padding-right: 0;
+
+        @media (max-width: 768px) {
+            .filters {
+                flex-direction: column;
+            }
+
+            .filter-select {
+                width: 100%;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                margin-bottom: 5px;
+            }
         }
     </style>
 </head>
 <body>
-<div class="container-fluid">
-    <div class="row">
-        <!-- Sidebar -->
-        <div class="col-lg-2 p-0">
-            <div class="sidebar">
-                <div class="sidebar-header">
-                    <h4>مكتب المحاماة</h4>
-                    <p th:text="${secretaire != null ? secretaire.firstName + ' ' + secretaire.lastName : ''}"></p>
-                </div>
-                <ul>
-                    <li class="active"><a th:href="@{/Secretaire/Dashboard}"><i class="fas fa-tachometer-alt"></i> لوحة التحكم</a></li>
-                    <li><a th:href="@{/Secretaire/notifications}"><i class="fas fa-bell"></i> الإشعارات
-                        <span th:if="${unreadNotificationsCount > 0}" class="badge bg-danger" th:text="${unreadNotificationsCount}"></span>
-                    </a></li>
-                    <li><a th:href="@{/Secretaire/rdv/list}"><i class="fas fa-calendar-alt"></i> المواعيد</a></li>
-                    <li><a th:href="@{/Secretaire/dossier/list}"><i class="fas fa-folder"></i> الملفات</a></li>
-                    <li><a th:href="@{/logout}"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a></li>
-                </ul>
+<div class="container">
+    <!-- Header -->
+    <header>
+        <div class="logo">المساعد القانوني</div>
+        <div class="user-info">
+            <div class="user-avatar" th:text="${avocat.getFirstName().substring(0,1)}">م</div>
+            <div class="user-details">
+                <div class="user-name" th:text="${'الأستاذ ' + avocat.getFirstName() + ' ' + avocat.getLastName()}">الأستاذ محمد العلوي</div>
+                <div class="user-email" th:text="${avocat.getEmail()}">m.alaoui@cabinet.ma</div>
+            </div>
+            <a class="logout-btn" th:href="@{/logout}">تسجيل الخروج</a>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <div class="tabs">
+        <a th:href="@{/Avocat/Dashboard}" class="tab">لوحة التحكم</a>
+        <a th:href="@{/Avocat/dossier/list}" class="tab">الملفات</a>
+        <a th:href="@{/Avocat/client/list}" class="tab">العملاء</a>
+        <a th:href="@{/Avocat/rdv/list}" class="tab active">المواعيد</a>
+    </div>
+
+    <!-- Page Header -->
+    <div class="page-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h1 class="page-title">قائمة المواعيد</h1>
+        <a th:href="@{/Avocat/rdv/create}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> إضافة موعد جديد
+        </a>
+    </div>
+
+    <!-- Success/Error Messages -->
+    <div th:if="${successMessage}" class="alert alert-success">
+        <p th:text="${successMessage}"></p>
+    </div>
+    <div th:if="${errorMessage}" class="alert alert-danger">
+        <p th:text="${errorMessage}"></p>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters">
+        <select class="filter-select" id="statusFilter" onchange="filterByStatus()">
+            <option value="">جميع الحالات</option>
+            <option value="EN_ATTENTE" th:selected="${selectedStatut == 'EN_ATTENTE'}">قيد الانتظار</option>
+            <option value="ACCEPTE" th:selected="${selectedStatut == 'ACCEPTE'}">مقبول</option>
+            <option value="REFUSE" th:selected="${selectedStatut == 'REFUSE'}">مرفوض</option>
+        </select>
+    </div>
+
+    <!-- Appointments Table -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">المواعيد</div>
+            <div class="card-icon">
+                <i class="fas fa-calendar-alt"></i>
             </div>
         </div>
+        <div class="card-content">
+            <div class="table-container">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>التاريخ</th>
+                        <th>الوقت</th>
+                        <th>الموضوع</th>
+                        <th>العميل</th>
+                        <th>الحالة</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="rdv : ${appointments}">
+                        <td th:text="${#temporals.format(rdv.date, 'dd/MM/yyyy')}">23/05/2025</td>
+                        <td th:text="${rdv.heur}">14:30</td>
+                        <td th:text="${rdv.sujet != null ? rdv.sujet : '-'}">استشارة قانونية</td>
+                        <td th:text="${rdv.client.firstName + ' ' + rdv.client.lastName}">أحمد المصطفى</td>
+                        <td>
+                            <span th:if="${rdv.statut == T(org.baeldung.persistence.model.pfe.Statut).EN_ATTENTE}" class="status-badge status-pending">قيد الانتظار</span>
+                            <span th:if="${rdv.statut == T(org.baeldung.persistence.model.pfe.Statut).ACCEPTE}" class="status-badge status-accepted">مقبول</span>
+                            <span th:if="${rdv.statut == T(org.baeldung.persistence.model.pfe.Statut).REFUSE}" class="status-badge status-rejected">مرفوض</span>
+                        </td>
+                        <td>
+                            <div class="actions">
+                                <a th:href="@{/Avocat/rdv/details/{id}(id=${rdv.id})}" class="btn-icon btn-view" title="عرض التفاصيل">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a th:href="@{/Avocat/rdv/edit/{id}(id=${rdv.id})}" class="btn-icon btn-edit" title="تعديل">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a th:if="${rdv.statut == T(org.baeldung.persistence.model.pfe.Statut).EN_ATTENTE}"
+                                   th:href="@{/Avocat/rdv/accept/{id}(id=${rdv.id})}"
+                                   class="btn-icon btn-success"
+                                   title="قبول">
+                                    <i class="fas fa-check"></i>
+                                </a>
+                                <a th:if="${rdv.statut == T(org.baeldung.persistence.model.pfe.Statut).EN_ATTENTE}"
+                                   th:href="@{/Avocat/rdv/refuse/{id}(id=${rdv.id})}"
+                                   class="btn-icon btn-danger"
+                                   title="رفض"
+                                   onclick="return confirm('هل أنت متأكد من رفض هذا الموعد؟')">
+                                    <i class="fas fa-times"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr th:if="${appointments.isEmpty()}">
+                        <td colspan="6">
+                            <div class="empty-state">
+                                <i class="fas fa-calendar-times"></i>
+                                <h3>لا توجد مواعيد</h3>
+                                <p>لم يتم العثور على أي مواعيد. يمكنك إضافة موعد جديد باستخدام زر "إضافة موعد جديد".</p>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
 
-        <!-- Main Content -->
-        <div class="col-lg-10">
-            <div class="main-content">
-                <h2 class="page-title">قائمة المواعيد</h2>
+            <!-- Pagination -->
+            <div th:if="${rdvPage.totalPages > 1}" class="pagination">
+                <a th:if="${!rdvPage.first}" th:href="@{/Avocat/rdv/list(page=${rdvPage.number - 1}, statut=${selectedStatut})}" class="previous">&laquo;</a>
+                <a th:if="${rdvPage.first}" class="previous disabled">&laquo;</a>
 
-                <!-- Table Container -->
-                <div id="appointments-section" class="table-container">
-                    <div class="table-header">
-                        <h5>جميع المواعيد</h5>
-                        <a th:href="@{/Secretaire/rdv/create}" class="btn-add-rdv"><i class="fas fa-plus"></i> إضافة موعد جديد</a>
-                    </div>
+                <th:block th:each="i : ${#numbers.sequence(0, rdvPage.totalPages - 1)}">
+                    <a th:href="@{/Avocat/rdv/list(page=${i}, statut=${selectedStatut})}"
+                       th:text="${i + 1}"
+                       th:class="${rdvPage.number == i ? 'active' : ''}">1</a>
+                </th:block>
 
-                    <!-- Empty State -->
-                    <div th:if="${rdvPage.empty}" class="empty-state">
-                        <i class="fas fa-calendar-times"></i>
-                        <h5>لا توجد مواعيد</h5>
-                        <p>لم يتم العثور على أي مواعيد. يمكنك إضافة موعد جديد من خلال النقر على زر "إضافة موعد جديد".</p>
-                    </div>
-
-                    <!-- Table with Data -->
-                    <div th:if="${!rdvPage.empty}" class="table-responsive">
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th class="id-column">المعرف</th>
-                                <th class="date-column">التاريخ</th>
-                                <th class="time-column">الوقت</th>
-                                <th class="subject-column">الموضوع</th>
-                                <th class="client-column">العميل</th>
-                                <th class="office-column">المحامي</th>
-                                <th class="status-column">الحالة</th>
-                                <th class="action-column">الإجراءات</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="rdv : ${rdvPage.content}">
-                                <td th:text="${rdv.id}"></td>
-                                <td th:text="${#temporals.format(rdv.date, 'dd/MM/yyyy')}"></td>
-                                <td th:text="${rdv.heur}"></td>
-                                <td th:text="${rdv.sujet}"></td>
-                                <td th:text="${rdv.client != null ? rdv.client.getFirstName() + ' ' + rdv.client.getLastName() : '-'}"></td>
-                                <td th:text="${rdv.bureau != null ? (rdv.bureau.getNom().startsWith('مكتب') ? rdv.bureau.getNom().substring(4) : rdv.bureau.getNom()) : '-'}"></td>
-                                <td>
-                                    <span th:if="${rdv.statut == T(org.baeldung.persistence.model.pfe.Statut).ACCEPTE}" class="status-badge status-accepted" th:text="${rdv.statut.getArabicTranslation()}">مقبول</span>
-                                    <span th:if="${rdv.statut == T(org.baeldung.persistence.model.pfe.Statut).EN_ATTENTE}" class="status-badge status-pending" th:text="${rdv.statut.getArabicTranslation()}">قيد الانتظار</span>
-                                    <span th:if="${rdv.statut == T(org.baeldung.persistence.model.pfe.Statut).REFUSE}" class="status-badge status-rejected" th:text="${rdv.statut.getArabicTranslation()}">مرفوض</span>
-                                    <span th:if="${rdv.statut != T(org.baeldung.persistence.model.pfe.Statut).ACCEPTE && rdv.statut != T(org.baeldung.persistence.model.pfe.Statut).EN_ATTENTE && rdv.statut != T(org.baeldung.persistence.model.pfe.Statut).REFUSE && rdv.statut != null}" class="status-badge" style="background-color: #6c757d;" th:text="${rdv.statut}"></span>
-                                    <span th:if="${rdv.statut == null}">-</span>
-                                </td>
-                                <td class="action-column">
-                                    <a th:href="@{/Secretaire/rdv/details/{id}(id=${rdv.id})}" class="btn-action btn-view" title="عرض التفاصيل"><i class="fas fa-eye"></i></a>
-                                    <a th:href="@{/Secretaire/rdv/edit/{id}(id=${rdv.id})}" class="btn-action btn-edit" title="تعديل"><i class="fas fa-edit"></i></a>
-                                    <a th:href="@{/Secretaire/rdv/delete/{id}(id=${rdv.id})}" class="btn-action btn-delete" title="حذف" onclick="return confirm('هل أنت متأكد من حذف هذا الموعد؟')"><i class="fas fa-trash-alt"></i></a>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-
-                        <!-- Pagination -->
-                        <div class="pagination-container">
-                            <nav aria-label="Page navigation">
-                                <ul class="pagination">
-                                    <!-- Previous Page -->
-                                    <li class="page-item" th:classappend="${rdvPage.first} ? 'disabled' : ''">
-                                        <a class="page-link" th:href="@{/Secretaire/rdv/list(page=${rdvPage.number - 1})}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-                                    </li>
-                                    <!-- Page Numbers -->
-                                    <li class="page-item" th:each="pageNumber : ${pageNumbers}" th:classappend="${pageNumber == rdvPage.number + 1 ? 'active' : ''}">
-                                        <a class="page-link" th:href="@{/Secretaire/rdv/list(page=${pageNumber - 1})}" th:text="${pageNumber}"></a>
-                                    </li>
-                                    <!-- Next Page -->
-                                    <li class="page-item" th:classappend="${rdvPage.last} ? 'disabled' : ''">
-                                        <a class="page-link" th:href="@{/Secretaire/rdv/list(page=${rdvPage.number + 1})}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-
-                        <!-- Pagination Info -->
-                        <div class="pagination-info">
-                            <span th:text="'عرض ' + ${rdvPage.numberOfElements} + ' من إجمالي ' + ${rdvPage.totalElements} + ' موعد'"></span>
-                        </div>
-                    </div>
-                </div>
+                <a th:if="${!rdvPage.last}" th:href="@{/Avocat/rdv/list(page=${rdvPage.number + 1}, statut=${selectedStatut})}" class="next">&raquo;</a>
+                <a th:if="${rdvPage.last}" class="next disabled">&raquo;</a>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Scripts -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+    // Filtrer par statut
+    function filterByStatus() {
+        const status = document.getElementById('statusFilter').value;
+        window.location.href = `/Avocat/rdv/list?statut=${status}`;
+    }
+
+    // Highlight active tab
     document.addEventListener('DOMContentLoaded', function() {
-        // Ajouter une classe active au menu actuel
-        const currentLocation = window.location.pathname;
-        document.querySelectorAll('.sidebar ul li').forEach(function(item) {
-            const link = item.querySelector('a').getAttribute('href');
-            if (currentLocation.includes(link) && link !== '#') {
-                item.classList.add('active');
+        const path = window.location.pathname;
+        const tabs = document.querySelectorAll('.tab');
+
+        tabs.forEach(tab => {
+            const href = tab.getAttribute('href');
+            if (path.includes(href) && href !== '/Avocat/Dashboard') {
+                tab.classList.add('active');
             }
         });
     });

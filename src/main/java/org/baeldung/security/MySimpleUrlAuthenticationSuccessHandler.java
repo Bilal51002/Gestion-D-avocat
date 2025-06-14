@@ -1,6 +1,5 @@
 package org.baeldung.security;
 
-import org.baeldung.persistence.model.Privilege;
 import org.baeldung.persistence.model.User;
 import org.baeldung.service.AdresseMacService;
 import org.baeldung.service.DeviceService;
@@ -14,7 +13,6 @@ import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -89,11 +87,11 @@ public class MySimpleUrlAuthenticationSuccessHandler implements AuthenticationSu
         boolean isAvocat = false;
         boolean isClient = false;
 
-        System.out.println("Autorités de l'utilisateur authentifié :");
+       // System.out.println("Autorités de l'utilisateur authentifié :");
         final Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         for (final GrantedAuthority grantedAuthority : authorities) {
             String authority = grantedAuthority.getAuthority();
-            System.out.println("- " + authority);
+           // System.out.println("- " + authority);
 
             // Chercher les autorités avec le préfixe ROLE_
             if (authority.equals("ROLE_USER")) {
@@ -118,14 +116,11 @@ public class MySimpleUrlAuthenticationSuccessHandler implements AuthenticationSu
             }
         }
 
-        System.out.println("Rôles identifiés : Admin=" + isAdmin + ", Secretaire=" + isSecretaire +
-                ", Avocat=" + isAvocat + ", Client=" + isClient + ", User=" + isUser);
-
         if (isClient) {
-            return "/Client/index";
+            return "/Client/Dashboard";
         }
         if (isAvocat) {
-            return "/Avocat/employee";
+            return "/Avocat/Dashboard";
         }
         if (isSecretaire) {
             return "/Secretaire/Dashboard";
@@ -147,7 +142,7 @@ public class MySimpleUrlAuthenticationSuccessHandler implements AuthenticationSu
             return "/super_admin/index";
         } else {
             // Redirection vers une page par défaut si aucun rôle reconnu
-            System.err.println("Aucun rôle reconnu. Redirection vers la page d'accueil.");
+           // System.err.println("Aucun rôle reconnu. Redirection vers la page d'accueil.");
             return "/login?error=insufficient_privileges";
         }
     }

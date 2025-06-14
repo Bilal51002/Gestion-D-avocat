@@ -1,10 +1,289 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" dir="rtl" lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جدول المواعيد المتاحة</title>
+
+    <!-- FullCalendar CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/main.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+
+        .calendar-container {
+            margin-top: 20px;
+        }
+
+        .fc-header-toolbar {
+            direction: rtl;
+        }
+
+        .fc-button {
+            background-color: #7e57c2 !important;
+            border-color: #7e57c2 !important;
+        }
+
+        .fc-button:hover {
+            background-color: #6a4caf !important;
+            border-color: #6a4caf !important;
+        }
+
+        .fc-daygrid-day-number {
+            float: right !important;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 0 10px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            margin-left: 5px;
+            border-radius: 4px;
+        }
+
+        .legend-available {
+            background-color: #4CAF50;
+        }
+
+        .legend-booked {
+            background-color: #F44336;
+        }
+
+        .form-container {
+            margin-bottom: 30px;
+        }
+
+        .selected-slot {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f0ebfa;
+            border-radius: 8px;
+            display: none;
+        }
+    </style>
 </head>
 <body>
-$END$
+<div class="container">
+    <h1 class="text-center mb-4">جدول المواعيد المتاحة</h1>
+
+    <div class="form-container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="avocat" class="form-label">اختر الأستاذ:</label>
+                    <select id="avocat" class="form-select">
+                        <option value="">-- اختر الأستاذ --</option>
+                        <option th:each="avocat : ${avocats}" th:value="${avocat.id}"
+                                th:text="${avocat.firstName + ' ' + avocat.lastName}"></option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="legend">
+        <div class="legend-item">
+            <div class="legend-color legend-available"></div>
+            <span>متاح</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color legend-booked"></div>
+            <span>محجوز</span>
+        </div>
+    </div>
+
+    <div class="calendar-container">
+        <div id="calendar"></div>
+    </div>
+
+    <div class="selected-slot" id="selected-slot">
+        <h4>تفاصيل الموعد المختار</h4>
+        <p><strong>التاريخ:</strong> <span id="selected-date"></span></p>
+        <p><strong>الوقت:</strong> <span id="selected-time"></span></p>
+        <p><strong>الأستاذ:</strong> <span id="selected-avocat"></span></p>
+
+        <form th:action="@{/Client/rdv/create}" method="post">
+            <input type="hidden" id="avocat-id" name="avocat.id">
+            <input type="hidden" id="date-input" name="date">
+            <input type="hidden" id="heur-input" name="heur">
+
+            <div class="mb-3">
+                <label for="sujet" class="form-label">موضوع الموعد:</label>
+                <input type="text" class="form-control" id="sujet" name="sujet" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="bureau" class="form-label">المكتب:</label>
+                <select id="bureau" name="bureau.id" class="form-select" required>
+                    <option value="">-- اختر المكتب --</option>
+                    <option th:each="bureau : ${bureaux}" th:value="${bureau.id}" th:text="${bureau.nom}"></option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">تأكيد الموعد</button>
+        </form>
+    </div>
+</div>
+
+<!-- FullCalendar JS -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales/ar.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const calendarEl = document.getElementById('calendar');
+        const avocatSelect = document.getElementById('avocat');
+        const selectedSlotDiv = document.getElementById('selected-slot');
+        const selectedDateSpan = document.getElementById('selected-date');
+        const selectedTimeSpan = document.getElementById('selected-time');
+        const selectedAvocatSpan = document.getElementById('selected-avocat');
+        const avocatIdInput = document.getElementById('avocat-id');
+        const dateInput = document.getElementById('date-input');
+        const heurInput = document.getElementById('heur-input');
+
+        let calendar;
+
+        // Initialiser le calendrier
+        calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'timeGridWeek',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            locale: 'ar',
+            direction: 'rtl',
+            slotMinTime: '09:00:00',
+            slotMaxTime: '18:00:00',
+            slotDuration: '00:30:00',
+            allDaySlot: false,
+            weekends: false,
+            selectable: true,
+            selectMirror: true,
+            eventClick: function(info) {
+                // Vérifier si c'est un créneau disponible
+                if (info.event.backgroundColor === '#4CAF50') {
+                    // Récupérer les informations du créneau
+                    const start = info.event.start;
+                    const heure = info.event.extendedProps.heure;
+                    const date = start.toISOString().split('T')[0];
+                    const avocatId = avocatSelect.value;
+                    const avocatText = avocatSelect.options[avocatSelect.selectedIndex].text;
+
+                    // Afficher les informations du créneau sélectionné
+                    selectedDateSpan.textContent = formatDate(date);
+                    selectedTimeSpan.textContent = heure;
+                    selectedAvocatSpan.textContent = avocatText;
+
+                    // Remplir les champs cachés du formulaire
+                    avocatIdInput.value = avocatId;
+                    dateInput.value = date;
+                    heurInput.value = heure;
+
+                    // Afficher le formulaire
+                    selectedSlotDiv.style.display = 'block';
+
+                    // Faire défiler jusqu'au formulaire
+                    selectedSlotDiv.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        });
+
+        calendar.render();
+
+        // Charger les disponibilités lorsque l'avocat est sélectionné
+        avocatSelect.addEventListener('change', function() {
+            const avocatId = this.value;
+
+            if (avocatId) {
+                // Effacer les événements existants
+                calendar.removeAllEvents();
+
+                // Récupérer les dates de début et de fin de la vue actuelle
+                const view = calendar.view;
+                const start = view.activeStart.toISOString().split('T')[0];
+                const end = view.activeEnd.toISOString().split('T')[0];
+
+                // Charger les créneaux disponibles
+                fetch(`/Client/rdv/disponibilites?avocatId=${avocatId}&start=${start}&end=${end}`)
+                    .then(response => response.json())
+                    .then(events => {
+                        calendar.addEventSource(events);
+                    });
+
+                // Charger les rendez-vous existants
+                fetch(`/Client/rdv/existants?avocatId=${avocatId}&start=${start}&end=${end}`)
+                    .then(response => response.json())
+                    .then(events => {
+                        calendar.addEventSource(events);
+                    });
+
+                // Cacher le formulaire de sélection
+                selectedSlotDiv.style.display = 'none';
+            }
+        });
+
+        // Mettre à jour les événements lorsque la vue du calendrier change
+        calendar.on('datesSet', function(info) {
+            const avocatId = avocatSelect.value;
+
+            if (avocatId) {
+                // Effacer les événements existants
+                calendar.removeAllEvents();
+
+                // Récupérer les dates de début et de fin de la nouvelle vue
+                const start = info.start.toISOString().split('T')[0];
+                const end = info.end.toISOString().split('T')[0];
+
+                // Charger les créneaux disponibles
+                fetch(`/Client/rdv/disponibilites?avocatId=${avocatId}&start=${start}&end=${end}`)
+                    .then(response => response.json())
+                    .then(events => {
+                        calendar.addEventSource(events);
+                    });
+
+                // Charger les rendez-vous existants
+                fetch(`/Client/rdv/existants?avocatId=${avocatId}&start=${start}&end=${end}`)
+                    .then(response => response.json())
+                    .then(events => {
+                        calendar.addEventSource(events);
+                    });
+            }
+        });
+
+        // Fonction pour formater la date en arabe
+        function formatDate(dateStr) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(dateStr).toLocaleDateString('ar-MA', options);
+        }
+    });
+</script>
 </body>
 </html>

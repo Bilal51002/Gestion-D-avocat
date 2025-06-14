@@ -1,10 +1,83 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <meta charset="UTF-8">
-  <title>$Title$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">Gestion Avocat</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-$END$
+<!-- Header -->
+<header class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container">
+    <a class="navbar-brand" href="/Secretaire/Dashboard">Gestion Avocat</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/Secretaire/Dashboard}">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/Secretaire/dossier/list}">Dossiers</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/Secretaire/notifications}">
+            Notifications
+            <span class="badge badge-light" th:if="${unreadNotificationsCount > 0}" th:text="${unreadNotificationsCount}"></span>
+          </a>
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
+            <span sec:authentication="name">Utilisateur</span>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right">
+            <a class="dropdown-item" href="#">Profil</a>
+            <div class="dropdown-divider"></div>
+            <form th:action="@{/logout}" method="post">
+              <button class="dropdown-item" type="submit">Déconnexion</button>
+            </form>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<!-- Main Content -->
+<main class="container mt-4">
+  <div layout:fragment="content">
+    <!-- Le contenu de la page sera inséré ici -->
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="bg-light py-3 mt-5">
+  <div class="container text-center">
+    <p class="mb-0">© 2025 Gestion Avocat - Tous droits réservés</p>
+  </div>
+</footer>
+
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Scripts additionnels spécifiques aux pages -->
+<th:block layout:fragment="scripts">
+  <!-- Les scripts de la page seront insérés ici -->
+</th:block>
 </body>
 </html>

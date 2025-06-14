@@ -1,12 +1,14 @@
 package org.baeldung.security;
 
 import java.util.List;
-
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionBindingListener;
-
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
+@Data
+@NoArgsConstructor
 @Component
 public class LoggedUser implements HttpSessionBindingListener {
 
@@ -16,9 +18,6 @@ public class LoggedUser implements HttpSessionBindingListener {
     public LoggedUser(String username, ActiveUserStore activeUserStore) {
         this.username = username;
         this.activeUserStore = activeUserStore;
-    }
-
-    public LoggedUser() {
     }
 
     @Override
@@ -67,12 +66,10 @@ public class LoggedUser implements HttpSessionBindingListener {
             e.printStackTrace();
         }
     }
-
     public String getUsername() {
-        return username;
+    	return this.username;
     }
-
     public void setUsername(String username) {
-        this.username = username;
+    	 this.username=username;
     }
 }

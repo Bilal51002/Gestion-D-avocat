@@ -1,10 +1,206 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <title>طباعة الموعد</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        @media print {
+            .no-print {
+                display: none;
+            }
+            body {
+                font-family: 'Cairo', sans-serif;
+                padding: 10px;
+            }
+            .container {
+                max-width: 100%;
+                padding: 0;
+            }
+            .print-card {
+                border: none;
+                padding: 10px;
+                margin: 0;
+            }
+        }
+        body {
+            font-family: 'Cairo', sans-serif;
+        }
+        .print-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .rdv-header {
+            text-align: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        .rdv-header h2 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+        .rdv-details {
+            margin-bottom: 15px;
+        }
+        .info-line {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: baseline;
+            justify-content: flex-start;
+            text-align: right;
+        }
+        .info-label {
+            font-weight: bold;
+            color: #555;
+            min-width: 100px;
+            margin-left: 15px;
+            text-align: left;
+        }
+        .info-value {
+            flex: 1;
+        }
+        .section-title {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            color: #444;
+            padding-bottom: 5px;
+            text-align: right;
+            border-bottom: 1px dashed #eee;
+        }
+        .rdv-footer {
+            margin-top: 25px;
+            text-align: center;
+            color: #777;
+            font-size: 0.8rem;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+        }
+        .logo-container {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .logo-container img {
+            max-height: 70px;
+        }
+        .qr-container {
+            text-align: center;
+            margin-top: 15px;
+        }
+        .qr-container img {
+            max-width: 100px;
+            height: auto;
+        }
+        .info-section {
+            padding-right: 10px;
+            margin-bottom: 15px;
+        }
+    </style>
 </head>
 <body>
-$END$
+<div class="container mt-4">
+    <!-- أزرار مرئية فقط على الشاشة -->
+    <div class="no-print mb-3 text-center">
+        <button onclick="window.print();" class="btn btn-sm btn-primary">
+            <i class="fas fa-print ml-1"></i>طباعة
+        </button>
+        <a th:href="@{/Client/rdv/details/{id}(id=${rdv.id})}" class="btn btn-sm btn-secondary">
+            <i class="fas fa-arrow-right ml-1"></i>العودة
+        </a>
+    </div>
+
+    <div class="print-card">
+        <!-- الشعار (اختياري) -->
+        <div class="logo-container">
+            <img src="/images/logo.png" alt="شعار المكتب" th:if="${false}" />
+        </div>
+
+        <!-- ترويسة المستند -->
+        <div class="rdv-header">
+            <h2><i class="fas fa-calendar-check ml-1"></i>تفاصيل الموعد</h2>
+            <p class="text-muted mb-0">رقم الموعد: <span th:text="${rdv.id}"></span></p>
+        </div>
+        <!-- معلومات العميل -->
+        <div class="info-section">
+            <h5 class="section-title">معلومات الزبون</h5>
+
+            <div class="info-line">
+                <div class="info-label">الإسم:</div>
+                <div class="info-value" th:text="${rdv.client != null ? rdv.client.getFirstName() : 'غير محدد'}"></div>
+            </div>
+
+            <div class="info-line">
+                <div class="info-label">اللقب:</div>
+                <div class="info-value" th:text="${rdv.client != null ? rdv.client.getLastName() : 'غير محدد'}"></div>
+            </div>
+
+            <div class="info-line">
+                <div class="info-label">العنوان:</div>
+                <div class="info-value" th:text="${rdv.client != null ? (rdv.client.getAdresse() ?: '-') : 'غير محدد'}"></div>
+            </div>
+
+            <div class="info-line">
+                <div class="info-label">البريد الإلكتروني:</div>
+                <div class="info-value" th:text="${rdv.client != null ? (rdv.client.getEmail() ?: '-') : 'غير محدد'}"></div>
+            </div>
+        </div>
+
+        <!-- تفاصيل الموعد -->
+        <div class="rdv-details">
+            <div class="info-section">
+                <div class="info-line">
+                    <div class="info-label">التاريخ:</div>
+                    <div class="info-value" th:text="${#temporals.format(rdv.date, 'yyyy-MM-dd')}"></div>
+                </div>
+
+                <div class="info-line">
+                    <div class="info-label">الساعة:</div>
+                    <div class="info-value" th:text="${rdv.heur}"></div>
+                </div>
+
+                <div class="info-line">
+                    <div class="info-label">الموضوع:</div>
+                    <div class="info-value" th:text="${rdv.sujet}"></div>
+                </div>
+
+                <div class="info-line">
+                    <div class="info-label">المحامي:</div>
+                    <div class="info-value" th:text="${rdv.avocat != null ? rdv.avocat.getLastName() + ' ' + rdv.avocat.getFirstName() : 'غير محدد'}"></div>
+                </div>
+
+                <div class="info-line">
+                    <div class="info-label">المكتب:</div>
+                    <div class="info-value" th:text="${rdv.bureau != null ? rdv.bureau.getNom() : 'غير محدد'}"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- تذييل الصفحة -->
+        <div class="rdv-footer">
+            <p class="mb-0">© مكتب المحاماة - جميع الحقوق محفوظة</p>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    // استيراد خط Cairo العربي من Google Fonts
+    (function() {
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = 'https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap';
+        document.head.appendChild(link);
+    })();
+</script>
 </body>
 </html>

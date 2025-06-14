@@ -1,10 +1,92 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" dir="rtl" lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <title>تفاصيل الإشعار</title>
+    <!-- أضف CSS الخاص بك هنا -->
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            direction: rtl;
+            text-align: right;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .notification-date {
+            color: #666;
+            font-size: 0.9em;
+        }
+        .notification-message {
+            margin: 20px 0;
+            line-height: 1.5;
+        }
+        .rdv-details {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .rdv-info p {
+            margin: 8px 0;
+        }
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            margin: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+    </style>
 </head>
 <body>
-$END$
+<div class="container">
+    <h1 th:text="${notification.titre}"></h1>
+    <p class="notification-date" th:text="${#temporals.format(notification.dateCreation, 'dd/MM/yyyy HH:mm')}"></p>
+    <div class="notification-message" th:text="${notification.message}"></div>
+
+    <!-- إذا كان إشعار طلب موعد، عرض تفاصيل الموعد -->
+    <div th:if="${notification.type == 'RDV_DEMANDE'}" class="rdv-details">
+        <h2>تفاصيل الموعد</h2>
+        <div class="rdv-info">
+            <p><strong>العميل:</strong> <span th:text="${rdv.client.firstName + ' ' + rdv.client.lastName}"></span></p>
+            <p><strong>التاريخ:</strong> <span th:text="${rdv.date}"></span></p>
+            <p><strong>الوقت:</strong> <span th:text="${rdv.heur}"></span></p>
+            <p><strong>المحامي المطلوب:</strong> <span th:text="${rdv.avocat != null ? rdv.avocat.firstName + ' ' + rdv.avocat.lastName : 'غير محدد'}"></span></p>
+            <p><strong>الموضوع:</strong> <span th:text="${rdv.sujet}"></span></p>
+            <!-- <p><strong>الوصف:</strong> <span th:text="${rdv.description}"></span></p> -->
+            <!-- <p><strong>الحالة:</strong> <span th:text="${rdv.statut}"></span></p> -->
+        </div>
+
+        <!-- أزرار لقبول أو رفض الموعد -->
+        <!-- <div class="rdv-actions" th:if="${rdv.statut == T(package.to.Statut).EN_ATTENTE}">
+            <form th:action="@{/Secretaire/rdv/accepter/{id}(id=${rdv.id})}" method="post" style="display: inline;">
+                <button type="submit" class="btn btn-success">قبول</button>
+            </form>
+            <form th:action="@{/Secretaire/rdv/refuser/{id}(id=${rdv.id})}" method="post" style="display: inline;">
+                <button type="submit" class="btn btn-danger">رفض</button>
+            </form>
+        </div> -->
+    </div>
+
+    <a href="/Secretaire/notifications" class="btn btn-primary">العودة إلى القائمة</a>
+</div>
 </body>
 </html>

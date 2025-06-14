@@ -1,10 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>$Title$</title>
+  <title>Rappel de Rendez-vous</title>
 </head>
 <body>
-$END$
+<div style="max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif;">
+  <img th:src="|cid:${imageResourceName}|" alt="Logo" style="max-width: 200px; margin-bottom: 20px;">
+
+  <h2>Rappel de Rendez-vous</h2>
+
+  <p th:text="${message0}">Bonjour</p>
+  <p th:text="${message1}">Détails du rendez-vous</p>
+  <p th:text="${message2}">Date et heure</p>
+  <p th:text="${message3}">Avocat</p>
+  <p th:text="${message4}">Sujet</p>
+
+  <p>Pour plus de détails, <a th:href="${url}">cliquez ici</a>.</p>
+
+  <p>Cordialement,<br>Votre Cabinet d'Avocats</p>
+</div>
 </body>
 </html>

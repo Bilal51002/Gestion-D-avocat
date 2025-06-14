@@ -212,7 +212,7 @@ public class UserServiceIntegrationTest {
         final String token_status = userService.validateVerificationToken(token);
         assertEquals(token_status, UserService.TOKEN_VALID);
         user = userService.getUserByID(userId).get();
-        assertTrue(user.isEnabled());
+        assertTrue(user.getEnabled());
     }
 
     @Test

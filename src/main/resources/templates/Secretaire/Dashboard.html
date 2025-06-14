@@ -78,8 +78,8 @@
 
         /* Main Content */
         .main-content {
-            margin-right: 16.666667%;
-            padding: 30px;
+            margin-right: 2%;
+            padding: 5px;
         }
         .page-title {
             margin-bottom: 30px;
@@ -129,6 +129,8 @@
             font-size: 1em;
             color: #7f8c8d;
             text-align: right;
+            text-decoration: none;
+            border-bottom: none;
         }
         .stat-card-primary {
             border-top: 4px solid #3498db;
@@ -146,7 +148,7 @@
         /* Appointments Table */
         .table-container {
             background-color: #fff;
-            border-radius: 10px;
+            border-radius: 27px;
             box-shadow: 0 0 15px rgba(0,0,0,0.05);
             margin-bottom: 30px;
             overflow: hidden;
@@ -189,13 +191,14 @@
         }
         .table thead th {
             border-bottom: 2px solid #e9ecef;
-            font-weight: 600;
+            font-weight: 900;
             color: #34495e;
         }
         .table td, .table th {
-            padding: 15px;
+            padding: 10px;
             vertical-align: middle;
             text-align: right;
+            white-space: nowrap; /* Empêche les retours à la ligne */
         }
         .table tbody tr {
             transition: background-color 0.3s;
@@ -265,6 +268,188 @@
             margin-left: 10px;
             margin-right: 0;
         }
+
+        /* Styles des notifications */
+        .notification-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            text-decoration: none;
+            color: inherit;
+        }
+        .notification-item:hover {
+            background-color: #f9f9f9;
+            text-decoration: none;
+            color: inherit;
+        }
+        .notification-item.unread {
+            background-color: #f0f7ff;
+        }
+        .notification-time {
+            font-size: 0.8rem;
+            color: #777;
+            text-align: left;
+        }
+        .notification-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .notification-message {
+            color: #555;
+            margin-bottom: 0;
+        }
+        .notification-counter {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .btn-mark-all-read {
+            background-color: white;
+            color: #3498db;
+            border: 1px solid #3498db;
+            border-radius: 5px;
+            padding: 6px 12px;
+            font-size: 14px;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        .btn-mark-all-read:hover {
+            background-color: #3498db;
+            color: white;
+        }
+
+        /* Status badges */
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: white;
+            text-align: center;
+            margin-right: 10px;
+        }
+        .status-pending {
+            background-color: #6c757d;
+        }
+        .status-accepted {
+            background-color: #28a745;
+        }
+        .status-rejected {
+            background-color: #dc3545;
+        }
+
+        /* Styles pour les boutons d'action dans les notifications */
+        .btn-details {
+            background-color: #3498db;
+            color: white;
+        }
+        .btn-accept {
+            background-color: #2ecc71;
+            color: white;
+        }
+        .btn-reject {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        /* Style spécifique pour la section des notifications récentes */
+        .notifications-list {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .list-group-flush {
+            border-radius: 0;
+        }
+        .list-group-flush .notification-item:last-child {
+            border-bottom: none;
+        }
+        /* Styles pour la pagination */
+        .pagination-container {
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .pagination-item {
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 8px;
+            background-color: white;
+            color: #2c3e50;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+
+        .pagination-item:hover {
+            background-color: #f0f7ff;
+            transform: translateY(-2px);
+            color: #3498db;
+        }
+
+        .pagination-item.active {
+            background: #3498db;
+            color: white;
+        }
+
+        .pagination-item.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .pagination-nav {
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 8px;
+            background-color: white;
+            color: #2c3e50;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+
+        .pagination-nav:hover {
+            background-color: #f0f7ff;
+            transform: translateY(-2px);
+            color: #3498db;
+        }
+
+        .pagination-nav.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .pagination-info {
+            text-align: center;
+            color: #718096;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
     </style>
 </head>
 <body>
@@ -279,10 +464,11 @@
                 </div>
                 <ul>
                     <li class="active"><a href="#"><i class="fas fa-tachometer-alt"></i> لوحة التحكم</a></li>
+                    <li><a th:href="@{/Secretaire/notifications}"><i class="fas fa-bell"></i> الإشعارات
+                        <span th:if="${unreadNotificationsCount > 0}" class="badge bg-danger" th:text="${unreadNotificationsCount}"></span>
+                    </a></li>
                     <li><a th:href="@{/Secretaire/rdv/list}"><i class="fas fa-calendar-alt"></i> المواعيد</a></li>
-                    <li><a href="#"><i class="fas fa-users"></i> العملاء</a></li>
-                    <li><a href="#"><i class="fas fa-balance-scale"></i> المحامون</a></li>
-                    <li><a href="#"><i class="fas fa-folder"></i> الملفات</a></li>
+                    <li><a th:href="@{/Secretaire/dossier/list}"><i class="fas fa-folder"></i> الملفات</a></li>
                     <li><a th:href="@{/logout}"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a></li>
                 </ul>
             </div>
@@ -300,8 +486,10 @@
                             <div class="stat-card-icon">
                                 <i class="fas fa-calendar-alt"></i>
                             </div>
-                            <div class="stat-card-value" th:text="${rdvs != null ? rdvs.size() : 0}">0</div>
-                            <div class="stat-card-label">المواعيد الإجمالية</div>
+                            <div class="stat-card-value" th:text="${rdvs != null ? rdvs.size() : 0}"></div>
+                            <a th:href="@{/Secretaire/rdv/list}" class="stat-card-label">
+                                <i class="fas fa-calendar-alt"></i> المواعيد الإجمالية
+                            </a>
                         </div>
                     </div>
 
@@ -310,34 +498,41 @@
                             <div class="stat-card-icon">
                                 <i class="fas fa-calendar-day"></i>
                             </div>
-                            <div class="stat-card-value">5</div>
-                            <div class="stat-card-label">مواعيد اليوم</div>
+                            <div class="stat-card-value" th:text="${todayAppointmentsCount != null ? todayAppointmentsCount : 0}">0</div>
+                            <a th:if="${activeFilter != 'today'}" th:href="@{/Secretaire/rdv/list?dateFilter=today}" class="stat-card-label">
+                                <i class="fas fa-calendar-day"></i> مواعيد اليوم
+                            </a>
                         </div>
                     </div>
 
                     <div class="col-lg-3 col-md-6">
                         <div class="stat-card stat-card-success">
                             <div class="stat-card-icon">
-                                <i class="fas fa-users"></i>
+                                <i class="fas fa-folder"></i>
                             </div>
-                            <div class="stat-card-value">28</div>
-                            <div class="stat-card-label">العملاء</div>
+                            <div class="stat-card-value" th:text="${totalDossiers != null ? totalDossiers : 0}">0</div>
+                            <a th:href="@{/Secretaire/dossier/list}" class="stat-card-label">
+                                <i class="fas fa-folder"></i> الملفات الإجمالية
+                            </a>
                         </div>
                     </div>
 
                     <div class="col-lg-3 col-md-6">
                         <div class="stat-card stat-card-danger">
                             <div class="stat-card-icon">
-                                <i class="fas fa-balance-scale"></i>
+                                <i class="fas fa-bell"></i>
                             </div>
-                            <div class="stat-card-value">6</div>
-                            <div class="stat-card-label">المحامون</div>
+                            <div class="stat-card-value" th:text="${unreadNotificationsCount != null ? unreadNotificationsCount : 0}">3</div>
+                            <a th:href="@{/Secretaire/notifications}" class="stat-card-label">
+                                <i class="fas fa-bell"></i> الإشعارات الجديدة
+                            </a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Recent Appointments -->
-                <div class="table-container">
+                <!-- Recent Appointments avec pagination -->
+                <div id="appointments-section" class="table-container">
                     <div class="table-header">
                         <h5>المواعيد الأخيرة</h5>
                         <a th:href="@{/Secretaire/rdv/create}" class="btn-add-rdv">
@@ -360,20 +555,36 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="rdv : ${rdvs}">
+                            <!-- Modifier cette partie pour utiliser rdvPage.content au lieu de rdvs -->
+                            <tr th:each="rdv : ${rdvPage.content}">
                                 <td th:text="${rdv.id}"></td>
                                 <td th:text="${rdv.date != null ? #temporals.format(rdv.date, 'dd/MM/yyyy') : '-'}"></td>
                                 <td th:text="${rdv.heur != null ? rdv.heur : '-'}"></td>
                                 <td th:text="${rdv.client != null ? (rdv.client.firstName != null ? rdv.client.firstName : '') + ' ' + (rdv.client.lastName != null ? rdv.client.lastName : '') : '-'}"></td>
-                                <td th:text="${rdv.bureau != null ? (rdv.bureau.nom != null ? rdv.bureau.nom : '-') : '-'}"></td>
+                                <td th:text="${rdv.bureau != null ? (rdv.bureau.nom != null ? (rdv.bureau.nom.startsWith('مكتب') ? rdv.bureau.nom.substring(4) : rdv.bureau.nom) : '-') : '-'}"></td>
                                 <td th:text="${rdv.sujet != null ? rdv.sujet : '-'}"></td>
-                                <!-- Version corrigée de la partie statut avec th:class -->
                                 <!-- Version alternative simplifiée pour le statut -->
                                 <td>
-                                    <span th:if="${rdv.statut == 'مؤكد' || rdv.statut == 'تم التأكيد'}" class="badge bg-success" th:text="${rdv.statut}"></span>
-                                    <span th:if="${rdv.statut == 'قيد الانتظار' || rdv.statut == 'معلق'}" class="badge bg-warning" th:text="${rdv.statut}"></span>
-                                    <span th:if="${rdv.statut == 'ملغى'}" class="badge bg-danger" th:text="${rdv.statut}"></span>
-                                    <span th:if="${rdv.statut != null && rdv.statut != 'مؤكد' && rdv.statut != 'تم التأكيد' && rdv.statut != 'قيد الانتظار' && rdv.statut != 'معلق' && rdv.statut != 'ملغى'}" class="badge bg-secondary" th:text="${rdv.statut}"></span>
+                                    <!-- Utilisation directe de la méthode getArabicTranslation() de l'enum -->
+                                    <span th:if="${rdv.statut == T(org.baeldung.persistence.model.pfe.Statut).ACCEPTE}"
+                                          class="status-badge status-accepted"
+                                          th:text="${rdv.statut.getArabicTranslation()}">مقبول</span>
+
+                                    <span th:if="${rdv.statut == T(org.baeldung.persistence.model.pfe.Statut).EN_ATTENTE}"
+                                          class="status-badge status-pending"
+                                          th:text="${rdv.statut.getArabicTranslation()}">قيد الانتظار</span>
+
+                                    <span th:if="${rdv.statut == T(org.baeldung.persistence.model.pfe.Statut).REFUSE}"
+                                          class="status-badge status-rejected"
+                                          th:text="${rdv.statut.getArabicTranslation()}">مرفوض</span>
+
+                                    <span th:if="${rdv.statut != T(org.baeldung.persistence.model.pfe.Statut).ACCEPTE &&
+                   rdv.statut != T(org.baeldung.persistence.model.pfe.Statut).EN_ATTENTE &&
+                   rdv.statut != T(org.baeldung.persistence.model.pfe.Statut).REFUSE &&
+                   rdv.statut != null}"
+                                          class="status-badge" style="background-color: #6c757d;"
+                                          th:text="${rdv.statut}"></span>
+
                                     <span th:if="${rdv.statut == null}">-</span>
                                 </td>
                                 <td class="text-center">
@@ -390,7 +601,8 @@
                                     </a>
                                 </td>
                             </tr>
-                            <tr th:if="${rdvs == null || rdvs.isEmpty()}">
+                            <!-- Modifier la condition pour vérifier rdvPage au lieu de rdvs -->
+                            <tr th:if="${rdvPage == null || rdvPage.numberOfElements == 0}">
                                 <td colspan="8">
                                     <div class="empty-state">
                                         <i class="fas fa-calendar-times"></i>
@@ -401,6 +613,158 @@
                             </tr>
                             </tbody>
                         </table>
+                    </div>
+
+                    <!-- Ajout de la pagination -->
+                    <div id="appointments-section"></div> <!-- Ancre pour la pagination -->
+                    <div class="pagination-container" style="padding: 15px; display: flex; justify-content: center;">
+                        <div class="pagination" th:if="${rdvPage != null && rdvPage.totalPages > 0}">
+                            <!-- Bouton précédent -->
+                            <a th:if="${!rdvPage.first}"
+                               th:href="@{/Secretaire/Dashboard(page=${rdvPage.number - 1})} + '#appointments-section'"
+                               class="pagination-nav">&lt;</a>
+                            <span th:if="${rdvPage.first}" class="pagination-nav disabled">&lt;</span>
+
+                            <!-- Pages numérotées -->
+                            <th:block th:if="${pageNumbers != null}">
+                                <!-- Première page (si on n'est pas au début) -->
+                                <a th:if="${rdvPage.number > 2}"
+                                   th:href="@{/Secretaire/Dashboard(page=0)} + '#appointments-section'"
+                                   class="pagination-item">1</a>
+
+                                <!-- Points de suspension si nécessaire -->
+                                <span th:if="${rdvPage.number > 3}" class="pagination-item disabled">...</span>
+
+                                <!-- Pages autour de la page courante -->
+                                <th:block th:each="pageNumber : ${pageNumbers}">
+                                    <a th:if="${pageNumber >= rdvPage.number && pageNumber <= rdvPage.number + 2}"
+                                       th:href="@{/Secretaire/Dashboard(page=${pageNumber - 1})} + '#appointments-section'"
+                                       class="pagination-item"
+                                       th:classappend="${pageNumber == rdvPage.number + 1} ? 'active' : ''"
+                                       th:text="${pageNumber}"></a>
+                                </th:block>
+
+                                <!-- Points de suspension si nécessaire -->
+                                <span th:if="${rdvPage.number < rdvPage.totalPages - 4}" class="pagination-item disabled">...</span>
+
+                                <!-- Dernière page (si on n'est pas à la fin) -->
+                                <a th:if="${rdvPage.number < rdvPage.totalPages - 3}"
+                                   th:href="@{/Secretaire/Dashboard(page=${rdvPage.totalPages - 1})} + '#appointments-section'"
+                                   class="pagination-item" th:text="${rdvPage.totalPages}"></a>
+                            </th:block>
+
+                            <!-- Bouton suivant -->
+                            <a th:if="${!rdvPage.last}"
+                               th:href="@{/Secretaire/Dashboard(page=${rdvPage.number + 1})} + '#appointments-section'"
+                               class="pagination-nav">&gt;</a>
+                            <span th:if="${rdvPage.last}" class="pagination-nav disabled">&gt;</span>
+                        </div>
+                    </div>
+
+                    <!-- Information sur la pagination -->
+                    <div class="pagination-info text-center mb-3" th:if="${rdvPage != null && rdvPage.numberOfElements > 0}">
+                        عرض [[${rdvPage.numberOfElements}]] من إجمالي [[${rdvPage.totalElements}]] موعد
+                    </div>
+                </div>
+
+                <!-- Section des Dossiers -->
+                <div id="dossiers-section" class="table-container">
+                    <div class="table-header">
+                        <h5>الملفات الحالية</h5>
+                        <a th:href="@{/Secretaire/dossier/create}" class="btn-add-rdv">
+                            <i class="fas fa-plus"></i>
+                            ملف جديد
+                        </a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>رقم الملف</th>
+                                <th>تاريخ الإنشاء</th>
+                                <th>الموضوع</th>
+                                <th>نوع الملف</th>
+                                <th>تاريخ الجلسة القادمة</th>
+                                <th>العميل</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="dossier : ${dossiers}">
+                                <td th:text="${dossier.numeroDossier}"></td>
+                                <td th:text="${dossier.DateCreation != null ? #dates.format(dossier.DateCreation, 'dd/MM/yyyy') : '-'}"></td>
+                                <td th:text="${dossier.sujet != null ? dossier.sujet : '-'}"></td>
+                                <td th:text="${dossier.typeD != null ? dossier.typeD.nom : '-'}"></td>
+                                <td th:text="${dossier.dateProchSession != null ? #dates.format(dossier.dateProchSession, 'dd/MM/yyyy') : '-'}"></td>
+                                <td>
+                                    <span th:if="${dossier.client != null && !dossier.client.isEmpty()}"
+                                          th:text="${dossier.client.size() > 0 ?
+                                                 (dossier.client.iterator().next().firstName + ' ' +
+                                                  dossier.client.iterator().next().lastName) : '-'}"></span>
+                                    <span th:if="${dossier.client == null || dossier.client.isEmpty()}">-</span>
+                                </td>
+                                <td class="text-center">
+                                    <a th:href="@{/Secretaire/dossier/details/{id}(id=${dossier.id})}" class="btn-action btn-view" title="عرض التفاصيل">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a th:href="@{/Secretaire/dossier/edit/{id}(id=${dossier.id})}" class="btn-action btn-edit" title="تعديل">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a th:href="@{/Secretaire/dossier/delete/{id}(id=${dossier.id})}" class="btn-action btn-delete"
+                                       title="حذف"
+                                       onclick="return confirm('هل أنت متأكد من حذف هذا الملف؟')">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <!-- Message si aucun dossier -->
+                            <tr th:if="${dossiers == null || dossiers.isEmpty()}">
+                                <td colspan="7">
+                                    <div class="empty-state">
+                                        <i class="fas fa-folder-open"></i>
+                                        <h5>لا توجد ملفات</h5>
+                                        <p>لم يتم العثور على أي ملفات. يمكنك إضافة ملف جديد من خلال النقر على زر "ملف جديد".</p>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Notifications Area - Corrigée selon l'image -->
+                <div class="table-container">
+                    <div class="table-header">
+                        <h5>آخر الإشعارات</h5>
+                        <a th:href="@{/Secretaire/notifications/mark-all-read}" class="btn-mark-all-read">
+                            <i class="fas fa-check-double ml-1"></i>
+                            تحديد الكل كمقروء
+                        </a>
+                    </div>
+                    <div class="notifications-list">
+                        <!-- Message si aucune notification -->
+                        <div th:if="${notifications == null || notifications.isEmpty()}" class="empty-state">
+                            <i class="fas fa-inbox"></i>
+                            <h5>لا توجد إشعارات جديدة</h5>
+                            <p>ستظهر الإشعارات الجديدة هنا عند استلامها.</p>
+                        </div>
+
+                        <!-- Liste limitée aux 3 dernières notifications -->
+                        <div th:unless="${notifications == null || notifications.isEmpty()}" class="list-group list-group-flush">
+                            <a th:each="notification, iterStat : ${notifications}"
+                               th:if="${iterStat.index < 3}"
+                               th:href="@{/Secretaire/notifications/{id}(id=${notification.id})}"
+                               class="notification-item"
+                               th:classappend="${!notification.lu ? 'unread' : ''}">
+                                <div>
+                                    <div class="notification-title" th:text="${notification.titre}">طلب موعد جديد</div>
+                                    <div class="notification-message" th:text="${notification.message}"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="text-center p-3">
+                        <a th:href="@{/Secretaire/notifications}" class="btn btn-outline-primary">عرض جميع الإشعارات</a>
                     </div>
                 </div>
 
@@ -478,6 +842,9 @@
     </div>
 </div>
 
+<!-- Container pour les notifications toast -->
+<div id="notificationContainer" style="position: fixed; bottom: 20px; right: 20px; z-index: 1050;"></div>
+
 <!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
@@ -499,6 +866,83 @@
         // Animation pour les cartes statistiques
         $('.stat-card').each(function(index) {
             $(this).delay(index * 100).animate({ opacity: 1, top: 0 }, 500);
+        });
+    });
+
+    // WebSocket pour les notifications en temps réel
+    let stompClient = null;
+
+    function connectWebSocket() {
+        const socket = new SockJS('/ws');
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function(frame) {
+            console.log('Connected: ' + frame);
+            stompClient.subscribe('/topic/notifications', function(notificationMessage) {
+                showNotification(JSON.parse(notificationMessage.body));
+            });
+        });
+    }
+
+    function showNotification(notification) {
+        // Afficher une alerte/toast
+        const toast = document.createElement('div');
+        toast.className = 'toast show';
+        toast.setAttribute('role', 'alert');
+        toast.setAttribute('aria-live', 'assertive');
+        toast.setAttribute('aria-atomic', 'true');
+
+        toast.innerHTML = `
+        <div class="toast-header">
+            <strong class="me-auto">إشعار جديد</strong>
+            <small>الآن</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            ${notification.message}
+            <div class="mt-2 pt-2 border-top">
+                <a href="/Secretaire/notifications" class="btn btn-primary btn-sm">عرض التفاصيل</a>
+            </div>
+        </div>
+    `;
+
+        document.getElementById('notificationContainer').appendChild(toast);
+
+        // Mettre à jour le compteur de notifications
+        const badgeElement = document.querySelector('.sidebar a[href="/Secretaire/notifications"] .badge');
+        if (badgeElement) {
+            const count = parseInt(badgeElement.textContent || '0');
+            badgeElement.textContent = count + 1;
+            badgeElement.style.display = 'inline-block';
+        }
+
+        // Son de notification
+        playNotificationSound();
+
+        // Supprimer automatiquement après 5 secondes
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 500);
+        }, 5000);
+    }
+
+    function playNotificationSound() {
+        const audio = new Audio('/sounds/notification.mp3');
+        audio.play().catch(e => console.log('Erreur lors de la lecture du son:', e));
+    }
+
+    // Se connecter au WebSocket quand la page est chargée
+    document.addEventListener('DOMContentLoaded', function() {
+        // Vérifier si SockJS est disponible
+        if (typeof SockJS !== 'undefined' && typeof Stomp !== 'undefined') {
+            connectWebSocket();
+        } else {
+            console.log('SockJS ou Stomp non chargés');
+        }
+
+        // Initialiser les toasts Bootstrap
+        var toastElList = [].slice.call(document.querySelectorAll('.toast'));
+        var toastList = toastElList.map(function (toastEl) {
+            return new bootstrap.Toast(toastEl);
         });
     });
 </script>

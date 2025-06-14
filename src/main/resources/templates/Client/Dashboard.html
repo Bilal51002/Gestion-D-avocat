@@ -1,10 +1,843 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم العميل</title>
+    <style>
+        @font-face {
+            font-family: 'Tajawal';
+            src: url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
+        }
+
+        :root {
+            --primary-color: #6d28d9;
+            --secondary-color: #ede9fe;
+            --text-color: #1e293b;
+            --accent-color: #8b5cf6;
+            --success-color: #059669;
+            --danger-color: #dc2626;
+            --warning-color: #f59e0b;
+            --background-color: #f5f3ff;
+            --card-shadow: 0 10px 15px -3px rgba(109, 40, 217, 0.1), 0 4px 6px -2px rgba(109, 40, 217, 0.05);
+            --hover-transition: all 0.3s ease;
+            --gradient-primary: linear-gradient(135deg, #6d28d9, #8b5cf6);
+            --gradient-secondary: linear-gradient(135deg, #a78bfa, #c4b5fd);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            text-align: right;
+            line-height: 1.5;
+            background-image: radial-gradient(#ddd6fe 1px, transparent 1px);
+            background-size: 20px 20px;
+            direction: rtl;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 2px solid #e2e8f0;
+            margin-bottom: 40px;
+            flex-direction: row-reverse;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+            background: var(--gradient-primary);
+            padding: 10px 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(109, 40, 217, 0.3);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-direction: row-reverse;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            box-shadow: 0 4px 10px rgba(109, 40, 217, 0.3);
+            border: 3px solid white;
+        }
+
+        .user-name {
+            font-weight: 600;
+            text-align: right;
+            font-size: 18px;
+        }
+
+        .user-email {
+            text-align: right;
+            color: #718096;
+        }
+
+        .logout-btn {
+            padding: 10px 16px;
+            background-color: #edf2f7;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--hover-transition);
+            font-weight: 500;
+            color: var(--text-color);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .logout-btn:hover {
+            background-color: #e2e8f0;
+            transform: translateY(-2px);
+        }
+
+        .notification-indicator {
+            position: relative;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--danger-color);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            padding: 25px;
+            transition: var(--hover-transition);
+            border-right: 4px solid var(--primary-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient-primary);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-direction: row-reverse;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 24px;
+            box-shadow: 0 4px 10px rgba(109, 40, 217, 0.2);
+        }
+
+        .card-content {
+            margin-bottom: 20px;
+        }
+
+        .card-content p {
+            margin-bottom: 12px;
+            font-size: 16px;
+            text-align: right;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .card-content p strong {
+            margin-left: 8px;
+            color: #4a5568;
+            font-weight: 700;
+            min-width: 80px;
+        }
+
+        .card-content p span {
+            font-weight: 500;
+        }
+
+        .card-header, .card-content, .card-footer {
+            text-align: right;
+            direction: rtl;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--hover-transition);
+            font-size: 15px;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 0 4px 6px rgba(109, 40, 217, 0.3);
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(109, 40, 217, 0.4);
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .btn-primary:hover::before {
+            opacity: 1;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-outline:hover {
+            color: white;
+            transform: translateY(-2px);
+            border-color: transparent;
+        }
+
+        .btn-outline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: var(--gradient-primary);
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+
+        .btn-outline:hover::before {
+            width: 100%;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-direction: row-reverse;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-color);
+            position: relative;
+            padding-right: 15px;
+        }
+
+        .section-title::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 5px;
+            height: 25px;
+            background: var(--gradient-primary);
+            border-radius: 3px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+        }
+
+        th, td {
+            padding: 16px 20px;
+            text-align: right;
+        }
+
+        th {
+            background: var(--gradient-primary);
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        tr {
+            border-bottom: 1px solid #e2e8f0;
+            transition: var(--hover-transition);
+        }
+
+        tr:hover {
+            background-color: #ebf8ff;
+        }
+
+        tr:last-child {
+            border-bottom: none;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-accepted {
+            background: linear-gradient(135deg, #a7f3d0, #6ee7b7);
+            color: #065f46;
+        }
+
+        .status-pending {
+            background: linear-gradient(135deg, #fef3c7, #fcd34d);
+            color: #92400e;
+        }
+
+        .status-rejected {
+            background: linear-gradient(135deg, #fecaca, #fca5a5);
+            color: #991b1b;
+        }
+
+        .bureau-info {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            padding: 30px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bureau-info::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient-primary);
+        }
+
+        .bureau-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+            flex-direction: row-reverse;
+        }
+
+        .bureau-logo {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            color: white;
+            box-shadow: 0 4px 10px rgba(109, 40, 217, 0.3);
+            border: 4px solid white;
+        }
+
+        .bureau-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            background-color: var(--secondary-color);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: inset 0 2px 5px rgba(109, 40, 217, 0.1);
+        }
+
+        .detail-item {
+            margin-bottom: 15px;
+        }
+
+        .detail-label {
+            font-size: 15px;
+            color: #718096;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .tab-container {
+            margin-bottom: 40px;
+        }
+
+        .tab:hover {
+            background-color: #f7fafc;
+            color: var(--primary-color);
+        }
+
+        .tab.active {
+            color: white;
+            background: var(--gradient-primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .notification {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            border-bottom: 1px solid #e2e8f0;
+            flex-direction: row-reverse;
+            transition: var(--hover-transition);
+        }
+
+        .notification:hover {
+            background-color: #f8fafc;
+        }
+
+        .notification:last-child {
+            border-bottom: none;
+        }
+
+        .notification-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gradient-secondary);
+            color: var(--primary-color);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: var(--hover-transition);
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        /* Styles pour la pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .pagination-item {
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 8px;
+            background-color: white;
+            color: var(--text-color);
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: var(--hover-transition);
+        }
+
+        .pagination-item:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .pagination-item.active {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .pagination-item.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .pagination-nav {
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 8px;
+            background-color: white;
+            color: var(--text-color);
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: var(--hover-transition);
+        }
+
+        .pagination-nav:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .pagination-nav.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .pagination-info {
+            text-align: center;
+            color: #718096;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        /* Script pour maintenir la position de défilement après le chargement de la page */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
 </head>
 <body>
-$END$
+<div class="container">
+    <header>
+        <div class="user-info">
+            <a class="btn btn-danger logout-btn" th:href="@{/logout}">تسجيل الخروج</a>
+            <div class="notification-indicator" th:if="${unreadNotificationsCount != null && unreadNotificationsCount > 0}">
+                <span class="notification-badge" th:text="${unreadNotificationsCount}">1</span>
+                <a href="#" onclick="document.querySelectorAll('.tab')[1].click();" title="الإشعارات الجديدة">
+                    🔔
+                </a>
+            </div>
+            <div class="user-avatar" th:text="${client.getFirstName().substring(0,1)}"></div>
+            <div>
+                <div class="user-name" th:text="${client.getFirstName()+' '+client.getLastName()}"></div>
+                <div class="user-email" th:text="${client.getEmail()}"></div>
+            </div>
+        </div>
+        <div class="logo">المساعد القانوني</div>
+    </header>
+
+    <div class="dashboard">
+        <div th:if="${dossiers != null && !dossiers.isEmpty()}" class="card">
+            <div class="card-header">
+                <div class="card-title">ملفي</div>
+                <div class="card-icon">📁</div>
+            </div>
+            <div class="card-content">
+                <p><strong>المرجع:</strong> <span th:text="${dossiers[0].numeroDossier}">LD-2025-0472</span></p>
+                <p><strong>النوع:</strong> <span th:text="${dossiers[0].typeD != null ? dossiers[0].typeD.nom : 'غير محدد'}"></span></p>
+                <p><strong>الحالة:</strong> <span th:text="${dossiers[0].typeDecas != null ? dossiers[0].typeDecas : 'قيد التنفيذ'}"> </span></p>
+                <p><strong>الموضوع: </strong><span th:text="${dossiers[0].getSujet()}"></span></p>
+                <p><strong>تاريخ الفتح:</strong> <span th:text="${#dates.format(dossiers[0].DateCreation, 'dd/MM/yyyy')}"></span></p>
+                <p th:if="${dossiers[0].getDateProchSession() != null}"><strong>تاريخ الجلسة المقبلة:</strong> <span th:text="${#dates.format(dossiers[0].getDateProchSession(), 'dd/MM/yyyy')}"></span></p>
+                <p th:unless="${dossiers[0].getDateProchSession() != null}"><strong>تاريخ الجلسة المقبلة:</strong> <span>غير محدد</span></p>
+            </div>
+            <div class="card-footer">
+                <a th:href="@{/Client/dossier/details/{id}(id=${dossiers[0].id})}" class="btn btn-outline">عرض التفاصيل</a>
+                <a th:href="@{/Client/dossier/dossiers}" class="btn btn-primary">عرض جميع الملفات</a>
+            </div>
+        </div>
+
+        <!-- Si le client n'a pas de dossiers, afficher un message -->
+        <div th:if="${dossiers == null || dossiers.isEmpty()}" class="card" style="text-align: center; padding: 30px;">
+            <div style="font-size: 48px; margin-bottom: 20px;">📁</div>
+            <h3 style="margin-bottom: 15px;">لا توجد ملفات حاليًا</h3>
+            <p style="margin-bottom: 20px; color: #718096;">يمكنك إنشاء ملف جديد أو الاتصال بمحاميك لإضافة ملف</p>
+<!--            <a th:href="@{/Client/dossier/create}" class="btn btn-primary">إنشاء ملف جديد</a>-->
+        </div>
+
+        <div class="card" th:if="${prochainRdv != null}">
+            <div class="card-header">
+                <div class="card-title">الموعد القادم</div>
+                <div class="card-icon">📅</div>
+            </div>
+            <div class="card-content">
+                <p><strong>التاريخ: </strong><span th:text="${#temporals.format(prochainRdv.date, 'yyyy-MM-dd')}"></span></p>
+                <p><strong>الوقت: </strong><span th:text="${prochainRdv.heur}"></span></p>
+                <p><strong>الموضوع: </strong><span th:text="${prochainRdv.getSujet()}"></span></p>
+                <p><strong>الحالة: </strong>
+                    <span th:switch="${prochainRdv.getStatut()}">
+                        <span th:case="${T(org.baeldung.persistence.model.pfe.Statut).ACCEPTE}"
+                              class="status-badge status-accepted">مقبول</span>
+                        <span th:case="${T(org.baeldung.persistence.model.pfe.Statut).EN_ATTENTE}"
+                              class="status-badge status-pending">قيد الانتظار</span>
+                        <span th:case="${T(org.baeldung.persistence.model.pfe.Statut).REFUSE}"
+                              class="status-badge status-rejected">مرفوض</span>
+                        <span th:case="*">-</span>
+                    </span>
+                </p>
+                <p th:if="${prochainRdv.getAvocat() != null}"><strong>مع الأستاذ: </strong> <span th:text="${prochainRdv.getAvocat().getFirstName() +' '+prochainRdv.getAvocat().getLastName()}"></span></p>
+                <p th:unless="${prochainRdv.getAvocat() != null}"><strong>مع الأستاذ: </strong> <span>غير محدد</span></p>
+            </div>
+            <div class="card-footer">
+                <a th:href="@{/Client/rdv/details/{id}(id=${prochainRdv.id})}" class="btn btn-outline">عرض التفاصيل</a>
+            </div>
+        </div>
+
+        <div class="card" th:unless="${prochainRdv != null}">
+            <div class="card-header">
+                <div class="card-title">المواعيد</div>
+                <div class="card-icon">📅</div>
+            </div>
+            <div class="card-content" style="text-align: center; padding: 20px 0;">
+                <div style="font-size: 48px; margin-bottom: 10px;">📅</div>
+                <p style="margin-bottom: 20px;">لا توجد مواعيد قادمة</p>
+            </div>
+            <div class="card-footer">
+                <a th:href="@{/Client/rdv/create}" class="btn btn-primary">حجز موعد جديد</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-container">
+        <div class="tab-content active">
+            <!-- Ajoutez un id à votre section de rendez-vous -->
+            <div id="appointments-section" class="section-header">
+                <h2 class="section-title">مواعيدي</h2>
+                <a class="btn btn-primary" th:href="@{/Client/rdv/create}">طلب موعد</a>
+            </div>
+
+            <table>
+                <thead>
+                <tr>
+                    <th>التاريخ</th>
+                    <th>الوقت</th>
+                    <th>الموضوع</th>
+                    <th>مع</th>
+                    <th>الحالة</th>
+                    <th>الإجراءات</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="rdv : ${rdvPage.content}" th:if="${rdvPage != null && rdvPage.numberOfElements > 0}">
+                    <td th:text="${#temporals.format(rdv.date, 'dd/MM/yyyy')}"></td>
+                    <td th:text="${rdv.heur}"></td>
+                    <td th:text="${rdv.sujet}"></td>
+                    <td th:text="${rdv.avocat != null ? rdv.avocat.firstName + ' ' + rdv.avocat.lastName : 'غير محدد'}"></td>
+                    <td>
+                        <span th:switch="${rdv.statut}">
+                            <span th:case="${T(org.baeldung.persistence.model.pfe.Statut).ACCEPTE}"
+                                  class="status-badge status-accepted">مقبول</span>
+                            <span th:case="${T(org.baeldung.persistence.model.pfe.Statut).EN_ATTENTE}"
+                                  class="status-badge status-pending">قيد الانتظار</span>
+                            <span th:case="${T(org.baeldung.persistence.model.pfe.Statut).REFUSE}"
+                                  class="status-badge status-rejected">مرفوض</span>
+                            <span th:case="*">-</span>
+                        </span>
+                    </td>
+                    <td>
+                        <a th:href="@{/Client/rdv/details/{id}(id=${rdv.id})}" class="btn btn-outline" style="padding: 5px 10px; font-size: 14px;">عرض</a>
+                        <a th:if="${rdv.statut == T(org.baeldung.persistence.model.pfe.Statut).EN_ATTENTE}"
+                           th:href="@{/Client/rdv/edit/{id}(id=${rdv.id})}" class="btn btn-outline" style="padding: 5px 10px; font-size: 14px;">تعديل</a>
+                    </td>
+                </tr>
+
+                <tr th:if="${rdvPage == null || rdvPage.numberOfElements == 0}">
+                    <td colspan="6" style="text-align: center; padding: 30px;">
+                        <div style="font-size: 18px; color: #718096;">لا توجد مواعيد حاليًا</div>
+                        <div style="margin-top: 10px;">
+                            <a th:href="@{/Client/rdv/create}" class="btn btn-primary">حجز موعد جديد</a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <!-- Pagination corrigée -->
+            <div class="pagination" th:if="${rdvPage != null && rdvPage.totalPages > 0}">
+                <!-- Bouton précédent -->
+                <a th:if="${!rdvPage.first}"
+                   th:href="@{/Client/Dashboard(page=${rdvPage.number - 1})} + '#appointments-section'"
+                   class="pagination-nav">&lt;</a>
+                <span th:if="${rdvPage.first}" class="pagination-nav disabled">&lt;</span>
+
+                <!-- Pages numérotées -->
+                <th:block th:if="${pageNumbers != null}">
+                    <!-- Première page (si on n'est pas au début) -->
+                    <a th:if="${rdvPage.number > 2}"
+                       th:href="@{/Client/Dashboard(page=0)} + '#appointments-section'"
+                       class="pagination-item">1</a>
+
+                    <!-- Points de suspension si nécessaire -->
+                    <span th:if="${rdvPage.number > 3}" class="pagination-item disabled">...</span>
+
+                    <!-- Pages autour de la page courante -->
+                    <th:block th:each="pageNumber : ${pageNumbers}">
+                        <a th:if="${pageNumber >= rdvPage.number && pageNumber <= rdvPage.number + 2}"
+                           th:href="@{/Client/Dashboard(page=${pageNumber - 1})} + '#appointments-section'"
+                           class="pagination-item"
+                           th:classappend="${pageNumber == rdvPage.number + 1} ? 'active' : ''"
+                           th:text="${pageNumber}"></a>
+                    </th:block>
+
+                    <!-- Points de suspension si nécessaire -->
+                    <span th:if="${rdvPage.number < rdvPage.totalPages - 4}" class="pagination-item disabled">...</span>
+
+                    <!-- Dernière page (si on n'est pas à la fin) -->
+                    <a th:if="${rdvPage.number < rdvPage.totalPages - 3}"
+                       th:href="@{/Client/Dashboard(page=${rdvPage.totalPages - 1})} + '#appointments-section'"
+                       class="pagination-item" th:text="${rdvPage.totalPages}"></a>
+                </th:block>
+
+                <!-- Bouton suivant -->
+                <a th:if="${!rdvPage.last}"
+                   th:href="@{/Client/Dashboard(page=${rdvPage.number + 1})} + '#appointments-section'"
+                   class="pagination-nav">&gt;</a>
+                <span th:if="${rdvPage.last}" class="pagination-nav disabled">&gt;</span>
+            </div>
+
+            <!-- Information sur la pagination -->
+            <div class="pagination-info" th:if="${rdvPage != null && rdvPage.numberOfElements > 0}">
+                عرض [[${rdvPage.numberOfElements}]] من إجمالي [[${rdvPage.totalElements}]] موعد
+            </div>
+        </div>
+    </div>
+
+    <!-- Informations du bureau d'avocat -->
+    <div class="bureau-info" th:if="${bureau != null && !bureau.isEmpty()}">
+        <div class="bureau-header">
+            <div class="bureau-logo">⚖️</div>
+            <div>
+                <h2 style="margin-bottom: 5px;" th:text="${bureau[0].nom}">مكتب المحاماة</h2>
+                <p style="color: #718096;" th:text="${bureau[0].adresse}">عنوان المكتب</p>
+            </div>
+        </div>
+
+        <div class="bureau-details">
+            <div>
+                <div class="detail-item">
+                    <div class="detail-label">الهاتف</div>
+                    <div class="detail-value" th:text="${bureau[0].tel}">+212 522 123 456</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">البريد الإلكتروني</div>
+                    <div class="detail-value" th:text="${bureau[0].email}">contact@bureau-avocat.ma</div>
+                </div>
+            </div>
+            <div>
+                <div class="detail-item">
+                    <div class="detail-label">ساعات العمل</div>
+                    <div class="detail-value">من الاثنين إلى الجمعة: 9:00 - 17:00</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script pour maintenir la position de défilement -->
+<script>
+    // Si l'URL contient un fragment d'ancre, nous nous assurons que le défilement se fait correctement
+    document.addEventListener('DOMContentLoaded', function() {
+        // Vérifie si l'URL contient un fragment d'ancre
+        if(window.location.hash) {
+            // Petit délai pour s'assurer que la page est complètement chargée
+            setTimeout(function() {
+                const element = document.querySelector(window.location.hash);
+                if(element) {
+                    element.scrollIntoView({behavior: 'smooth'});
+                }
+            }, 100);
+        }
+    });
+</script>
 </body>
 </html>
+

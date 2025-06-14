@@ -1,5 +1,7 @@
 package org.baeldung.persistence.model.pfe;
 
+import lombok.Data;
+
 import java.util.Collection;
 
 import javax.persistence.Entity;
@@ -8,7 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
-
+@Data
 @Entity
 
 public class Juge {

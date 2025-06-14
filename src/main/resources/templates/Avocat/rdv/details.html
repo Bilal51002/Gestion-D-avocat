@@ -1,58 +1,544 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" dir="rtl">
+<html lang="ar" dir="rtl" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>تفاصيل الموعد</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <title>تفاصيل الموعد</title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
   <style>
-    body {
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
+
+    :root {
+      --primary-color: #2c3e50;
+      --secondary-color: #34495e;
+      --accent-color: #3498db;
+      --light-accent: #e0f7fa;
+      --success-color: #2ecc71;
+      --warning-color: #f39c12;
+      --danger-color: #e74c3c;
+      --text-color: #444444;
+      --light-text: #95a5a6;
+      --background-color: #ecf0f1;
+      --card-bg: #ffffff;
+      --border-radius: 8px;
+      --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
       font-family: 'Cairo', sans-serif;
     }
-    .container {
-      text-align: right;
+
+    body {
+      background-color: var(--background-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      direction: rtl;
     }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Header */
+    header {
+      background-color: var(--primary-color);
+      padding: 20px;
+      border-radius: var(--border-radius);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 700;
+      color: white;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: var(--accent-color);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+    }
+
+    .user-details {
+      color: white;
+    }
+
+    .user-name {
+      font-weight: 600;
+    }
+
+    .user-email {
+      font-size: 12px;
+      color: #bdc3c7;
+    }
+
+    .logout-btn {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: none;
+      border-radius: var(--border-radius);
+      padding: 8px 15px;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+
+    .logout-btn:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Navigation Tabs */
+    .tabs {
+      display: flex;
+      margin-bottom: 20px;
+      background-color: var(--card-bg);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      overflow: hidden;
+    }
+
+    .tab {
+      padding: 15px 20px;
+      flex: 1;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      font-weight: 600;
+      color: var(--text-color);
+      position: relative;
+      text-decoration: none;
+    }
+
+    .tab:hover {
+      background-color: #f5f5f5;
+    }
+
+    .tab.active {
+      color: var(--accent-color);
+    }
+
+    .tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background-color: var(--accent-color);
+    }
+
+    /* Page header */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .page-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-color);
+      position: relative;
+      padding-right: 15px;
+    }
+
+    .page-title::before {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 5px;
+      height: 25px;
+      background-color: var(--accent-color);
+      border-radius: 3px;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 15px;
+      background-color: #f0f0f0;
+      color: var(--text-color);
+      border-radius: var(--border-radius);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .back-btn:hover {
+      background-color: #e0e0e0;
+      transform: translateY(-2px);
+    }
+
+    /* Card */
+    .card {
+      background-color: var(--card-bg);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      overflow: hidden;
+      margin-bottom: 30px;
+    }
+
+    .card-header {
+      padding: 15px 20px;
+      background-color: var(--primary-color);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card-title {
+      font-weight: 600;
+    }
+
+    .card-icon {
+      font-size: 24px;
+    }
+
+    .card-content {
+      padding: 20px;
+    }
+
+    /* Appointment details */
+    .appointment-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .appointment-icon {
+      width: 60px;
+      height: 60px;
+      background-color: var(--light-accent);
+      color: var(--accent-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: 28px;
+    }
+
+    .appointment-info {
+      flex: 1;
+    }
+
+    .appointment-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .appointment-date {
+      font-size: 16px;
+      color: var(--light-text);
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      color: white;
+      margin-top: 10px;
+    }
+
+    .status-pending {
+      background-color: var(--warning-color);
+    }
+
+    .status-accepted {
+      background-color: var(--success-color);
+    }
+
+    .status-rejected {
+      background-color: var(--danger-color);
+    }
+
+    /* Details rows */
+    .detail-row {
+      display: flex;
+      border-bottom: 1px solid #eee;
+      padding: 15px 0;
+    }
+
+    .detail-label {
+      font-weight: 600;
+      min-width: 150px;
+      color: var(--secondary-color);
+    }
+
+    .detail-value {
+      flex: 1;
+    }
+
+    /* Actions */
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
     .btn {
-      margin-right: 0;
-      margin-left: 5px;
+      padding: 10px 20px;
+      border-radius: var(--border-radius);
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: var(--transition);
+    }
+
+    .btn-primary {
+      background-color: var(--accent-color);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #2980b9;
+      transform: translateY(-2px);
+    }
+
+    .btn-success {
+      background-color: var(--success-color);
+      color: white;
+    }
+
+    .btn-success:hover {
+      background-color: #27ae60;
+      transform: translateY(-2px);
+    }
+
+    .btn-danger {
+      background-color: var(--danger-color);
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background-color: #c0392b;
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      border: 1px solid var(--accent-color);
+      color: var(--accent-color);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--accent-color);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    /* Alerts */
+    .alert {
+      padding: 15px;
+      border-radius: var(--border-radius);
+      margin-bottom: 20px;
+    }
+
+    .alert-success {
+      background-color: #d4edda;
+      color: #155724;
+      border-right: 4px solid #28a745;
+    }
+
+    .alert-danger {
+      background-color: #f8d7da;
+      color: #721c24;
+      border-right: 4px solid #dc3545;
+    }
+
+    @media (max-width: 768px) {
+      .appointment-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .detail-row {
+        flex-direction: column;
+      }
+
+      .detail-label {
+        margin-bottom: 5px;
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
     }
   </style>
 </head>
 <body>
-<div class="container mt-5">
-  <h2>تفاصيل الموعد</h2>
-
-  <div class="card">
-    <div class="card-body">
-      <p><strong>الرقم التعريفي:</strong> <span th:text="${rdv.id}"></span></p>
-<!--      <p><strong>التاريخ:</strong> <span th:text="${#dates.format(rdv.date, 'dd/MM/yyyy')}"></span></p>-->
-      <p><strong>التاريخ:</strong> <span th:text="${#temporals.format(rdv.date, 'dd/MM/yyyy')}"></span></p>
-      <p><strong>الوقت:</strong> <span th:text="${rdv.heur}"></span></p>
-      <p><strong>الموضوع:</strong> <span th:text="${rdv.sujet}"></span></p>
-      <p><strong>رقم العميل:</strong> <span th:text="${rdv.client != null ? rdv.client.id : 'غير محدد'}"></span></p>
-      <p><strong>رقم المكتب:</strong> <span th:text="${rdv.bureau != null ? rdv.bureau.id : 'غير محدد'}"></span></p>
+<div class="container">
+  <!-- Header -->
+  <header>
+    <div class="logo">المساعد القانوني</div>
+    <div class="user-info">
+      <div class="user-avatar" th:text="${avocat.getFirstName().substring(0,1)}">م</div>
+      <div class="user-details">
+        <div class="user-name" th:text="${'الأستاذ ' + avocat.getFirstName() + ' ' + avocat.getLastName()}">الأستاذ محمد العلوي</div>
+        <div class="user-email" th:text="${avocat.getEmail()}">m.alaoui@cabinet.ma</div>
+      </div>
+      <a class="logout-btn" th:href="@{/logout}">تسجيل الخروج</a>
     </div>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <div class="tabs">
+    <a th:href="@{/Avocat/Dashboard}" class="tab">لوحة التحكم</a>
+    <a th:href="@{/Avocat/dossier/list}" class="tab">الملفات</a>
+    <a th:href="@{/Avocat/client/list}" class="tab">العملاء</a>
+    <a th:href="@{/Avocat/rdv/list}" class="tab active">المواعيد</a>
   </div>
 
-  <div class="mt-3">
-    <a th:href="@{/Secretaire/rdv/edit/{id}(id=${rdv.id})}" class="btn btn-warning">تعديل</a>
-    <a th:href="@{/Secretaire/rdv/delete/{id}(id=${rdv.id})}" class="btn btn-danger"
-       onclick="return confirm('هل أنت متأكد من رغبتك في حذف هذا الموعد؟')">حذف</a>
-    <a th:href="@{/Secretaire/rdv/list}" class="btn btn-secondary">العودة إلى القائمة</a>
+  <!-- Page Header -->
+  <div class="page-header">
+    <h1 class="page-title">تفاصيل الموعد</h1>
+    <a th:href="@{/Avocat/rdv/list}" class="back-btn">
+      <i class="fas fa-arrow-right"></i> العودة إلى قائمة المواعيد
+    </a>
+  </div>
+
+  <!-- Success/Error Messages -->
+  <div th:if="${successMessage}" class="alert alert-success">
+    <p th:text="${successMessage}"></p>
+  </div>
+  <div th:if="${errorMessage}" class="alert alert-danger">
+    <p th:text="${errorMessage}"></p>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">معلومات الموعد</div>
+      <div class="card-icon">
+        <i class="fas fa-calendar-alt"></i>
+      </div>
+    </div>
+    <div class="card-content">
+      <div class="appointment-header">
+        <div class="appointment-icon">
+          <i class="fas fa-calendar-check"></i>
+        </div>
+        <div class="appointment-info">
+          <h2 class="appointment-title" th:text="${rdv.sujet}">استشارة قانونية</h2>
+          <div class="appointment-date">
+            <i class="far fa-calendar-alt"></i>
+            <span th:text="${#temporals.format(rdv.date, 'dd/MM/yyyy')}">23/05/2025</span> -
+            <i class="far fa-clock"></i>
+            <span th:text="${rdv.heur}">14:30</span>
+          </div>
+
+          <div th:if="${rdv.statut == T(org.baeldung.persistence.model.pfe.Statut).EN_ATTENTE}" class="status-badge status-pending">قيد الانتظار</div>
+          <div th:if="${rdv.statut == T(org.baeldung.persistence.model.pfe.Statut).ACCEPTE}" class="status-badge status-accepted">مقبول</div>
+          <div th:if="${rdv.statut == T(org.baeldung.persistence.model.pfe.Statut).REFUSE}" class="status-badge status-rejected">مرفوض</div>
+        </div>
+      </div>
+
+      <div class="appointment-details">
+        <div class="detail-row">
+          <div class="detail-label">العميل:</div>
+          <div class="detail-value" th:text="${rdv.client.firstName + ' ' + rdv.client.lastName}">أحمد المصطفى</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">البريد الإلكتروني:</div>
+          <div class="detail-value" th:text="${rdv.client.email}">ahmed@example.com</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">الهاتف:</div>
+          <div class="detail-value" th:text="${rdv.client.tel != null ? rdv.client.tel : '-'}">0612345678</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">المحامي:</div>
+          <div class="detail-value" th:text="${rdv.avocat.firstName + ' ' + rdv.avocat.lastName}">محمد العلوي</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">المكتب:</div>
+          <div class="detail-value" th:text="${rdv.bureau != null ? rdv.bureau.nom : '-'}">مكتب المحاماة الرئيسي</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">الموضوع:</div>
+          <div class="detail-value" th:text="${rdv.sujet}">استشارة قانونية</div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <a th:href="@{/Avocat/rdv/edit/{id}(id=${rdv.id})}" class="btn btn-primary">
+          <i class="fas fa-edit"></i> تعديل
+        </a>
+
+        <a th:if="${rdv.statut == T(org.baeldung.persistence.model.pfe.Statut).EN_ATTENTE}"
+           th:href="@{/Avocat/rdv/accept/{id}(id=${rdv.id})}"
+           class="btn btn-success"
+           onclick="return confirm('هل أنت متأكد من قبول هذا الموعد؟')">
+          <i class="fas fa-check"></i> قبول
+        </a>
+
+        <a th:if="${rdv.statut == T(org.baeldung.persistence.model.pfe.Statut).EN_ATTENTE}"
+           th:href="@{/Avocat/rdv/refuse/{id}(id=${rdv.id})}"
+           class="btn btn-danger"
+           onclick="return confirm('هل أنت متأكد من رفض هذا الموعد؟')">
+          <i class="fas fa-times"></i> رفض
+        </a>
+      </div>
+    </div>
   </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
-  // Importer la police arabe Cairo de Google Fonts
-  (function() {
-    var link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = 'https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap';
-    document.head.appendChild(link);
-  })();
+  // Highlight active tab
+  document.addEventListener('DOMContentLoaded', function() {
+    const path = window.location.pathname;
+    const tabs = document.querySelectorAll('.tab');
+
+    tabs.forEach(tab => {
+      const href = tab.getAttribute('href');
+      if (path.includes('rdv')) {
+        if (tab.getAttribute('href').includes('rdv')) {
+          tab.classList.add('active');
+        } else {
+          tab.classList.remove('active');
+        }
+      }
+    });
+  });
 </script>
 </body>
 </html>

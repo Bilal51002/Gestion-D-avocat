@@ -1,6 +1,8 @@
 
 package org.baeldung.persistence.model;
 
+import org.baeldung.persistence.model.pfe.Secretaire;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -16,6 +18,10 @@ public class VerificationToken {
     private Long id;
 
     private String token;
+    @OneToOne(targetEntity = Secretaire.class, fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false, name = "secretaire_id", foreignKey = @ForeignKey(name = "FK_VERIFY_SECRETAIRE"))
+    private Secretaire secretaire;
+
 
     @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "user_id", foreignKey = @ForeignKey(name = "FK_VERIFY_USER"))

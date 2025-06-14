@@ -108,10 +108,6 @@ public class RegistrationController {
                 session.setAttribute("user1", user);
             }
             authWithoutPassword(user);
-           // ra.addAttribute("user", user);
-            System.out.println("user="+user.toString());
-            //model.addAttribute("message", messages.getMessage("message.accountVerified", null, locale));
-           // return "redirect:/console.html?lang=" + locale.getLanguage();
             return "redirect:/Client/index.html?user="+user.getEmail();
         }
 

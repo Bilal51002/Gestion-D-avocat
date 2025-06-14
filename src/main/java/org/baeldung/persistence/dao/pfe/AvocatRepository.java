@@ -13,5 +13,7 @@ import org.springframework.stereotype.Repository;
   public interface AvocatRepository extends JpaRepository<Avocat, Long> {
 	  List<Avocat> findByfirstNameContaining(String mc);
 	  public Avocat findByfirstName(String name);
+      Avocat findByEmail(String email);
+      List<Avocat> findAll();
   }
  

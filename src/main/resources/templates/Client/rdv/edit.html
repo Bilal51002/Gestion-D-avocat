@@ -1,143 +1,165 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" dir="rtl">
+<html xmlns:th="http://www.thymeleaf.org" lang="ar" dir="rtl">
 <head>
   <title>تعديل الموعد</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <style>
     body {
       font-family: 'Cairo', sans-serif;
     }
-    .container {
-      text-align: right;
+    .input-group-rtl .form-control {
+      border-radius: 0 0.25rem 0.25rem 0;
     }
-    .btn {
-      margin-right: 0;
-      margin-left: 5px;
+    .input-group-rtl .input-group-prepend .input-group-text {
+      border-radius: 0.25rem 0 0 0.25rem;
     }
-
-    /* Cacher l'icône native du sélecteur de temps */
-    input[type="time"]::-webkit-calendar-picker-indicator {
-      display: none;
+    .field-label {
+      font-weight: 600;
     }
-    input[type="time"] {
-      appearance: textfield;
-      -webkit-appearance: textfield;
-      -moz-appearance: textfield;
+    .form-header {
+      margin-bottom: 2rem;
+      text-align: center;
+      color: #3a3a3a;
     }
-    /* Pour s'assurer que la valeur est toujours visible */
-    input[type="time"] {
-      direction: ltr;
-      text-align: right;
+    .form-card {
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      padding: 25px;
+      background-color: #fff;
+    }
+    .form-section {
+      margin-bottom: 30px;
+    }
+    .action-buttons {
+      margin-top: 30px;
     }
   </style>
 </head>
 <body>
-<div class="container mt-5">
-  <h2>تعديل الموعد</h2>
+<div class="container mt-5 mb-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <a th:href="@{/Client/rdv/details/{id}(id=${rdv.id})}" class="btn btn-outline-secondary">
+      <i class="fas fa-arrow-right ml-2"></i>العودة إلى التفاصيل
+    </a>
+    <h2><i class="fas fa-edit ml-2"></i>تعديل الموعد</h2>
+  </div>
 
-  <form th:action="@{/Secretaire/rdv/edit/{id}(id=${rdv.id})}" th:object="${rdv}" method="post" class="needs-validation" novalidate>
-    <div class="card mb-4">
-      <div class="card-header">
-        <h5 class="mb-0">معلومات الموعد</h5>
+  <div class="form-card">
+    <form th:action="@{/Client/rdv/edit/{id}(id=${rdv.id})}" th:object="${rdv}" method="post">
+      <!-- Champ caché pour l'ID -->
+      <input type="hidden" th:field="*{id}" />
+
+      <!-- Message de succès ou d'erreur -->
+      <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${successMessage}"></span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-      <div class="card-body">
+      <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span th:text="${errorMessage}"></span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="form-section">
+        <h5 class="mb-3"><i class="fas fa-calendar-day ml-2"></i>معلومات الموعد</h5>
         <div class="row">
-          <!-- Date du RDV -->
-          <div class="col-md-6 mb-3">
-            <label for="date" class="form-label">التاريخ</label>
-            <input type="date" class="form-control" id="date" th:field="*{date}" required>
-            <div class="invalid-feedback" th:if="${#fields.hasErrors('date')}" th:errors="*{date}">
-              يرجى إدخال تاريخ صحيح
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="field-label" for="date">التاريخ <span class="text-danger">*</span></label>
+              <div class="input-group input-group-rtl">
+                <input type="date" class="form-control" id="date" th:field="*{date}" required>
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                </div>
+              </div>
+              <span class="text-danger" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></span>
             </div>
           </div>
 
-          <!-- Heure du RDV -->
-          <div class="col-md-6 mb-3">
-            <label for="heur" class="form-label">الوقت</label>
-            <input type="time" class="form-control" id="heur" th:field="*{heur}" required>
-            <div class="invalid-feedback" th:if="${#fields.hasErrors('heur')}" th:errors="*{heur}">
-              يرجى إدخال وقت صحيح
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="field-label" for="heur">الساعة <span class="text-danger">*</span></label>
+              <div class="input-group input-group-rtl">
+                <input type="time" class="form-control" id="heur" th:field="*{heur}" required>
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-clock"></i></span>
+                </div>
+              </div>
+              <span class="text-danger" th:if="${#fields.hasErrors('heur')}" th:errors="*{heur}"></span>
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- Sujet du RDV -->
-        <div class="mb-3">
-          <label for="sujet" class="form-label">الموضوع</label>
-          <input type="text" class="form-control" id="sujet" th:field="*{sujet}" required>
-          <div class="invalid-feedback" th:if="${#fields.hasErrors('sujet')}" th:errors="*{sujet}">
-            يرجى إدخال موضوع الموعد
+      <div class="form-section">
+        <h5 class="mb-3"><i class="fas fa-info-circle ml-2"></i>تفاصيل الموعد</h5>
+        <div class="form-group">
+          <label class="field-label" for="sujet">الموضوع <span class="text-danger">*</span></label>
+          <div class="input-group input-group-rtl">
+            <input type="text" class="form-control" id="sujet" th:field="*{sujet}" placeholder="أدخل موضوع الموعد" required>
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fas fa-edit"></i></span>
+            </div>
           </div>
+          <span class="text-danger" th:if="${#fields.hasErrors('sujet')}" th:errors="*{sujet}"></span>
         </div>
-      </div>
-    </div>
 
-    <div class="card mb-4">
-      <div class="card-header">
-        <h5 class="mb-0">معلومات المراجعة</h5>
-      </div>
-      <div class="card-body">
         <div class="row">
-          <!-- ID Client -->
-          <div class="col-md-6 mb-3">
-            <label for="client" class="form-label">رقم العميل</label>
-            <div class="input-group">
-              <input type="number" class="form-control" id="client" name="client"
-                     th:value="${rdv.client != null ? rdv.client.id : ''}" required>
-              <button class="btn btn-outline-secondary" type="button" id="searchClient">بحث</button>
-            </div>
-            <div class="invalid-feedback">
-              يرجى إدخال رقم العميل
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="field-label" for="avocat">المحامي <span class="text-danger">*</span></label>
+              <div class="input-group input-group-rtl">
+                <select class="form-control" id="avocat" th:field="*{avocat}" required>
+                  <option value="" disabled>-- اختر المحامي --</option>
+                  <option th:each="a : ${avocats}" th:value="${a.id}" th:text="${a.getLastName() + ' ' + a.getFirstName()}" th:selected="${a.id == rdv.avocat?.id}"></option>
+                </select>
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-user-tie"></i></span>
+                </div>
+              </div>
+              <span class="text-danger" th:if="${#fields.hasErrors('avocat')}" th:errors="*{avocat}"></span>
             </div>
           </div>
 
-          <!-- ID Bureau -->
-          <div class="col-md-6 mb-3">
-            <label for="bureau" class="form-label">رقم المكتب</label>
-            <div class="input-group">
-              <input type="number" class="form-control" id="bureau" name="bureau"
-                     th:value="${rdv.bureau != null ? rdv.bureau.id : ''}" required>
-              <button class="btn btn-outline-secondary" type="button" id="searchBureau">بحث</button>
-            </div>
-            <div class="invalid-feedback">
-              يرجى إدخال رقم المكتب
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="field-label" for="bureau">المكتب <span class="text-danger">*</span></label>
+              <div class="input-group input-group-rtl">
+                <select class="form-control" id="bureau" th:field="*{bureau}" required>
+                  <option value="" disabled>-- اختر المكتب --</option>
+                  <option th:each="b : ${bureaux}" th:value="${b.id}" th:text="${b.getNom()}" th:selected="${b.id == rdv.bureau?.id}"></option>
+                </select>
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-building"></i></span>
+                </div>
+              </div>
+              <span class="text-danger" th:if="${#fields.hasErrors('bureau')}" th:errors="*{bureau}"></span>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="d-flex justify-content-end">
-      <button type="submit" class="btn btn-primary ms-2">حفظ التغييرات</button>
-      <a th:href="@{/Secretaire/rdv/list}" class="btn btn-secondary">إلغاء</a>
-    </div>
-  </form>
-
-  <script>
-    // Validation des formulaires Bootstrap
-    (function() {
-      'use strict';
-      window.addEventListener('load', function() {
-        var forms = document.getElementsByClassName('needs-validation');
-        var validation = Array.prototype.filter.call(forms, function(form) {
-          form.addEventListener('submit', function(event) {
-            if (form.checkValidity() === false) {
-              event.preventDefault();
-              event.stopPropagation();
-            }
-            form.classList.add('was-validated');
-          }, false);
-        });
-      }, false);
-    })();
-  </script>
+      <div class="action-buttons text-center">
+        <button type="submit" class="btn btn-success btn-lg ml-2">
+          <i class="fas fa-save ml-2"></i>حفظ التغييرات
+        </button>
+        <a th:href="@{/Client/rdv/details/{id}(id=${rdv.id})}" class="btn btn-secondary btn-lg">
+          <i class="fas fa-times ml-2"></i>إلغاء
+        </a>
+      </div>
+    </form>
+  </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
   // Importer la police arabe Cairo de Google Fonts
   (function() {

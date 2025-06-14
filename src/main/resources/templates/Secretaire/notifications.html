@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة التحكم - الإشعارات</title>
+    <title>الإشعارات - مكتب المحاماة</title>
     <!-- Bootstrap RTL CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.rtl.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
@@ -15,7 +15,7 @@
             background-color: #f8f9fa;
             color: #333;
         }
-        /* Sidebar Styles */
+
         .sidebar {
             background-color: #2c3e50;
             min-height: 100vh;
@@ -74,182 +74,153 @@
             border-right-color: #3498db;
             font-weight: 600;
         }
+
         /* Main Content */
         .main-content {
-            margin-right: 260px;
+            margin-right: 2%;
             padding: 30px;
-            transition: all 0.3s;
         }
-        .content-header {
-            border-bottom: 1px solid #e9ecef;
-            padding-bottom: 15px;
+        .page-title {
             margin-bottom: 30px;
+            position: relative;
+            padding-bottom: 15px;
         }
-        .content-header h1 {
-            font-weight: 700;
-            margin-bottom: 5px;
-            font-size: 28px;
+        .page-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 60px;
+            height: 3px;
+            background-color: #3498db;
         }
-        .content-header .breadcrumb {
-            background: transparent;
-            padding: 0;
-            margin: 0;
-        }
-        /* Notification Cards */
-        .notification-card {
+
+        /* Notification Styles */
+        .notifications-container {
             background-color: #fff;
             border-radius: 10px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-            transition: transform 0.3s;
+            box-shadow: 0 0 15px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+        .notifications-header {
+            background-color: #3498db;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .notifications-header h5 {
+            margin: 0;
+            font-weight: 600;
+        }
+        .btn-mark-all-read {
+            background-color: white;
+            color: #3498db;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .btn-mark-all-read:hover {
+            background-color: #f8f9fa;
+            transform: translateY(-2px);
+        }
+
+        .notification-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.3s;
+            position: relative;
+        }
+        .notification-item:hover {
+            background-color: #f9f9f9;
+        }
+        .notification-item.unread {
             border-right: 4px solid #3498db;
-        }
-        .notification-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        .notification-card.unread {
             background-color: #f0f7ff;
         }
-        .notification-card.important {
-            border-right-color: #e74c3c;
+        .notification-item.read {
+            border-right: 4px solid transparent;
         }
-        .notification-card.warning {
-            border-right-color: #f39c12;
-        }
-        .notification-card.success {
-            border-right-color: #2ecc71;
+        .notification-content {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            cursor: pointer;
         }
         .notification-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
-            border-bottom: 1px solid #f1f1f1;
+            margin-bottom: 8px;
         }
-        .notification-header .notification-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background-color: #3498db;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 22px;
+        .notification-title {
+            font-weight: bold;
+            font-size: 16px;
+            color: #2c3e50;
         }
-        .notification-header .important .notification-icon {
-            background-color: #e74c3c;
-        }
-        .notification-header .warning .notification-icon {
-            background-color: #f39c12;
-        }
-        .notification-header .success .notification-icon {
-            background-color: #2ecc71;
-        }
-        .notification-body {
-            padding: 20px;
-        }
-        .notification-body h5 {
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-        .notification-body p {
-            margin-bottom: 0;
-            color: #666;
-        }
-        .notification-footer {
-            padding: 10px 20px;
-            background-color: #fafafa;
-            border-top: 1px solid #f1f1f1;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .notification-date {
+            color: #7f8c8d;
             font-size: 14px;
-            color: #777;
-            border-radius: 0 0 10px 10px;
         }
-        .notification-actions a {
+        .notification-message {
             color: #555;
-            margin-left: 15px;
-            text-decoration: none;
-            transition: color 0.3s;
+            margin-bottom: 15px;
         }
-        .notification-actions a:hover {
-            color: #3498db;
+
+        /* Action Buttons */
+        .rdv-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-start;
+            margin-top: 10px;
         }
-        .notification-actions a.delete:hover {
-            color: #e74c3c;
+        .btn-action {
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            border: none;
+            transition: all 0.3s;
         }
-        .badge {
-            padding: 5px 10px;
-            border-radius: 50px;
-            font-weight: 500;
-        }
-        .filter-section {
-            margin-bottom: 25px;
-            background-color: #fff;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-        }
-        .stats-card {
-            background-color: #fff;
-            border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        .stats-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 5px;
-            height: 100%;
+        .btn-details {
             background-color: #3498db;
+            color: white;
         }
-        .stats-card.unread::before {
-            background-color: #3498db;
-        }
-        .stats-card.important::before {
-            background-color: #e74c3c;
-        }
-        .stats-card.all::before {
+        .btn-accept {
             background-color: #2ecc71;
+            color: white;
         }
-        .stats-card h2 {
-            font-size: 36px;
-            font-weight: 700;
-            margin-bottom: 5px;
-            color: #333;
+        .btn-reject {
+            background-color: #e74c3c;
+            color: white;
         }
-        .stats-card p {
-            color: #777;
-            margin-bottom: 0;
-            font-size: 14px;
+        .btn-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
         }
-        .stats-card i {
-            position: absolute;
-            left: 15px;
-            top: 15px;
-            font-size: 24px;
-            opacity: 0.2;
+
+        /* Empty State */
+        .empty-state {
+            padding: 40px;
+            text-align: center;
+            color: #7f8c8d;
         }
-        @media (max-width: 992px) {
+        .empty-state i {
+            font-size: 3em;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        /* Responsive */
+        @media (max-width: 991.98px) {
             .sidebar {
-                margin-right: -260px;
+                position: static;
+                min-height: auto;
             }
             .main-content {
                 margin-right: 0;
-            }
-            .sidebar.active {
-                margin-right: 0;
-            }
-            .main-content.active {
-                margin-right: 260px;
             }
         }
     </style>
@@ -257,369 +228,105 @@
 <body>
 <div class="container-fluid">
     <div class="row">
-        <!-- Sidebar -->
-        <div class="col-lg-3 col-xl-2 p-0">
+        <div class="col-lg-2 p-0">
             <div class="sidebar">
                 <div class="sidebar-header">
-                    <h4>لوحة التحكم</h4>
-                    <p>مرحباً، أحمد محمد</p>
+                    <h4>مكتب المحاماة</h4>
+                    <p th:text="${secretaire != null ? secretaire.firstName + ' ' + secretaire.lastName : ''}"></p>
                 </div>
                 <ul>
-                    <li>
-                        <a href="dashboard.html">
-                            <i class="fas fa-home"></i>
-                            الرئيسية
-                        </a>
-                    </li>
-                    <li class="active">
-                        <a href="notifications.html">
-                            <i class="fas fa-bell"></i>
-                            الإشعارات
-                            <span class="badge bg-danger rounded-pill float-start">8</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="messages.html">
-                            <i class="fas fa-envelope"></i>
-                            الرسائل
-                        </a>
-                    </li>
-                    <li>
-                        <a href="users.html">
-                            <i class="fas fa-users"></i>
-                            المستخدمين
-                        </a>
-                    </li>
-                    <li>
-                        <a href="reports.html">
-                            <i class="fas fa-chart-bar"></i>
-                            التقارير
-                        </a>
-                    </li>
-                    <li>
-                        <a href="settings.html">
-                            <i class="fas fa-cog"></i>
-                            الإعدادات
-                        </a>
-                    </li>
-                    <li>
-                        <a href="login.html">
-                            <i class="fas fa-sign-out-alt"></i>
-                            تسجيل الخروج
-                        </a>
-                    </li>
+                    <li class="active"><a th:href="@{/Secretaire/Dashboard}"><i class="fas fa-tachometer-alt"></i> لوحة التحكم</a></li>
+                    <li><a th:href="@{/Secretaire/notifications}"><i class="fas fa-bell"></i> الإشعارات
+                        <span th:if="${unreadNotificationsCount > 0}" class="badge bg-danger" th:text="${unreadNotificationsCount}"></span>
+                    </a></li>
+                    <li><a th:href="@{/Secretaire/rdv/list}"><i class="fas fa-calendar-alt"></i> المواعيد</a></li>
+                    <li><a th:href="@{/Secretaire/dossier/list}"><i class="fas fa-folder"></i> الملفات</a></li>
+                    <li><a th:href="@{/logout}"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a></li>
                 </ul>
             </div>
         </div>
 
         <!-- Main Content -->
-        <div class="col-lg-9 col-xl-10 main-content">
-            <div class="content-header">
-                <h1>الإشعارات</h1>
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">الرئيسية</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">الإشعارات</li>
-                    </ol>
-                </nav>
-            </div>
+        <div class="col-lg-10">
+            <div class="main-content">
+                <h2 class="page-title">الإشعارات</h2>
 
-            <!-- Statistics Cards -->
-            <div class="row mb-4">
-                <div class="col-md-4 mb-3">
-                    <div class="stats-card all">
-                        <i class="fas fa-bell"></i>
-                        <h2>24</h2>
-                        <p>إجمالي الإشعارات</p>
+                <div class="notifications-container">
+                    <div class="notifications-header">
+                        <h5>قائمة الإشعارات</h5>
+                        <a th:href="@{/Secretaire/notifications/mark-all-read}" class="btn-mark-all-read">
+                            <i class="fas fa-check-double ml-1"></i>
+                            تحديد الكل كمقروء
+                        </a>
                     </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <div class="stats-card unread">
-                        <i class="fas fa-envelope-open"></i>
-                        <h2>8</h2>
-                        <p>إشعارات غير مقروءة</p>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <div class="stats-card important">
-                        <i class="fas fa-exclamation-circle"></i>
-                        <h2>3</h2>
-                        <p>إشعارات مهمة</p>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Filter Section -->
-            <div class="filter-section">
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="البحث عن إشعارات...">
-                            <button class="btn btn-primary" type="button">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </div>
+                    <div th:if="${notifications.isEmpty()}" class="empty-state">
+                        <i class="fas fa-bell-slash"></i>
+                        <h5>لا توجد إشعارات</h5>
+                        <p>ستظهر الإشعارات الجديدة هنا عند استلامها.</p>
                     </div>
-                    <div class="col-md-4">
-                        <select class="form-select">
-                            <option selected>جميع الإشعارات</option>
-                            <option>غير مقروءة</option>
-                            <option>مهمة</option>
-                            <option>تحذيرات</option>
-                            <option>إنجازات</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Notifications -->
-            <div class="notifications-container">
-                <!-- Important Notification -->
-                <div class="notification-card important unread">
-                    <div class="notification-header">
-                        <div class="d-flex align-items-center">
-                            <div class="notification-icon">
-                                <i class="fas fa-exclamation"></i>
+                    <div th:unless="${notifications.isEmpty()}" class="notification-list">
+                        <div th:each="notification : ${notifications}" class="notification-item"
+                             th:classappend="${notification.lu ? 'read' : 'unread'}">
+                            <!-- Afficher les informations de la notification -->
+                            <div class="notification-content" onclick="window.location.href=this.getAttribute('data-href')"
+                                 th:attr="data-href=@{/Secretaire/notifications/{id}(id=${notification.id})}">
+                                <div class="notification-header">
+                                    <span class="notification-title" th:text="${notification.titre}"></span>
+                                    <span class="notification-date" th:text="${#temporals.format(notification.dateCreation, 'dd/MM/yyyy HH:mm')}"></span>
+                                </div>
+                                <div class="notification-message" th:text="${notification.message}"></div>
                             </div>
-                            <div class="ms-3">
-                                <h5 class="mb-0">تحديث أمني مهم</h5>
-                                <span class="badge bg-danger">مهم</span>
-                            </div>
-                        </div>
-                        <div>
-                            <span class="badge bg-secondary">منذ ساعة</span>
-                        </div>
-                    </div>
-                    <div class="notification-body">
-                        <p>تم اكتشاف محاولة تسجيل دخول غير عادية إلى حسابك من موقع جديد. يرجى التحقق من نشاط حسابك فوراً وتغيير كلمة المرور إذا لزم الأمر.</p>
-                    </div>
-                    <div class="notification-footer">
-                        <div class="notification-time">
-                            <i class="far fa-clock"></i> 10:30 صباحاً - 27 أبريل 2025
-                        </div>
-                        <div class="notification-actions">
-                            <a href="#" title="تحديد كمقروء"><i class="fas fa-check"></i></a>
-                            <a href="#" title="تفاصيل"><i class="fas fa-eye"></i></a>
-                            <a href="#" class="delete" title="حذف"><i class="fas fa-trash"></i></a>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Warning Notification -->
-                <div class="notification-card warning unread">
-                    <div class="notification-header">
-                        <div class="d-flex align-items-center">
-                            <div class="notification-icon">
-                                <i class="fas fa-exclamation-triangle"></i>
-                            </div>
-                            <div class="ms-3">
-                                <h5 class="mb-0">تحذير المساحة التخزينية</h5>
-                                <span class="badge bg-warning text-dark">تحذير</span>
-                            </div>
-                        </div>
-                        <div>
-                            <span class="badge bg-secondary">منذ ساعتين</span>
-                        </div>
-                    </div>
-                    <div class="notification-body">
-                        <p>المساحة التخزينية الخاصة بك توشك على النفاذ. لديك فقط 15% متبقية. قم بترقية خطتك أو حذف الملفات القديمة.</p>
-                    </div>
-                    <div class="notification-footer">
-                        <div class="notification-time">
-                            <i class="far fa-clock"></i> 9:15 صباحاً - 27 أبريل 2025
-                        </div>
-                        <div class="notification-actions">
-                            <a href="#" title="تحديد كمقروء"><i class="fas fa-check"></i></a>
-                            <a href="#" title="تفاصيل"><i class="fas fa-eye"></i></a>
-                            <a href="#" class="delete" title="حذف"><i class="fas fa-trash"></i></a>
-                        </div>
-                    </div>
-                </div>
+                            <!-- Ajout des boutons pour les notifications de type RDV -->
+                            <div class="rdv-actions" th:if="${notification.type != null && notification.type.startsWith('RDV_')}">
+                                <!-- Bouton de détails toujours affiché -->
+                                <form th:action="@{/Secretaire/notifications/{id}(id=${notification.id})}" method="get">
+                                    <button type="submit" class="btn-action btn-details">
+                                        <i class="fas fa-eye ml-1"></i> عرض التفاصيل
+                                    </button>
+                                </form>
 
-                <!-- Success Notification -->
-                <div class="notification-card success unread">
-                    <div class="notification-header">
-                        <div class="d-flex align-items-center">
-                            <div class="notification-icon">
-                                <i class="fas fa-check"></i>
+                                <!-- Boutons accepter/refuser si rendezVous n'est pas null -->
+                                <form th:if="${notification.rendezVous != null && notification.rendezVous.id != null}"
+                                      th:action="@{/Secretaire/rdv/accepter/{id}(id=${notification.getRendezVous().getId()})}" method="post">
+                                    <button type="submit" class="btn-action btn-accept">
+                                        <i class="fas fa-check ml-1"></i> قبول
+                                    </button>
+                                </form>
+                                <form th:if="${notification.rendezVous != null && notification.rendezVous.id != null}"
+                                      th:action="@{/Secretaire/rdv/refuser/{id}(id=${notification.rendezVous.id})}" method="post">
+                                    <button type="submit" class="btn-action btn-reject">
+                                        <i class="fas fa-times ml-1"></i> رفض
+                                    </button>
+                                </form>
                             </div>
-                            <div class="ms-3">
-                                <h5 class="mb-0">تم اكتمال المهمة</h5>
-                                <span class="badge bg-success">نجاح</span>
-                            </div>
-                        </div>
-                        <div>
-                            <span class="badge bg-secondary">منذ 3 ساعات</span>
-                        </div>
-                    </div>
-                    <div class="notification-body">
-                        <p>تم اكتمال عملية النسخ الاحتياطي للبيانات بنجاح. يمكنك الآن استعادة البيانات في أي وقت من لوحة التحكم.</p>
-                    </div>
-                    <div class="notification-footer">
-                        <div class="notification-time">
-                            <i class="far fa-clock"></i> 8:00 صباحاً - 27 أبريل 2025
-                        </div>
-                        <div class="notification-actions">
-                            <a href="#" title="تحديد كمقروء"><i class="fas fa-check"></i></a>
-                            <a href="#" title="تفاصيل"><i class="fas fa-eye"></i></a>
-                            <a href="#" class="delete" title="حذف"><i class="fas fa-trash"></i></a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Default Notification -->
-                <div class="notification-card">
-                    <div class="notification-header">
-                        <div class="d-flex align-items-center">
-                            <div class="notification-icon">
-                                <i class="fas fa-bell"></i>
-                            </div>
-                            <div class="ms-3">
-                                <h5 class="mb-0">تحديث النظام</h5>
-                                <span class="badge bg-info">معلومات</span>
-                            </div>
-                        </div>
-                        <div>
-                            <span class="badge bg-secondary">منذ يوم</span>
-                        </div>
-                    </div>
-                    <div class="notification-body">
-                        <p>تم إصدار تحديث جديد للنظام (v2.5.3). يتضمن هذا التحديث تحسينات أمنية وإصلاحات للأخطاء. نوصي بتثبيت التحديث في أقرب وقت ممكن.</p>
-                    </div>
-                    <div class="notification-footer">
-                        <div class="notification-time">
-                            <i class="far fa-clock"></i> 11:45 صباحاً - 26 أبريل 2025
-                        </div>
-                        <div class="notification-actions">
-                            <a href="#" title="تفاصيل"><i class="fas fa-eye"></i></a>
-                            <a href="#" class="delete" title="حذف"><i class="fas fa-trash"></i></a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Another Normal Notification -->
-                <div class="notification-card">
-                    <div class="notification-header">
-                        <div class="d-flex align-items-center">
-                            <div class="notification-icon">
-                                <i class="fas fa-user"></i>
-                            </div>
-                            <div class="ms-3">
-                                <h5 class="mb-0">طلب صداقة جديد</h5>
-                                <span class="badge bg-primary">اجتماعي</span>
-                            </div>
-                        </div>
-                        <div>
-                            <span class="badge bg-secondary">منذ يومين</span>
-                        </div>
-                    </div>
-                    <div class="notification-body">
-                        <p>لديك طلب صداقة جديد من سارة أحمد. يمكنك قبول الطلب أو رفضه من صفحة الملف الشخصي.</p>
-                    </div>
-                    <div class="notification-footer">
-                        <div class="notification-time">
-                            <i class="far fa-clock"></i> 3:20 مساءً - 25 أبريل 2025
-                        </div>
-                        <div class="notification-actions">
-                            <a href="#" title="تفاصيل"><i class="fas fa-eye"></i></a>
-                            <a href="#" class="delete" title="حذف"><i class="fas fa-trash"></i></a>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Pagination -->
-            <nav aria-label="Page navigation" class="mt-4">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">السابق</a>
-                    </li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">التالي</a>
-                    </li>
-                </ul>
-            </nav>
         </div>
     </div>
 </div>
 
-<!-- Bootstrap Bundle with Popper -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
+
 <script>
-    // Toggle sidebar on mobile
-    document.addEventListener('DOMContentLoaded', function() {
-        const toggleBtn = document.createElement('button');
-        toggleBtn.classList.add('btn', 'btn-primary', 'position-fixed', 'top-0', 'end-0', 'm-3', 'd-lg-none');
-        toggleBtn.innerHTML = '<i class="fas fa-bars"></i>';
-        toggleBtn.addEventListener('click', function() {
-            document.querySelector('.sidebar').classList.toggle('active');
-            document.querySelector('.main-content').classList.toggle('active');
-        });
-        document.body.appendChild(toggleBtn);
-
-        // Mark notifications as read
-        const markReadButtons = document.querySelectorAll('.notification-actions a[title="تحديد كمقروء"]');
-        markReadButtons.forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                const card = this.closest('.notification-card');
-                card.classList.remove('unread');
-                this.style.display = 'none';
-
-                // Update unread count
-                const unreadCount = document.querySelectorAll('.notification-card.unread').length;
-                document.querySelector('.stats-card.unread h2').textContent = unreadCount;
-                document.querySelector('.badge.bg-danger.rounded-pill').textContent = unreadCount;
-            });
-        });
-
-        // Delete notifications
-        const deleteButtons = document.querySelectorAll('.notification-actions a.delete');
-        deleteButtons.forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                const card = this.closest('.notification-card');
-                card.style.opacity = '0';
-                setTimeout(() => {
-                    card.remove();
-
-                    // Update counts
-                    const totalCount = document.querySelectorAll('.notification-card').length;
-                    const unreadCount = document.querySelectorAll('.notification-card.unread').length;
-                    const importantCount = document.querySelectorAll('.notification-card.important').length;
-
-                    document.querySelector('.stats-card.all h2').textContent = totalCount;
-                    document.querySelector('.stats-card.unread h2').textContent = unreadCount;
-                    document.querySelector('.stats-card.important h2').textContent = importantCount;
-                    document.querySelector('.badge.bg-danger.rounded-pill').textContent = unreadCount;
-                }, 300);
-            });
+    $(document).ready(function() {
+        // Ajouter une classe active au menu actuel
+        const currentLocation = window.location.pathname;
+        $('.sidebar ul li').each(function() {
+            const link = $(this).find('a').attr('href');
+            if (currentLocation.includes(link) && link !== '#') {
+                $(this).addClass('active');
+                $(this).siblings().removeClass('active');
+            }
         });
     });
 </script>
 </body>
 </html>
-<!--&lt;!&ndash; notifications-badge.html (fragment Thymeleaf) &ndash;&gt;-->
-<!--<div class="dropdown" th:fragment="notificationsBadge">-->
-<!--    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">-->
-<!--        <i class="fas fa-bell"></i>-->
-<!--        <span class="badge badge-danger" th:if="${notificationsCount > 0}" th:text="${notificationsCount}"></span>-->
-<!--    </a>-->
-<!--    <div class="dropdown-menu dropdown-menu-right" style="width: 300px;">-->
-<!--        <h6 class="dropdown-header">الإشعارات</h6>-->
-<!--        <div th:if="${notifications.isEmpty()}">-->
-<!--            <span class="dropdown-item text-muted">لا توجد إشعارات جديدة</span>-->
-<!--        </div>-->
-<!--        <a th:each="notif : ${recentNotifications}"-->
-<!--           th:href="@{/secretaire/notification/{id}(id=${notif.id})}"-->
-<!--           class="dropdown-item">-->
-<!--            <div class="small text-muted" th:text="${#temporals.format(notif.dateCreation, 'HH:mm')}"></div>-->
-<!--            <div th:text="${notif.titre}"></div>-->
-<!--        </a>-->
-<!--        <div class="dropdown-divider"></div>-->
-<!--        <a class="dropdown-item text-center" href="/secretaire/dashboard">عرض كافة الإشعارات</a>-->
-<!--    </div>-->
-<!--</div>-->
