@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قائمة الملفات</title>
+    <!-- Bootstrap RTL CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
+    <!-- Google Font: Cairo - Excellent Arabic font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            background-color: #2c3e50;
+            min-height: 100vh;
+            color: white;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: inherit;
+            z-index: 100;
+        }
+        .sidebar-header {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            background-color: #1a2530;
+        }
+        .sidebar-header h4 {
+            margin: 0;
+            font-weight: 700;
+            color: #ecf0f1;
+        }
+        .sidebar-header p {
+            margin: 10px 0 0;
+            opacity: 0.8;
+            font-size: 14px;
+        }
+        .sidebar ul {
+            padding: 20px 0;
+            margin: 0;
+        }
+        .sidebar ul li {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li a {
+            color: #ecf0f1;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: block;
+            padding: 15px 20px;
+            border-right: 4px solid transparent;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .sidebar ul li a i {
+            margin-left: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        .sidebar ul li a:hover {
+            background-color: rgba(255,255,255,0.1);
+            border-right-color: #3498db;
+        }
+        .sidebar ul li.active a {
+            background-color: rgba(255,255,255,0.15);
+            color: #fff;
+            border-right-color: #3498db;
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-right: 2%;
+            padding: 5px;
+        }
+        .page-title {
+            margin-bottom: 30px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        .page-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 60px;
+            height: 3px;
+            background-color: #3498db;
+        }
+
+        /* Table Styles */
+        .table-container {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        .table-header {
+            background-color: #3498db;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .table-header h5 {
+            margin: 0;
+            font-weight: 600;
+        }
+        .btn-add {
+            background-color: white;
+            color: #3498db;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s;
+        }
+        .btn-add i {
+            margin-left: 8px;
+        }
+        .btn-add:hover {
+            background-color: #f8f9fa;
+            transform: translateY(-2px);
+        }
+        .table {
+            margin-bottom: 0;
+        }
+        .table thead {
+            background-color: #f8f9fa;
+        }
+        .table thead th {
+            border-bottom: 2px solid #e9ecef;
+            font-weight: 700;
+            color: #34495e;
+        }
+        .table td, .table th {
+            padding: 15px;
+            vertical-align: middle;
+            text-align: right;
+        }
+        .table tbody tr {
+            transition: background-color 0.3s;
+        }
+        .table tbody tr:hover {
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+        .table tbody tr:not(:last-child) {
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        /* Action Buttons */
+        .btn-action {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 3px;
+            color: white;
+            transition: all 0.3s;
+        }
+        .btn-view {
+            background-color: #3498db;
+        }
+        .btn-edit {
+            background-color: #f39c12;
+        }
+        .btn-delete {
+            background-color: #e74c3c;
+        }
+        .btn-action:hover {
+            transform: scale(1.1);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+            color: white;
+        }
+
+        /* Empty State */
+        .empty-state {
+            padding: 40px;
+            text-align: center;
+            color: #7f8c8d;
+        }
+        .empty-state i {
+            font-size: 3em;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        /* Search Box */
+        .search-box {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 12px 15px;
+            padding-right: 45px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+            direction: rtl;
+        }
+        .search-box input:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        .search-box i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #7f8c8d;
+        }
+
+        /* Filters */
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .filter-select {
+            min-width: 200px;
+            padding: 10px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background-color: #fff;
+            color: #333;
+            direction: rtl;
+        }
+        .filter-select:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        /* Status badges */
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: white;
+            text-align: center;
+        }
+        .status-pending {
+            background-color: #f39c12;
+        }
+        .status-completed {
+            background-color: #2ecc71;
+        }
+        .status-cancelled {
+            background-color: #e74c3c;
+        }
+
+        /* Responsive */
+        @media (max-width: 991.98px) {
+            .sidebar {
+                position: static;
+                min-height: auto;
+            }
+            .main-content {
+                margin-right: 0;
+            }
+            .filters {
+                flex-direction: column;
+            }
+        }
+
+        /* Pagination */
+        .pagination-container {
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .pagination-item {
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 8px;
+            background-color: white;
+            color: #2c3e50;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+        .pagination-item:hover {
+            background-color: #f0f7ff;
+            transform: translateY(-2px);
+            color: #3498db;
+        }
+        .pagination-item.active {
+            background: #3498db;
+            color: white;
+        }
+        .pagination-item.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        .pagination-nav {
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 8px;
+            background-color: white;
+            color: #2c3e50;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+        .pagination-nav:hover {
+            background-color: #f0f7ff;
+            transform: translateY(-2px);
+            color: #3498db;
+        }
+        .pagination-nav.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .pagination-info {
+            text-align: center;
+            color: #718096;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-lg-2 p-0">
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <h4>مكتب المحاماة</h4>
+                    <p th:text="${secretaire != null ? secretaire.firstName + ' ' + secretaire.lastName : ''}"></p>
+                </div>
+                <ul>
+                    <li class="active"><a th:href="@{/Secretaire/Dashboard} "><i class="fas fa-tachometer-alt"></i> لوحة التحكم</a></li>
+                    <li><a th:href="@{/Secretaire/notifications}"><i class="fas fa-bell"></i> الإشعارات
+                        <span th:if="${unreadNotificationsCount > 0}" class="badge bg-danger" th:text="${unreadNotificationsCount}"></span>
+                    </a></li>
+                    <li><a th:href="@{/Secretaire/rdv/list}"><i class="fas fa-calendar-alt"></i> المواعيد</a></li>
+                    <li><a th:href="@{/Secretaire/dossier/list}"><i class="fas fa-folder"></i> الملفات</a></li>
+                    <li><a th:href="@{/logout}"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-lg-10">
+            <div class="main-content">
+                <h2 class="page-title">قائمة الملفات</h2>
+
+                <!-- Search and Filters -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="search-box">
+                            <input type="text" id="searchInput" placeholder="البحث عن ملف..." class="form-control">
+                            <i class="fas fa-search"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="filters">
+                            <select class="filter-select" id="typeFilter">
+                                <option value="">جميع الأنواع</option>
+                                <option th:each="type : ${typeDossiers}" th:value="${type.id}" th:text="${type.nom}"></option>
+                            </select>
+                            <select class="filter-select" id="statusFilter">
+                                <option value="">جميع الحالات</option>
+                                <option value="قيد التنفيذ">قيد التنفيذ</option>
+                                <option value="مكتمل">مكتمل</option>
+                                <option value="معلق">معلق</option>
+                                <option value="مرفوض">مرفوض</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Files Table -->
+                <div class="table-container">
+                    <div class="table-header">
+                        <h5>الملفات</h5>
+                        <a th:href="@{/Secretaire/dossier/create}" class="btn-add">
+                            <i class="fas fa-plus"></i>
+                            ملف جديد
+                        </a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table" id="dossierTable">
+                            <thead>
+                            <tr>
+                                <th>رقم الملف</th>
+                                <th>تاريخ الإنشاء</th>
+                                <th>الموضوع</th>
+                                <th>نوع الملف</th>
+                                <th>الحالة</th>
+                                <th>تاريخ الجلسة القادمة</th>
+                                <th>العميل</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="dossier : ${dossiers}">
+                                <td th:text="${dossier.numeroDossier}"></td>
+                                <td th:text="${dossier.DateCreation != null ? #dates.format(dossier.DateCreation, 'dd/MM/yyyy') : '-'}"></td>
+                                <td th:text="${dossier.sujet}"></td>
+                                <td th:text="${dossier.typeD != null ? dossier.typeD.nom : '-'}"></td>
+                                <td>
+                                    <span th:if="${dossier.typeDecas == 'قيد التنفيذ'}" class="status-badge status-pending" th:text="${dossier.typeDecas}"></span>
+                                    <span th:if="${dossier.typeDecas == 'مكتمل'}" class="status-badge status-completed" th:text="${dossier.typeDecas}"></span>
+                                    <span th:if="${dossier.typeDecas == 'معلق'}" class="status-badge" style="background-color: #6c757d;" th:text="${dossier.typeDecas}"></span>
+                                    <span th:if="${dossier.typeDecas == 'مرفوض'}" class="status-badge status-cancelled" th:text="${dossier.typeDecas}"></span>
+                                    <span th:if="${dossier.typeDecas == null || (dossier.typeDecas != 'قيد التنفيذ' && dossier.typeDecas != 'مكتمل' && dossier.typeDecas != 'معلق' && dossier.typeDecas != 'مرفوض')}">-</span>
+                                </td>
+                                <td th:text="${dossier.dateProchSession != null ? #dates.format(dossier.dateProchSession, 'dd/MM/yyyy') : '-'}"></td>
+                                <td>
+                                    <span th:if="${dossier.client != null && !dossier.client.isEmpty()}"
+                                          th:text="${dossier.client.size() > 0 ?
+                                                 (dossier.client.iterator().next().firstName + ' ' +
+                                                  dossier.client.iterator().next().lastName) : '-'}"></span>
+                                    <span th:if="${dossier.client == null || dossier.client.isEmpty()}">-</span>
+                                </td>
+                                <td class="text-center">
+                                    <a th:href="@{/Secretaire/dossier/details/{id}(id=${dossier.id})}" class="btn-action btn-view" title="عرض التفاصيل">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a th:href="@{/Secretaire/dossier/edit/{id}(id=${dossier.id})}" class="btn-action btn-edit" title="تعديل">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a th:href="@{/Secretaire/dossier/delete/{id}(id=${dossier.id})}" class="btn-action btn-delete"
+                                       title="حذف"
+                                       onclick="return confirm('هل أنت متأكد من حذف هذا الملف؟')">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr th:if="${dossiers == null || dossiers.isEmpty()}">
+                                <td colspan="8">
+                                    <div class="empty-state">
+                                        <i class="fas fa-folder-open"></i>
+                                        <h5>لا توجد ملفات</h5>
+                                        <p>لم يتم العثور على أي ملفات. يمكنك إضافة ملف جديد من خلال النقر على زر "ملف جديد".</p>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div th:if="${dossierPage != null && dossierPage.totalPages > 0}" class="pagination-container">
+                    <div class="pagination">
+                        <!-- Bouton précédent -->
+                        <a th:if="${!dossierPage.first}"
+                           th:href="@{/Secretaire/dossier/list(page=${dossierPage.number - 1})}"
+                           class="pagination-nav">&lt;</a>
+                        <span th:if="${dossierPage.first}" class="pagination-nav disabled">&lt;</span>
+
+                        <!-- Pages numérotées -->
+                        <th:block th:each="i : ${#numbers.sequence(1, dossierPage.totalPages)}">
+                            <a th:href="@{/Secretaire/dossier/list(page=${i - 1})}"
+                               th:text="${i}"
+                               th:class="${dossierPage.number + 1 == i} ? 'pagination-item active' : 'pagination-item'"></a>
+                        </th:block>
+
+                        <!-- Bouton suivant -->
+                        <a th:if="${!dossierPage.last}"
+                           th:href="@{/Secretaire/dossier/list(page=${dossierPage.number + 1})}"
+                           class="pagination-nav">&gt;</a>
+                        <span th:if="${dossierPage.last}" class="pagination-nav disabled">&gt;</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Fonction de filtrage du tableau
+        function filterTable() {
+            var searchText = $("#searchInput").val().toLowerCase();
+            var typeFilter = $("#typeFilter").val();
+            var statusFilter = $("#statusFilter").val();
+
+            $("#dossierTable tbody tr").each(function() {
+                var row = $(this);
+                var numeroText = row.find("td:nth-child(1)").text().toLowerCase();
+                var sujetText = row.find("td:nth-child(3)").text().toLowerCase();
+                var typeText = row.find("td:nth-child(4)").text();
+                var statusText = row.find("td:nth-child(5) span").text();
+                var clientText = row.find("td:nth-child(7)").text().toLowerCase();
+
+                var matchesSearch = numeroText.includes(searchText) ||
+                    sujetText.includes(searchText) ||
+                    clientText.includes(searchText);
+
+                var matchesType = typeFilter === "" || (typeText !== "-" && typeText === typeFilter);
+                var matchesStatus = statusFilter === "" || statusText === statusFilter;
+
+                if (matchesSearch && matchesType && matchesStatus) {
+                    row.show();
+                } else {
+                    row.hide();
+                }
+            });
+
+            // Afficher un message si aucun résultat
+            var visibleRows = $("#dossierTable tbody tr:visible").length;
+            if (visibleRows === 0) {
+                if ($("#noResultsMessage").length === 0) {
+                    $("#dossierTable tbody").append('<tr id="noResultsMessage"><td colspan="8"><div class="empty-state"><i class="fas fa-search"></i><h5>لا توجد نتائج</h5><p>لم يتم العثور على ملفات تطابق معايير البحث الخاصة بك.</p></div></td></tr>');
+                }
+            } else {
+                $("#noResultsMessage").remove();
+            }
+        }
+
+        // Événements pour le filtrage
+        $("#searchInput").on("keyup", filterTable);
+        $("#typeFilter, #statusFilter").on("change", filterTable);
+
+        // Ajouter une classe active au menu actuel
+        const currentLocation = window.location.pathname;
+        $('.sidebar ul li').each(function() {
+            const link = $(this).find('a').attr('href');
+            if (currentLocation.includes(link) && link !== '#') {
+                $(this).addClass('active');
+                $(this).siblings().removeClass('active');
+            }
+        });
+    });
+</script>
+</body>
+</html>

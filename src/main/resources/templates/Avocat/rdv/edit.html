@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" dir="rtl">
+<head>
+  <title>تعديل الموعد</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+    }
+    .container {
+      text-align: right;
+    }
+    .btn {
+      margin-right: 0;
+      margin-left: 5px;
+    }
+
+    /* Cacher l'icône native du sélecteur de temps */
+    input[type="time"]::-webkit-calendar-picker-indicator {
+      display: none;
+    }
+    input[type="time"] {
+      appearance: textfield;
+      -webkit-appearance: textfield;
+      -moz-appearance: textfield;
+    }
+    /* Pour s'assurer que la valeur est toujours visible */
+    input[type="time"] {
+      direction: ltr;
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+<div class="container mt-5">
+  <h2>تعديل الموعد</h2>
+
+  <form th:action="@{/Secretaire/rdv/edit/{id}(id=${rdv.id})}" th:object="${rdv}" method="post" class="needs-validation" novalidate>
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">معلومات الموعد</h5>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <!-- Date du RDV -->
+          <div class="col-md-6 mb-3">
+            <label for="date" class="form-label">التاريخ</label>
+            <input type="date" class="form-control" id="date" th:field="*{date}" required>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('date')}" th:errors="*{date}">
+              يرجى إدخال تاريخ صحيح
+            </div>
+          </div>
+
+          <!-- Heure du RDV -->
+          <div class="col-md-6 mb-3">
+            <label for="heur" class="form-label">الوقت</label>
+            <input type="time" class="form-control" id="heur" th:field="*{heur}" required>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('heur')}" th:errors="*{heur}">
+              يرجى إدخال وقت صحيح
+            </div>
+          </div>
+        </div>
+
+        <!-- Sujet du RDV -->
+        <div class="mb-3">
+          <label for="sujet" class="form-label">الموضوع</label>
+          <input type="text" class="form-control" id="sujet" th:field="*{sujet}" required>
+          <div class="invalid-feedback" th:if="${#fields.hasErrors('sujet')}" th:errors="*{sujet}">
+            يرجى إدخال موضوع الموعد
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">معلومات المراجعة</h5>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <!-- ID Client -->
+          <div class="col-md-6 mb-3">
+            <label for="client" class="form-label">رقم العميل</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="client" name="client"
+                     th:value="${rdv.client != null ? rdv.client.id : ''}" required>
+              <button class="btn btn-outline-secondary" type="button" id="searchClient">بحث</button>
+            </div>
+            <div class="invalid-feedback">
+              يرجى إدخال رقم العميل
+            </div>
+          </div>
+
+          <!-- ID Bureau -->
+          <div class="col-md-6 mb-3">
+            <label for="bureau" class="form-label">رقم المكتب</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="bureau" name="bureau"
+                     th:value="${rdv.bureau != null ? rdv.bureau.id : ''}" required>
+              <button class="btn btn-outline-secondary" type="button" id="searchBureau">بحث</button>
+            </div>
+            <div class="invalid-feedback">
+              يرجى إدخال رقم المكتب
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-end">
+      <button type="submit" class="btn btn-primary ms-2">حفظ التغييرات</button>
+      <a th:href="@{/Secretaire/rdv/list}" class="btn btn-secondary">إلغاء</a>
+    </div>
+  </form>
+
+  <script>
+    // Validation des formulaires Bootstrap
+    (function() {
+      'use strict';
+      window.addEventListener('load', function() {
+        var forms = document.getElementsByClassName('needs-validation');
+        var validation = Array.prototype.filter.call(forms, function(form) {
+          form.addEventListener('submit', function(event) {
+            if (form.checkValidity() === false) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+          }, false);
+        });
+      }, false);
+    })();
+  </script>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+  // Importer la police arabe Cairo de Google Fonts
+  (function() {
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap';
+    document.head.appendChild(link);
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - الإشعارات</title>
+    <!-- Bootstrap RTL CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
+    <!-- Google Font: Cairo - Excellent Arabic font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        /* Sidebar Styles */
+        .sidebar {
+            background-color: #2c3e50;
+            min-height: 100vh;
+            color: white;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: inherit;
+            z-index: 100;
+        }
+        .sidebar-header {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            background-color: #1a2530;
+        }
+        .sidebar-header h4 {
+            margin: 0;
+            font-weight: 700;
+            color: #ecf0f1;
+        }
+        .sidebar-header p {
+            margin: 10px 0 0;
+            opacity: 0.8;
+            font-size: 14px;
+        }
+        .sidebar ul {
+            padding: 20px 0;
+            margin: 0;
+        }
+        .sidebar ul li {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li a {
+            color: #ecf0f1;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: block;
+            padding: 15px 20px;
+            border-right: 4px solid transparent;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .sidebar ul li a i {
+            margin-left: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        .sidebar ul li a:hover {
+            background-color: rgba(255,255,255,0.1);
+            border-right-color: #3498db;
+        }
+        .sidebar ul li.active a {
+            background-color: rgba(255,255,255,0.15);
+            color: #fff;
+            border-right-color: #3498db;
+            font-weight: 600;
+        }
+        /* Main Content */
+        .main-content {
+            margin-right: 260px;
+            padding: 30px;
+            transition: all 0.3s;
+        }
+        .content-header {
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+        .content-header h1 {
+            font-weight: 700;
+            margin-bottom: 5px;
+            font-size: 28px;
+        }
+        .content-header .breadcrumb {
+            background: transparent;
+            padding: 0;
+            margin: 0;
+        }
+        /* Notification Cards */
+        .notification-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+            border-right: 4px solid #3498db;
+        }
+        .notification-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .notification-card.unread {
+            background-color: #f0f7ff;
+        }
+        .notification-card.important {
+            border-right-color: #e74c3c;
+        }
+        .notification-card.warning {
+            border-right-color: #f39c12;
+        }
+        .notification-card.success {
+            border-right-color: #2ecc71;
+        }
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #f1f1f1;
+        }
+        .notification-header .notification-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #3498db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 22px;
+        }
+        .notification-header .important .notification-icon {
+            background-color: #e74c3c;
+        }
+        .notification-header .warning .notification-icon {
+            background-color: #f39c12;
+        }
+        .notification-header .success .notification-icon {
+            background-color: #2ecc71;
+        }
+        .notification-body {
+            padding: 20px;
+        }
+        .notification-body h5 {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .notification-body p {
+            margin-bottom: 0;
+            color: #666;
+        }
+        .notification-footer {
+            padding: 10px 20px;
+            background-color: #fafafa;
+            border-top: 1px solid #f1f1f1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            color: #777;
+            border-radius: 0 0 10px 10px;
+        }
+        .notification-actions a {
+            color: #555;
+            margin-left: 15px;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .notification-actions a:hover {
+            color: #3498db;
+        }
+        .notification-actions a.delete:hover {
+            color: #e74c3c;
+        }
+        .badge {
+            padding: 5px 10px;
+            border-radius: 50px;
+            font-weight: 500;
+        }
+        .filter-section {
+            margin-bottom: 25px;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+        .stats-card {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .stats-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 5px;
+            height: 100%;
+            background-color: #3498db;
+        }
+        .stats-card.unread::before {
+            background-color: #3498db;
+        }
+        .stats-card.important::before {
+            background-color: #e74c3c;
+        }
+        .stats-card.all::before {
+            background-color: #2ecc71;
+        }
+        .stats-card h2 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .stats-card p {
+            color: #777;
+            margin-bottom: 0;
+            font-size: 14px;
+        }
+        .stats-card i {
+            position: absolute;
+            left: 15px;
+            top: 15px;
+            font-size: 24px;
+            opacity: 0.2;
+        }
+        @media (max-width: 992px) {
+            .sidebar {
+                margin-right: -260px;
+            }
+            .main-content {
+                margin-right: 0;
+            }
+            .sidebar.active {
+                margin-right: 0;
+            }
+            .main-content.active {
+                margin-right: 260px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-lg-3 col-xl-2 p-0">
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <h4>لوحة التحكم</h4>
+                    <p>مرحباً، أحمد محمد</p>
+                </div>
+                <ul>
+                    <li>
+                        <a href="dashboard.html">
+                            <i class="fas fa-home"></i>
+                            الرئيسية
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="notifications.html">
+                            <i class="fas fa-bell"></i>
+                            الإشعارات
+                            <span class="badge bg-danger rounded-pill float-start">8</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="messages.html">
+                            <i class="fas fa-envelope"></i>
+                            الرسائل
+                        </a>
+                    </li>
+                    <li>
+                        <a href="users.html">
+                            <i class="fas fa-users"></i>
+                            المستخدمين
+                        </a>
+                    </li>
+                    <li>
+                        <a href="reports.html">
+                            <i class="fas fa-chart-bar"></i>
+                            التقارير
+                        </a>
+                    </li>
+                    <li>
+                        <a href="settings.html">
+                            <i class="fas fa-cog"></i>
+                            الإعدادات
+                        </a>
+                    </li>
+                    <li>
+                        <a href="login.html">
+                            <i class="fas fa-sign-out-alt"></i>
+                            تسجيل الخروج
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-lg-9 col-xl-10 main-content">
+            <div class="content-header">
+                <h1>الإشعارات</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">الرئيسية</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">الإشعارات</li>
+                    </ol>
+                </nav>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="row mb-4">
+                <div class="col-md-4 mb-3">
+                    <div class="stats-card all">
+                        <i class="fas fa-bell"></i>
+                        <h2>24</h2>
+                        <p>إجمالي الإشعارات</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="stats-card unread">
+                        <i class="fas fa-envelope-open"></i>
+                        <h2>8</h2>
+                        <p>إشعارات غير مقروءة</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="stats-card important">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <h2>3</h2>
+                        <p>إشعارات مهمة</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="البحث عن إشعارات...">
+                            <button class="btn btn-primary" type="button">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select">
+                            <option selected>جميع الإشعارات</option>
+                            <option>غير مقروءة</option>
+                            <option>مهمة</option>
+                            <option>تحذيرات</option>
+                            <option>إنجازات</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notifications -->
+            <div class="notifications-container">
+                <!-- Important Notification -->
+                <div class="notification-card important unread">
+                    <div class="notification-header">
+                        <div class="d-flex align-items-center">
+                            <div class="notification-icon">
+                                <i class="fas fa-exclamation"></i>
+                            </div>
+                            <div class="ms-3">
+                                <h5 class="mb-0">تحديث أمني مهم</h5>
+                                <span class="badge bg-danger">مهم</span>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="badge bg-secondary">منذ ساعة</span>
+                        </div>
+                    </div>
+                    <div class="notification-body">
+                        <p>تم اكتشاف محاولة تسجيل دخول غير عادية إلى حسابك من موقع جديد. يرجى التحقق من نشاط حسابك فوراً وتغيير كلمة المرور إذا لزم الأمر.</p>
+                    </div>
+                    <div class="notification-footer">
+                        <div class="notification-time">
+                            <i class="far fa-clock"></i> 10:30 صباحاً - 27 أبريل 2025
+                        </div>
+                        <div class="notification-actions">
+                            <a href="#" title="تحديد كمقروء"><i class="fas fa-check"></i></a>
+                            <a href="#" title="تفاصيل"><i class="fas fa-eye"></i></a>
+                            <a href="#" class="delete" title="حذف"><i class="fas fa-trash"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Warning Notification -->
+                <div class="notification-card warning unread">
+                    <div class="notification-header">
+                        <div class="d-flex align-items-center">
+                            <div class="notification-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="ms-3">
+                                <h5 class="mb-0">تحذير المساحة التخزينية</h5>
+                                <span class="badge bg-warning text-dark">تحذير</span>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="badge bg-secondary">منذ ساعتين</span>
+                        </div>
+                    </div>
+                    <div class="notification-body">
+                        <p>المساحة التخزينية الخاصة بك توشك على النفاذ. لديك فقط 15% متبقية. قم بترقية خطتك أو حذف الملفات القديمة.</p>
+                    </div>
+                    <div class="notification-footer">
+                        <div class="notification-time">
+                            <i class="far fa-clock"></i> 9:15 صباحاً - 27 أبريل 2025
+                        </div>
+                        <div class="notification-actions">
+                            <a href="#" title="تحديد كمقروء"><i class="fas fa-check"></i></a>
+                            <a href="#" title="تفاصيل"><i class="fas fa-eye"></i></a>
+                            <a href="#" class="delete" title="حذف"><i class="fas fa-trash"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Success Notification -->
+                <div class="notification-card success unread">
+                    <div class="notification-header">
+                        <div class="d-flex align-items-center">
+                            <div class="notification-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="ms-3">
+                                <h5 class="mb-0">تم اكتمال المهمة</h5>
+                                <span class="badge bg-success">نجاح</span>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="badge bg-secondary">منذ 3 ساعات</span>
+                        </div>
+                    </div>
+                    <div class="notification-body">
+                        <p>تم اكتمال عملية النسخ الاحتياطي للبيانات بنجاح. يمكنك الآن استعادة البيانات في أي وقت من لوحة التحكم.</p>
+                    </div>
+                    <div class="notification-footer">
+                        <div class="notification-time">
+                            <i class="far fa-clock"></i> 8:00 صباحاً - 27 أبريل 2025
+                        </div>
+                        <div class="notification-actions">
+                            <a href="#" title="تحديد كمقروء"><i class="fas fa-check"></i></a>
+                            <a href="#" title="تفاصيل"><i class="fas fa-eye"></i></a>
+                            <a href="#" class="delete" title="حذف"><i class="fas fa-trash"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Default Notification -->
+                <div class="notification-card">
+                    <div class="notification-header">
+                        <div class="d-flex align-items-center">
+                            <div class="notification-icon">
+                                <i class="fas fa-bell"></i>
+                            </div>
+                            <div class="ms-3">
+                                <h5 class="mb-0">تحديث النظام</h5>
+                                <span class="badge bg-info">معلومات</span>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="badge bg-secondary">منذ يوم</span>
+                        </div>
+                    </div>
+                    <div class="notification-body">
+                        <p>تم إصدار تحديث جديد للنظام (v2.5.3). يتضمن هذا التحديث تحسينات أمنية وإصلاحات للأخطاء. نوصي بتثبيت التحديث في أقرب وقت ممكن.</p>
+                    </div>
+                    <div class="notification-footer">
+                        <div class="notification-time">
+                            <i class="far fa-clock"></i> 11:45 صباحاً - 26 أبريل 2025
+                        </div>
+                        <div class="notification-actions">
+                            <a href="#" title="تفاصيل"><i class="fas fa-eye"></i></a>
+                            <a href="#" class="delete" title="حذف"><i class="fas fa-trash"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Another Normal Notification -->
+                <div class="notification-card">
+                    <div class="notification-header">
+                        <div class="d-flex align-items-center">
+                            <div class="notification-icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="ms-3">
+                                <h5 class="mb-0">طلب صداقة جديد</h5>
+                                <span class="badge bg-primary">اجتماعي</span>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="badge bg-secondary">منذ يومين</span>
+                        </div>
+                    </div>
+                    <div class="notification-body">
+                        <p>لديك طلب صداقة جديد من سارة أحمد. يمكنك قبول الطلب أو رفضه من صفحة الملف الشخصي.</p>
+                    </div>
+                    <div class="notification-footer">
+                        <div class="notification-time">
+                            <i class="far fa-clock"></i> 3:20 مساءً - 25 أبريل 2025
+                        </div>
+                        <div class="notification-actions">
+                            <a href="#" title="تفاصيل"><i class="fas fa-eye"></i></a>
+                            <a href="#" class="delete" title="حذف"><i class="fas fa-trash"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <nav aria-label="Page navigation" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">السابق</a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">التالي</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Toggle sidebar on mobile
+    document.addEventListener('DOMContentLoaded', function() {
+        const toggleBtn = document.createElement('button');
+        toggleBtn.classList.add('btn', 'btn-primary', 'position-fixed', 'top-0', 'end-0', 'm-3', 'd-lg-none');
+        toggleBtn.innerHTML = '<i class="fas fa-bars"></i>';
+        toggleBtn.addEventListener('click', function() {
+            document.querySelector('.sidebar').classList.toggle('active');
+            document.querySelector('.main-content').classList.toggle('active');
+        });
+        document.body.appendChild(toggleBtn);
+
+        // Mark notifications as read
+        const markReadButtons = document.querySelectorAll('.notification-actions a[title="تحديد كمقروء"]');
+        markReadButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const card = this.closest('.notification-card');
+                card.classList.remove('unread');
+                this.style.display = 'none';
+
+                // Update unread count
+                const unreadCount = document.querySelectorAll('.notification-card.unread').length;
+                document.querySelector('.stats-card.unread h2').textContent = unreadCount;
+                document.querySelector('.badge.bg-danger.rounded-pill').textContent = unreadCount;
+            });
+        });
+
+        // Delete notifications
+        const deleteButtons = document.querySelectorAll('.notification-actions a.delete');
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const card = this.closest('.notification-card');
+                card.style.opacity = '0';
+                setTimeout(() => {
+                    card.remove();
+
+                    // Update counts
+                    const totalCount = document.querySelectorAll('.notification-card').length;
+                    const unreadCount = document.querySelectorAll('.notification-card.unread').length;
+                    const importantCount = document.querySelectorAll('.notification-card.important').length;
+
+                    document.querySelector('.stats-card.all h2').textContent = totalCount;
+                    document.querySelector('.stats-card.unread h2').textContent = unreadCount;
+                    document.querySelector('.stats-card.important h2').textContent = importantCount;
+                    document.querySelector('.badge.bg-danger.rounded-pill').textContent = unreadCount;
+                }, 300);
+            });
+        });
+    });
+</script>
+</body>
+</html>
+<!--&lt;!&ndash; notifications-badge.html (fragment Thymeleaf) &ndash;&gt;-->
+<!--<div class="dropdown" th:fragment="notificationsBadge">-->
+<!--    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">-->
+<!--        <i class="fas fa-bell"></i>-->
+<!--        <span class="badge badge-danger" th:if="${notificationsCount > 0}" th:text="${notificationsCount}"></span>-->
+<!--    </a>-->
+<!--    <div class="dropdown-menu dropdown-menu-right" style="width: 300px;">-->
+<!--        <h6 class="dropdown-header">الإشعارات</h6>-->
+<!--        <div th:if="${notifications.isEmpty()}">-->
+<!--            <span class="dropdown-item text-muted">لا توجد إشعارات جديدة</span>-->
+<!--        </div>-->
+<!--        <a th:each="notif : ${recentNotifications}"-->
+<!--           th:href="@{/secretaire/notification/{id}(id=${notif.id})}"-->
+<!--           class="dropdown-item">-->
+<!--            <div class="small text-muted" th:text="${#temporals.format(notif.dateCreation, 'HH:mm')}"></div>-->
+<!--            <div th:text="${notif.titre}"></div>-->
+<!--        </a>-->
+<!--        <div class="dropdown-divider"></div>-->
+<!--        <a class="dropdown-item text-center" href="/secretaire/dashboard">عرض كافة الإشعارات</a>-->
+<!--    </div>-->
+<!--</div>-->

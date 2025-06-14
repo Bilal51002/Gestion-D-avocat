@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ar" dir="rtl">
+<head>
+    <title>إنشاء موعد</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
+
+        body {
+            direction: rtl;
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+        }
+
+        h2 {
+            color: #3c4b64;
+            border-bottom: 2px solid #3c4b64;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        .form-group label {
+            display: block;
+            text-align: right;
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .form-control {
+            text-align: right;
+            border-radius: 4px;
+        }
+
+        .form-control:focus {
+            border-color: #3c4b64;
+            box-shadow: 0 0 0 0.2rem rgba(60, 75, 100, 0.25);
+        }
+
+        .btn-primary {
+            background-color: #3c4b64;
+            border-color: #3c4b64;
+        }
+
+        .btn-primary:hover {
+            background-color: #2d3a4f;
+            border-color: #2d3a4f;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #5a6268;
+        }
+
+        .text-danger {
+            display: block;
+            margin-top: 5px;
+            font-size: 14px;
+            text-align: right;
+        }
+
+        .input-group-text {
+            background-color: #f8f9fa;
+        }
+
+        .form-header {
+            margin-bottom: 20px;
+            text-align: right;
+        }
+
+        /* Assurer que les étiquettes sont bien alignées à droite */
+        .field-label {
+            text-align: right;
+            width: 100%;
+            display: block;
+        }
+
+        /* Forcer l'ordre des éléments dans l'input-group pour RTL */
+        .input-group-rtl .input-group-prepend {
+            margin-right: 0;
+            margin-left: -1px;
+        }
+
+        .input-group-rtl .form-control:not(:last-child) {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            border-top-right-radius: 0.25rem;
+            border-bottom-right-radius: 0.25rem;
+        }
+
+        .input-group-rtl .input-group-prepend > .input-group-text {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-top-left-radius: 0.25rem;
+            border-bottom-left-radius: 0.25rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <div class="form-header">
+        <h2><i class="fas fa-calendar-plus ml-2"></i>إنشاء موعد جديد</h2>
+    </div>
+
+    <form th:action="@{/Secretaire/rdv/create}" th:object="${rdv}" method="post">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="field-label" for="date">التاريخ <span class="text-danger">*</span></label>
+                    <div class="input-group input-group-rtl">
+                        <input type="date" class="form-control" id="date" th:field="*{date}" required>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                        </div>
+                    </div>
+                    <span class="text-danger" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></span>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="field-label" for="heur">الساعة <span class="text-danger">*</span></label>
+                    <div class="input-group input-group-rtl">
+                        <input type="time" class="form-control" id="heur" th:field="*{heur}" required>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-clock"></i></span>
+                        </div>
+                    </div>
+                    <span class="text-danger" th:if="${#fields.hasErrors('heur')}" th:errors="*{heur}"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="field-label" for="sujet">الموضوع <span class="text-danger">*</span></label>
+            <div class="input-group input-group-rtl">
+                <input type="text" class="form-control" id="sujet" th:field="*{sujet}" placeholder="أدخل موضوع الموعد" required>
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-edit"></i></span>
+                </div>
+            </div>
+            <span class="text-danger" th:if="${#fields.hasErrors('sujet')}" th:errors="*{sujet}"></span>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="field-label" for="client">العميل <span class="text-danger">*</span></label>
+                    <div class="input-group input-group-rtl">
+                        <select th:field="*{client}" class="form-control" id="client" required>
+                            <option value="" selected disabled>-- اختر العميل --</option>
+                            <option th:each="c : ${clients}" th:value="${c.id}" th:text="${c.getLastName() + ' ' + c.getFirstName()}"></option>
+                        </select>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                        </div>
+                    </div>
+                    <span class="text-danger" th:if="${#fields.hasErrors('client')}" th:errors="*{client}"></span>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="field-label" for="bureau">المكتب <span class="text-danger">*</span></label>
+                    <div class="input-group input-group-rtl">
+                        <select class="form-control" id="bureau" th:field="*{bureau}" required>
+                            <option value="" selected disabled>-- اختر المكتب --</option>
+                            <option th:each="b : ${bureaux}" th:value="${b.id}" th:text="${b.getNom()}"></option>
+                        </select>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-building"></i></span>
+                        </div>
+                    </div>
+                    <span class="text-danger" th:if="${#fields.hasErrors('bureau')}" th:errors="*{bureau}"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group mt-4 text-center">
+            <button type="submit" class="btn btn-primary btn-lg ml-2">
+                <i class="fas fa-save ml-2"></i>إنشاء الموعد
+            </button>
+            <a th:href="@{/Secretaire/rdv/list}" class="btn btn-secondary btn-lg">
+                <i class="fas fa-times ml-2"></i>إلغاء
+            </a>
+        </div>
+    </form>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
