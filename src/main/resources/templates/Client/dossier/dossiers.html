@@ -1,10 +1,623 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>$Title$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ملفاتي - المساعد القانوني</title>
+  <style>
+    @font-face {
+      font-family: 'Tajawal';
+      src: url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
+    }
+
+    :root {
+      --primary-color: #6d28d9;
+      --secondary-color: #ede9fe;
+      --text-color: #1e293b;
+      --accent-color: #8b5cf6;
+      --success-color: #059669;
+      --danger-color: #dc2626;
+      --warning-color: #f59e0b;
+      --background-color: #f5f3ff;
+      --card-shadow: 0 10px 15px -3px rgba(109, 40, 217, 0.1), 0 4px 6px -2px rgba(109, 40, 217, 0.05);
+      --hover-transition: all 0.3s ease;
+      --gradient-primary: linear-gradient(135deg, #6d28d9, #8b5cf6);
+      --gradient-secondary: linear-gradient(135deg, #a78bfa, #c4b5fd);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Tajawal', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--background-color);
+      color: var(--text-color);
+      text-align: right;
+      line-height: 1.5;
+      background-image: radial-gradient(#ddd6fe 1px, transparent 1px);
+      background-size: 20px 20px;
+      direction: rtl;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+      border-bottom: 2px solid #e2e8f0;
+      margin-bottom: 40px;
+      flex-direction: row-reverse;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+      color: white;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+      background: var(--gradient-primary);
+      padding: 10px 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(109, 40, 217, 0.3);
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-direction: row-reverse;
+    }
+
+    .user-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--gradient-primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 18px;
+      box-shadow: 0 4px 10px rgba(109, 40, 217, 0.3);
+      border: 3px solid white;
+    }
+
+    .user-name {
+      font-weight: 600;
+      text-align: right;
+      font-size: 18px;
+    }
+
+    .user-email {
+      text-align: right;
+      color: #718096;
+    }
+
+    .logout-btn {
+      padding: 10px 16px;
+      background-color: #edf2f7;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: var(--hover-transition);
+      font-weight: 500;
+      color: var(--text-color);
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .logout-btn:hover {
+      background-color: #e2e8f0;
+      transform: translateY(-2px);
+    }
+
+    .notification-indicator {
+      position: relative;
+      margin-right: 15px;
+      cursor: pointer;
+    }
+
+    .notification-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background-color: var(--danger-color);
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-direction: row-reverse;
+    }
+
+    .section-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-color);
+      position: relative;
+      padding-right: 15px;
+    }
+
+    .section-title::before {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 5px;
+      height: 25px;
+      background: var(--gradient-primary);
+      border-radius: 3px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+      background-color: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--card-shadow);
+    }
+
+    th, td {
+      padding: 16px 20px;
+      text-align: right;
+    }
+
+    th {
+      background: var(--gradient-primary);
+      color: white;
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f8fafc;
+    }
+
+    tr {
+      border-bottom: 1px solid #e2e8f0;
+      transition: var(--hover-transition);
+    }
+
+    tr:hover {
+      background-color: #ebf8ff;
+    }
+
+    tr:last-child {
+      border-bottom: none;
+    }
+
+    .status-badge {
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      display: inline-block;
+    }
+
+    .status-active {
+      background: linear-gradient(135deg, #a7f3d0, #6ee7b7);
+      color: #065f46;
+    }
+
+    .status-pending {
+      background: linear-gradient(135deg, #fef3c7, #fcd34d);
+      color: #92400e;
+    }
+
+    .status-completed {
+      background: linear-gradient(135deg, #bfdbfe, #93c5fd);
+      color: #1e40af;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: var(--hover-transition);
+      font-size: 15px;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .btn-primary {
+      background: var(--gradient-primary);
+      color: white;
+      box-shadow: 0 4px 6px rgba(109, 40, 217, 0.3);
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(109, 40, 217, 0.4);
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      border: 2px solid var(--primary-color);
+      color: var(--primary-color);
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+      padding: 5px 10px;
+      font-size: 14px;
+    }
+
+    .btn-outline:hover {
+      color: white;
+      transform: translateY(-2px);
+      border-color: transparent;
+    }
+
+    .btn-outline::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 100%;
+      background: var(--gradient-primary);
+      transition: width 0.3s ease;
+      z-index: -1;
+    }
+
+    .btn-outline:hover::before {
+      width: 100%;
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .pagination-item {
+      display: inline-block;
+      padding: 8px 15px;
+      border-radius: 8px;
+      background-color: white;
+      color: var(--text-color);
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      transition: var(--hover-transition);
+    }
+
+    .pagination-item:hover {
+      background-color: var(--secondary-color);
+      transform: translateY(-2px);
+    }
+
+    .pagination-item.active {
+      background: var(--gradient-primary);
+      color: white;
+    }
+
+    .pagination-item.disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .pagination-nav {
+      display: inline-block;
+      padding: 8px 15px;
+      border-radius: 8px;
+      background-color: white;
+      color: var(--text-color);
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      transition: var(--hover-transition);
+    }
+
+    .pagination-nav:hover {
+      background-color: var(--secondary-color);
+      transform: translateY(-2px);
+    }
+
+    .pagination-nav.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .pagination-info {
+      text-align: center;
+      color: #718096;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 50px 20px;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: var(--card-shadow);
+      margin-bottom: 30px;
+    }
+
+    .empty-state-icon {
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+
+    .empty-state-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text-color);
+    }
+
+    .empty-state-desc {
+      color: #718096;
+      margin-bottom: 20px;
+      max-width: 500px;
+      margin: 0 auto 20px;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      background-color: #f3f4f6;
+      color: var(--text-color);
+      text-decoration: none;
+      transition: var(--hover-transition);
+      margin-bottom: 20px;
+    }
+
+    .back-btn:hover {
+      background-color: #e5e7eb;
+      transform: translateY(-2px);
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 25px;
+      background-color: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: var(--card-shadow);
+    }
+
+    .filter-item {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .filter-label {
+      font-weight: 600;
+      font-size: 14px;
+      color: #4b5563;
+    }
+
+    .filter-input {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      font-size: 14px;
+    }
+
+    .filter-input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px var(--secondary-color);
+    }
+
+    .filter-actions {
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+    }
+
+    /* Script pour maintenir la position de défilement après le chargement de la page */
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
 </head>
 <body>
-$END$
+<div class="container">
+  <header>
+    <div class="user-info">
+      <a class="btn btn-danger logout-btn" th:href="@{/logout}">تسجيل الخروج</a>
+      <div class="notification-indicator" th:if="${unreadNotificationsCount != null && unreadNotificationsCount > 0}">
+        <span class="notification-badge" th:text="${unreadNotificationsCount}">1</span>
+        <a href="#" title="الإشعارات الجديدة">
+          🔔
+        </a>
+      </div>
+      <div class="user-avatar" th:text="${client.getFirstName().substring(0,1)}"></div>
+      <div>
+        <div class="user-name" th:text="${client.getFirstName()+' '+client.getLastName()}"></div>
+        <div class="user-email" th:text="${client.getEmail()}"></div>
+      </div>
+    </div>
+    <div class="logo">المساعد القانوني</div>
+  </header>
+
+  <a href="javascript:history.back()" class="back-btn">
+    ← العودة للخلف
+  </a>
+
+  <!-- Filtre pour les dossiers -->
+  <div class="filters" th:if="${dossiers != null && !dossiers.isEmpty()}">
+    <div class="filter-item">
+      <label class="filter-label">رقم الملف</label>
+      <input type="text" class="filter-input" placeholder="أدخل رقم الملف">
+    </div>
+    <div class="filter-item">
+      <label class="filter-label">النوع</label>
+      <select class="filter-input">
+        <option value="">كل الأنواع</option>
+        <option th:each="type : ${typeDossiers}" th:value="${type.id}" th:text="${type.nom}"></option>
+      </select>
+    </div>
+    <div class="filter-item">
+      <label class="filter-label">الحالة</label>
+      <select class="filter-input">
+        <option value="">كل الحالات</option>
+        <option value="قيد التنفيذ">قيد التنفيذ</option>
+        <option value="مكتمل">مكتمل</option>
+        <option value="معلق">معلق</option>
+      </select>
+    </div>
+    <div class="filter-actions">
+      <button class="btn btn-primary">تطبيق</button>
+    </div>
+  </div>
+
+  <!-- Ajoutez un id à votre section de dossiers -->
+  <div id="dossiers-section" class="section-header">
+    <h2 class="section-title">ملفاتي</h2>
+    <!-- <a class="btn btn-primary" th:href="@{/Client/dossier/create}">إنشاء ملف جديد</a> -->
+  </div>
+
+  <!-- Table des dossiers -->
+  <div th:if="${dossiers != null && !dossiers.isEmpty()}">
+    <table>
+      <thead>
+      <tr>
+        <th>المرجع</th>
+        <th>النوع</th>
+        <th>الموضوع</th>
+        <th>تاريخ الفتح</th>
+        <th>تاريخ الجلسة المقبلة</th>
+        <th>الحالة</th>
+        <th>الإجراءات</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="dossier : ${dossierPage.content}" th:if="${dossierPage != null && dossierPage.numberOfElements > 0}">
+        <td th:text="${dossier.numeroDossier}"></td>
+        <td th:text="${dossier.typeD != null ? dossier.typeD.nom : 'غير محدد'}"></td>
+        <td th:text="${dossier.getSujet()}"></td>
+        <td th:text="${#dates.format(dossier.DateCreation, 'dd/MM/yyyy')}"></td>
+        <td th:text="${dossier.getDateProchSession() != null ? #dates.format(dossier.getDateProchSession(), 'dd/MM/yyyy') : 'غير محدد'}"></td>
+        <td>
+                    <span th:switch="${dossier.typeDecas}">
+                        <span th:case="'قيد التنفيذ'" class="status-badge status-active">قيد التنفيذ</span>
+                        <span th:case="'معلق'" class="status-badge status-pending">معلق</span>
+                        <span th:case="'مكتمل'" class="status-badge status-completed">مكتمل</span>
+                        <span th:case="*" class="status-badge status-active" th:text="${dossier.typeDecas}"></span>
+                    </span>
+        </td>
+        <td>
+          <a th:href="@{/Client/dossier/details/{id}(id=${dossier.id})}" class="btn btn-outline">عرض</a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <div class="pagination" th:if="${dossierPage != null && dossierPage.totalPages > 0}">
+      <!-- Bouton précédent -->
+      <a th:if="${!dossierPage.first}"
+         th:href="@{/Client/dossier/dossiers(page=${dossierPage.number - 1})} + '#dossiers-section'"
+         class="pagination-nav">&lt;</a>
+      <span th:if="${dossierPage.first}" class="pagination-nav disabled">&lt;</span>
+
+      <!-- Pages numérotées -->
+      <th:block th:if="${pageNumbers != null}">
+        <!-- Première page (si on n'est pas au début) -->
+        <a th:if="${dossierPage.number > 2}"
+           th:href="@{/Client/dossier/dossiers(page=0)} + '#dossiers-section'"
+           class="pagination-item">1</a>
+
+        <!-- Points de suspension si nécessaire -->
+        <span th:if="${dossierPage.number > 3}" class="pagination-item disabled">...</span>
+
+        <!-- Pages autour de la page courante -->
+        <th:block th:each="pageNumber : ${pageNumbers}">
+          <a th:if="${pageNumber >= dossierPage.number && pageNumber <= dossierPage.number + 2}"
+             th:href="@{/Client/dossier/dossiers(page=${pageNumber - 1})} + '#dossiers-section'"
+             class="pagination-item"
+             th:classappend="${pageNumber == dossierPage.number + 1} ? 'active' : ''"
+             th:text="${pageNumber}"></a>
+        </th:block>
+
+        <!-- Points de suspension si nécessaire -->
+        <span th:if="${dossierPage.number < dossierPage.totalPages - 4}" class="pagination-item disabled">...</span>
+
+        <!-- Dernière page (si on n'est pas à la fin) -->
+        <a th:if="${dossierPage.number < dossierPage.totalPages - 3}"
+           th:href="@{/Client/dossier/dossiers(page=${dossierPage.totalPages - 1})} + '#dossiers-section'"
+           class="pagination-item" th:text="${dossierPage.totalPages}"></a>
+      </th:block>
+
+      <!-- Bouton suivant -->
+      <a th:if="${!dossierPage.last}"
+         th:href="@{/Client/dossier/dossiers(page=${dossierPage.number + 1})} + '#dossiers-section'"
+         class="pagination-nav">&gt;</a>
+      <span th:if="${dossierPage.last}" class="pagination-nav disabled">&gt;</span>
+    </div>
+
+    <!-- Information sur la pagination -->
+    <div class="pagination-info" th:if="${dossierPage != null && dossierPage.numberOfElements > 0}">
+      عرض [[${dossierPage.numberOfElements}]] من إجمالي [[${dossierPage.totalElements}]] ملف
+    </div>
+  </div>
+
+  <!-- Si aucun dossier n'est disponible -->
+  <div th:if="${dossiers == null || dossiers.isEmpty()}" class="empty-state">
+    <div class="empty-state-icon">📁</div>
+    <h3 class="empty-state-title">لا توجد ملفات حاليًا</h3>
+    <p class="empty-state-desc">لا يوجد لديك أي ملفات قانونية مسجلة في النظام. يرجى التواصل مع المحامي أو مكتب المحاماة لإضافة ملفاتك.</p>
+    <!-- <a th:href="@{/Client/dossier/create}" class="btn btn-primary">إنشاء ملف جديد</a> -->
+  </div>
+</div>
+
+<!-- Script pour maintenir la position de défilement -->
+<script>
+  // Si l'URL contient un fragment d'ancre, nous nous assurons que le défilement se fait correctement
+  document.addEventListener('DOMContentLoaded', function() {
+    // Vérifie si l'URL contient un fragment d'ancre
+    if(window.location.hash) {
+      // Petit délai pour s'assurer que la page est complètement chargée
+      setTimeout(function() {
+        const element = document.querySelector(window.location.hash);
+        if(element) {
+          element.scrollIntoView({behavior: 'smooth'});
+        }
+      }, 100);
+    }
+  });
+</script>
 </body>
 </html>

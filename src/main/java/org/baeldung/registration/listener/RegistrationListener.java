@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.baeldung.persistence.model.User;
 import org.baeldung.registration.OnRegistrationCompleteEvent;
+import org.baeldung.service.UserService;
 import org.baeldung.service.pfe.IUserService;
 import org.baeldung.service.MailClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class RegistrationListener implements ApplicationListener<OnRegistrationCompleteEvent> {
     @Autowired
-    private IUserService service;
+    private UserService service;
 
     @Autowired
     private MessageSource messages;

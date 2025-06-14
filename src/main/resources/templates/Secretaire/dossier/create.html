@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>إنشاء ملف جديد</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
   <style>
     @font-face {
       font-family: 'Tajawal';
@@ -256,6 +258,58 @@
       flex: 1;
     }
 
+    /* Style pour le choix multiple */
+    .select2-container {
+      width: 100% !important;
+    }
+
+    .select2-container--default .select2-selection--multiple {
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      min-height: 46px;
+      padding: 6px 8px;
+    }
+
+    .select2-container--default.select2-container--focus .select2-selection--multiple {
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+    }
+
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+      background-color: var(--secondary-color);
+      border: 1px solid var(--primary-color);
+      border-radius: 4px;
+      padding: 4px 8px;
+      margin-right: 5px;
+      color: var(--primary-color);
+    }
+
+    .alert {
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+
+    .alert-danger {
+      background-color: #fee2e2;
+      color: #b91c1c;
+      border-right: 4px solid #dc2626;
+    }
+
+    .alert-success {
+      background-color: #d1fae5;
+      color: #065f46;
+      border-right: 4px solid #059669;
+    }
+
+    .text-muted {
+      color: #6b7280;
+      font-size: 14px;
+      margin-top: 5px;
+      display: block;
+    }
+
     @media (max-width: 768px) {
       .form-row {
         flex-direction: column;
@@ -275,9 +329,6 @@
 </head>
 <body>
 <div class="container">
-  <header>
-    <a href="/Client/Dashboard" class="logo">المساعد القانوني</a>
-  </header>
 
   <h1 class="page-title">إنشاء ملف جديد</h1>
 
@@ -286,7 +337,20 @@
       <p>يرجى ملء جميع المعلومات المطلوبة لإنشاء ملف جديد. الحقول المميزة بعلامة (*) إلزامية.</p>
     </div>
 
-    <form th:action="@{/Client/dossier/create}" th:object="${dossier}" method="post">
+    <!-- Messages d'erreur et de succès -->
+    <div th:if="${param.error}" class="alert alert-danger">
+      <p th:text="${param.error == 'numeroNationalDuplique'} ? 'الرقم الوطني موجود بالفعل. الرجاء استخدام رقم آخر.' : 'حدث خطأ أثناء إنشاء الملف. يرجى المحاولة مرة أخرى.'"></p>
+    </div>
+
+    <div th:if="${errorMessage}" class="alert alert-danger">
+      <p th:text="${errorMessage}"></p>
+    </div>
+
+    <div th:if="${successMessage}" class="alert alert-success">
+      <p th:text="${successMessage}"></p>
+    </div>
+
+    <form th:action="@{/Secretaire/dossier/create}" th:object="${dossier}" method="post" id="createDossierForm">
       <div class="form-row">
         <div class="form-col">
           <div class="form-group">
@@ -326,17 +390,27 @@
       <div class="form-row">
         <div class="form-col">
           <div class="form-group">
-            <label for="tribunal" class="form-label">المحكمة</label>
-            <select id="tribunal" name="tribunalId" class="form-select">
-              <option value="">-- اختر المحكمة --</option>
-              <!-- Vous devrez ajouter les tribunaux dans le contrôleur -->
+            <label for="clients" class="form-label required-field">العملاء</label>
+            <select id="clients" name="clientIds" class="form-select select2-multiple" multiple required>
+              <option th:each="client : ${clients}"
+                      th:value="${client.id}"
+                      th:text="${client.firstName + ' ' + client.lastName}">
+                اسم العميل
+              </option>
             </select>
+            <small class="text-muted">اختر عميلاً واحدًا على الأقل</small>
           </div>
         </div>
         <div class="form-col">
           <div class="form-group">
-            <label for="numeroNational" class="form-label">الرقم الوطني</label>
-            <input type="text" id="numeroNational" th:field="*{numeroNational}" class="form-control">
+            <label for="avocats" class="form-label">المحامون المعينون</label>
+            <select id="avocats" name="avocatIds" class="form-select select2-multiple" multiple>
+              <option th:each="avocat : ${avocats}"
+                      th:value="${avocat.id}"
+                      th:text="${avocat.firstName + ' ' + avocat.lastName}">
+                اسم المحامي
+              </option>
+            </select>
           </div>
         </div>
       </div>
@@ -344,24 +418,95 @@
       <div class="form-row">
         <div class="form-col">
           <div class="form-group">
-            <label for="dateProchSession" class="form-label">تاريخ الجلسة المقبلة</label>
-            <input type="date" id="dateProchSession" th:field="*{dateProchSession}" class="form-control">
+            <label for="tribunal" class="form-label">المحكمة</label>
+            <select id="tribunal" name="tribunalIds" class="form-select select2-multiple" multiple>
+              <option th:each="tribunal : ${tribunaux}"
+                      th:value="${tribunal.id}"
+                      th:text="${tribunal.nom}">
+                اسم المحكمة
+              </option>
+            </select>
           </div>
         </div>
         <div class="form-col">
           <div class="form-group">
-            <label for="id_client" class="form-label">معرف العميل</label>
-            <input type="text" id="id_client" th:field="*{id_client}" class="form-control">
+            <label for="juges" class="form-label">القضاة</label>
+            <select id="juges" name="jugeIds" class="form-select select2-multiple" multiple>
+              <option th:each="juge : ${juges}"
+                      th:value="${juge.id}"
+                      th:text="${juge.nom + ' ' + juge.prenom}">
+                اسم القاضي
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-col">
+          <div class="form-group">
+            <label for="numeroNational" class="form-label">الرقم الوطني للملف</label>
+            <input type="text" id="numeroNational" th:field="*{numeroNational}" class="form-control">
+            <small class="text-muted">يجب أن يكون الرقم الوطني فريدًا</small>
+          </div>
+        </div>
+        <div class="form-col">
+          <div class="form-group">
+            <label for="dateProchSession" class="form-label">تاريخ الجلسة المقبلة</label>
+            <input type="date" id="dateProchSession" th:field="*{dateProchSession}" class="form-control">
           </div>
         </div>
       </div>
 
       <div class="form-actions">
-        <button type="submit" class="btn btn-primary">إنشاء الملف</button>
-        <a th:href="@{/Client/Dashboard}" class="btn btn-outline">إلغاء</a>
+        <button type="submit" class="btn btn-primary" id="submitBtn">إنشاء الملف</button>
+        <a th:href="@{/Secretaire/Dashboard}" class="btn btn-outline">إلغاء</a>
       </div>
     </form>
   </div>
 </div>
+
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+  $(document).ready(function() {
+    // Initialiser les sélecteurs multiples avec Select2
+    $('.select2-multiple').select2({
+      dir: "rtl",
+      language: "ar",
+      placeholder: "اختر من القائمة",
+      allowClear: true
+    });
+
+    // Validation du formulaire côté client
+    $('#createDossierForm').on('submit', function(e) {
+      // Vérifier que les champs requis sont remplis
+      if (!$('#typeD').val()) {
+        alert('يرجى اختيار نوع الملف');
+        e.preventDefault();
+        return false;
+      }
+
+      if (!$('#sujet').val()) {
+        alert('يرجى إدخال موضوع الملف');
+        e.preventDefault();
+        return false;
+      }
+
+      // Vérifier qu'au moins un client est sélectionné
+      if ($('#clients').val() == null || $('#clients').val().length === 0) {
+        alert('يرجى اختيار عميل واحد على الأقل');
+        e.preventDefault();
+        return false;
+      }
+
+      // Désactiver le bouton de soumission et montrer un indicateur de chargement
+      $('#submitBtn').prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> جاري المعالجة...');
+
+      return true;
+    });
+  });
+</script>
 </body>
 </html>

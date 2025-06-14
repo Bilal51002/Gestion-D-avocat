@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface  SecretaireRepository extends JpaRepository<Secretaire, Long> {
 	  List<Secretaire> findByfirstNameContaining(String mt);
 	  Secretaire findByEmail(String email);
-	  
+
+
 }
 

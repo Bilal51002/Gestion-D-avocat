@@ -33,7 +33,9 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserDetailsService userDetailsService;
-
+//
+//    @Autowired
+//    private CustomAuthenticationProvider authProvider;
     @Autowired
     private AuthenticationSuccessHandler myAuthenticationSuccessHandler;
 
@@ -46,8 +48,8 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomWebAuthenticationDetailsSource authenticationDetailsSource;
 
-//    @Autowired
-//    private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     public SecSecurityConfig() {
         super();
@@ -79,7 +81,7 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/Avocat/**").hasRole("AVOCAT")
                 .antMatchers("/super_admin/**").hasRole("USER")
                 .antMatchers("/Client/**").hasRole("CLIENT")
-                .antMatchers("/portfolio", "/services", "/about-us", "/contact-us", "/index", "/login").permitAll()
+                .antMatchers("/portfolio", "/services", "/about-us", "/contact-us", "/index", "/login","/home").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

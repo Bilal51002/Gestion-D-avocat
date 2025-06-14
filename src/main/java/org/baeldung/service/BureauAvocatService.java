@@ -1,6 +1,7 @@
 package org.baeldung.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.baeldung.persistence.dao.pfe.AvocatRepository;
 import org.baeldung.persistence.dao.pfe.BarreauRepository;
@@ -11,6 +12,8 @@ import org.baeldung.persistence.model.pfe.BureauAvocat;
 import org.baeldung.persistence.model.pfe.Ville;
 import org.baeldung.service.pfe.BureauAvocatServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,22 +27,6 @@ public class BureauAvocatService implements BureauAvocatServiceInterface {
 
 	@Autowired
 	private AvocatRepository avocatRepository;
-
-	/*
-	 * public void saveinfoToDB(MultipartFile file) { BureauAvocat b=new
-	 * BureauAvocat(); String
-	 * fileName=StringUtils.cleanPath(file.getOriginalFilename());
-	 * if(fileName.contains("..")) { System.out.println("not a valid file"); } try {
-	 * b.setImage(Base64.getEncoder().encodeToString(file.getBytes()));
-	 *
-	 * } catch (IOException e) { // TODO Auto-generated catch block
-	 * e.printStackTrace(); }
-	 *
-	 *
-	 * bureauAvocatRepository.save(b); }
-	 *
-	 *
-	 */
 
 
 	@Override
@@ -61,12 +48,6 @@ public class BureauAvocatService implements BureauAvocatServiceInterface {
 		return bureauAvocatRepository.findByNomContaining(mc);
 	}
 
-
-
-
-
-
-
 	@Override
 	public List<Barreau> findAllBarreaux() {
 		return barreauRepository.findAll();
@@ -75,5 +56,26 @@ public class BureauAvocatService implements BureauAvocatServiceInterface {
 	@Override
 	public List<Ville> findAllVilles() {
 		return villeRepository.findAll();
+	}
+
+
+	public Page<BureauAvocat> findAll(Pageable pageable) {
+		return bureauAvocatRepository.findAll(pageable);
+	}
+
+	public BureauAvocat save(BureauAvocat bureauAvocat) {
+		return bureauAvocatRepository.save(bureauAvocat);
+	}
+
+	public void delete(BureauAvocat bureauAvocat) {
+		bureauAvocatRepository.delete(bureauAvocat);
+	}
+
+	public Page<BureauAvocat> search(String query, Pageable pageable) {
+		return bureauAvocatRepository.findByNomContainingOrAdresseContaining(query, query, pageable);
+	}
+
+	public long count() {
+		return bureauAvocatRepository.count();
 	}
 }

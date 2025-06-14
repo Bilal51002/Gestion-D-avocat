@@ -3,20 +3,18 @@ package org.baeldung.service;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.Base64;
+import java.util.Collection;
 import java.util.List;
-import org.baeldung.persistence.dao.pfe.AvocatRepository;
-import org.baeldung.persistence.model.pfe.Avocat;
+
+import org.baeldung.persistence.dao.pfe.*;
+import org.baeldung.persistence.model.pfe.*;
 import org.baeldung.service.pfe.AvocatServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.baeldung.persistence.dao.pfe.BarreauRepository;
-import org.baeldung.persistence.dao.pfe.ClientRepository;
-import org.baeldung.persistence.dao.pfe.VilleRepository;
-import org.baeldung.persistence.model.pfe.Barreau;
-import org.baeldung.persistence.model.pfe.Client;
-import org.baeldung.persistence.model.pfe.Ville;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.persistence.EntityNotFoundException;
 
 
 @Service
@@ -24,16 +22,35 @@ public class AvocatService implements AvocatServiceInterface {
 	@Autowired
 	private AvocatRepository avocatRepository;
 	@Autowired
+	private BureauAvocatRepository bureauAvocatRepository;
+	@Autowired
 	private BarreauRepository barreauRepository;
 	@Autowired
 	private VilleRepository villeRepository;
 	@Autowired
 	private ClientRepository clientRepository;
 
-	/*
-	 * @Override public Avocat addAvocat(Avocat avocatAj) { return
-	 * avocatRepository.save(avocatAj); }
-	 */
+
+	public boolean verifierAppartenanceBureau(Long avocatId, Long bureauId) {
+		// Vérifier si l'avocat existe
+		Avocat avocat = avocatRepository.findById(avocatId)
+				.orElseThrow(() -> new EntityNotFoundException("Avocat non trouvé"));
+
+		// Vérifier si le bureau existe
+		BureauAvocat bureau = bureauAvocatRepository.findById(bureauId)
+				.orElseThrow(() -> new EntityNotFoundException("Bureau non trouvé"));
+
+		// Vérifier si l'avocat appartient au bureau
+		return avocat.getBureau() != null && avocat.getBureau().getId().equals(bureauId);
+	}
+	public Collection<Avocat> findAllById(List<Long> ids) {
+		return avocatRepository.findAllById(ids);
+	}
+	public Avocat findByEmail(String email) {
+		// Ici nous supposons que votre AvocatRepository a une méthode findByEmail
+		// Si ce n'est pas le cas, vous devrez l'ajouter également
+		return avocatRepository.findByEmail(email);
+	}
 
 	  @Override
 	    public void saveAvocattoDB(MultipartFile file,

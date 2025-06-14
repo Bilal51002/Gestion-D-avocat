@@ -19,6 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.persistence.EntityNotFoundException;
+
 @Service
 public class SecretaireService  implements SecretaireServiceInterface {
 
@@ -31,11 +34,17 @@ public class SecretaireService  implements SecretaireServiceInterface {
 	@Autowired
 	private DossierRepository dossierRepository;
 
-	/*@Override
-	public Secretaire addSecretaire(Secretaire secretaire) {
+	public Secretaire activerCompteSecretaire(Long secretaireId) {
+		// Récupérer le secrétaire par son ID
+		Secretaire secretaire = secretaireRepository.findById(secretaireId)
+				.orElseThrow(() -> new EntityNotFoundException("Secrétaire non trouvé avec l'ID: " + secretaireId));
 
+		// Activer le compte
+		secretaire.setEnabled(true);
+
+		// Sauvegarder les modifications
 		return secretaireRepository.save(secretaire);
-	}*/
+	}
 
     @Override
     public void saveSecretairetoDB(MultipartFile file,

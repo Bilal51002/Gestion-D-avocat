@@ -1,10 +1,449 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قائمة العملاء</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
+    <!-- Styles similaires à ceux de vos autres pages -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
+
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --accent-color: #3498db;
+            --light-accent: #e0f7fa;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --text-color: #444444;
+            --light-text: #95a5a6;
+            --background-color: #ecf0f1;
+            --card-bg: #ffffff;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            direction: rtl;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--primary-color);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .user-details {
+            color: white;
+        }
+
+        .user-name {
+            font-weight: 600;
+        }
+
+        .user-email {
+            font-size: 12px;
+            color: #bdc3c7;
+        }
+
+        .logout-btn {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 8px 15px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .logout-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Tab Navigation */
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+        }
+
+        .tab {
+            padding: 15px 20px;
+            flex: 1;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            color: var(--text-color);
+            position: relative;
+            text-decoration: none;
+        }
+
+        .tab:hover {
+            background-color: #f5f5f5;
+        }
+
+        .tab.active {
+            color: var(--accent-color);
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--accent-color);
+        }
+
+        /* Page title */
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: var(--text-color);
+            position: relative;
+            padding-right: 15px;
+        }
+
+        .page-title::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 5px;
+            height: 25px;
+            background-color: var(--accent-color);
+            border-radius: 3px;
+        }
+
+        /* Card */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .card-header {
+            padding: 15px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-title {
+            font-weight: 600;
+        }
+
+        .card-icon {
+            font-size: 24px;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        /* Table */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: right;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: var(--secondary-color);
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        /* Actions */
+        .btn {
+            padding: 8px 15px;
+            border-radius: var(--border-radius);
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .btn-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .btn-view {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .btn-edit {
+            background-color: var(--warning-color);
+            color: white;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-top: 20px;
+        }
+
+        .pagination a {
+            display: inline-block;
+            padding: 8px 12px;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            background-color: white;
+            color: var(--text-color);
+            transition: var(--transition);
+        }
+
+        .pagination a:hover, .pagination a.active {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .pagination a.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 50px 0;
+            color: var(--light-text);
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+        }
+    </style>
 </head>
 <body>
-$END$
+<div class="container">
+    <!-- Header -->
+    <header>
+        <div class="logo">المساعد القانوني</div>
+        <div class="user-info">
+            <div class="user-avatar" th:text="${avocat.getFirstName().substring(0,1)}">م</div>
+            <div class="user-details">
+                <div class="user-name" th:text="${'الأستاذ ' + avocat.getFirstName() + ' ' + avocat.getLastName()}">الأستاذ محمد العلوي</div>
+                <div class="user-email" th:text="${avocat.getEmail()}">m.alaoui@cabinet.ma</div>
+            </div>
+            <a class="logout-btn" th:href="@{/logout}">تسجيل الخروج</a>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <div class="tabs">
+        <a th:href="@{/Avocat/Dashboard}" class="tab">لوحة التحكم</a>
+        <a th:href="@{/Avocat/dossier/list}" class="tab">الملفات</a>
+        <a th:href="@{/Avocat/client/list}" class="tab active">العملاء</a>
+        <a th:href="@{/Avocat/rdv/list}" class="tab">المواعيد</a>
+    </div>
+
+    <!-- Page Header -->
+    <div class="page-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h1 class="page-title">قائمة العملاء</h1>
+        <a th:href="@{/Avocat/client/create}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> إضافة عميل جديد
+        </a>
+    </div>
+
+    <!-- Clients Table -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">العملاء</div>
+            <div class="card-icon">
+                <i class="fas fa-users"></i>
+            </div>
+        </div>
+        <div class="card-content">
+            <div class="table-container">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>الاسم</th>
+                        <th>البريد الإلكتروني</th>
+                        <th>الهاتف</th>
+                        <th>العنوان</th>
+                        <th>عدد الملفات</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="client : ${clients}">
+                        <td th:text="${client.firstName + ' ' + client.lastName}">سمير العربي</td>
+                        <td th:text="${client.email}">samir@example.com</td>
+                        <td th:text="${client.tel != null ? client.tel : '-'}">0612345678</td>
+                        <td th:text="${client.adresse != null ? client.adresse : '-'}">فاس، المغرب</td>
+                        <td th:text="${client.dossiers != null ? client.dossiers.size() : '0'}">3</td>
+                        <td>
+                            <a th:href="@{/Avocat/client/details/{id}(id=${client.id})}" class="btn-icon btn-view" title="عرض التفاصيل">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr th:if="${clients.isEmpty()}">
+                        <td colspan="6">
+                            <div class="empty-state">
+                                <i class="fas fa-users-slash"></i>
+                                <h3>لا يوجد عملاء</h3>
+                                <p>لم يتم العثور على أي عملاء. يمكنك إضافة عميل جديد باستخدام زر "إضافة عميل جديد".</p>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div th:if="${clientPage.totalPages > 1}" class="pagination">
+                <a th:if="${!clientPage.first}" th:href="@{/Avocat/client/list(page=${clientPage.number - 1})}" class="previous">&laquo;</a>
+                <a th:if="${clientPage.first}" class="previous disabled">&laquo;</a>
+
+                <th:block th:each="i : ${#numbers.sequence(0, clientPage.totalPages - 1)}">
+                    <a th:href="@{/Avocat/client/list(page=${i})}"
+                       th:text="${i + 1}"
+                       th:class="${clientPage.number == i ? 'active' : ''}">1</a>
+                </th:block>
+
+                <a th:if="${!clientPage.last}" th:href="@{/Avocat/client/list(page=${clientPage.number + 1})}" class="next">&raquo;</a>
+                <a th:if="${clientPage.last}" class="next disabled">&raquo;</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Highlight active tab
+    document.addEventListener('DOMContentLoaded', function() {
+        const path = window.location.pathname;
+        const tabs = document.querySelectorAll('.tab');
+
+        tabs.forEach(tab => {
+            const href = tab.getAttribute('href');
+            if (path.includes('client')) {
+                if (tab.getAttribute('href').includes('client')) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            }
+        });
+    });
+</script>
 </body>
 </html>

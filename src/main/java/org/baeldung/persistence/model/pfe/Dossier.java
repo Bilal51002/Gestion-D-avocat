@@ -7,7 +7,8 @@ import java.sql.Date;
 import java.util.Collection;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -22,7 +23,10 @@ public class Dossier implements Serializable {
 	@Column(unique = true, nullable = false, length = 20, name = "NUMERO_DOSSIER")
 	private String numeroDossier;
 
-	private Date DateCreation;
+	// Dans l'entité Dossier
+
+
+	private Date dateCreation;
 	private String typeDecas;
 	private String sujet;
 	private String typeProsedure;
@@ -41,10 +45,12 @@ public class Dossier implements Serializable {
 	@JoinColumn(name = "id_bureau", nullable = false)
 	private BureauAvocat bureau;
 
-	@ToString.Exclude
-	@ManyToMany(mappedBy = "dossier", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-	private Collection<Client> client;
+//	@ToString.Exclude
+//	@ManyToMany(mappedBy = "dossier", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+//	private Collection<Client> client;
 
+	@ManyToMany(mappedBy = "dossiers")  // Assurez-vous que cela correspond au nom du champ dans Client
+	private Collection<Client> client;
 	@ToString.Exclude
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	@JoinTable(name = "dossier_juge",
@@ -65,7 +71,7 @@ public class Dossier implements Serializable {
 	private TypeDossier typeD;
 
 	@ToString.Exclude
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+	@ManyToMany
 	@JoinTable(name = "dossier_Avocat",
 			joinColumns = @JoinColumn(name = "dossier_id"),
 			inverseJoinColumns = @JoinColumn(name = "avocat_id"))
@@ -74,7 +80,7 @@ public class Dossier implements Serializable {
 					String typeProsedure, Date dateProchSession,
 					String numeroNational, TypeDossier typeD,BureauAvocat bureau) {
 		this.numeroDossier = numeroDossier;
-		this.DateCreation = dateCreation;
+		this.dateCreation = dateCreation;
 		this.typeDecas = typeDecas;
 		this.sujet = sujet;
 		this.typeProsedure = typeProsedure;

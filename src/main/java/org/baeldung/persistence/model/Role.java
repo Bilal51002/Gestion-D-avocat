@@ -2,16 +2,11 @@ package org.baeldung.persistence.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.baeldung.persistence.model.pfe.Secretaire;
 
 import java.util.Collection;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
@@ -22,6 +17,8 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @ManyToMany(mappedBy = "roles",fetch = FetchType.LAZY)
+    private Collection<Secretaire> secretaires;
     @ManyToMany(mappedBy = "roles")
     private Collection<User> users;
 

@@ -1,0 +1,80 @@
+:root {
+    --primary-color: #4e73df;
+    --secondary-color: #F0F8FF;
+    --text-color: #333;
+    --border-color: #e3e6f0;
+    --hover-color: #3a5dd9;
+}
+
+body {
+    font-family: 'Cairo', sans-serif;
+}
+
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.dash-widget {
+    border: 1px solid var(--border-color);
+}
+
+.dash-widget-icon {
+    background-color: rgba(78, 115, 223, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    color: var(--primary-color);
+}
+
+.dash-widget-info h3 {
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--text-color);
+}
+
+.table-avatar .avatar {
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    overflow: hidden;
+}
+
+.action-btn {
+    background-color: transparent;
+    border: none;
+    color: var(--primary-color);
+    transition: color 0.3s ease;
+}
+
+.action-btn:hover {
+    color: var(--hover-color);
+}
+
+.page-header {
+    background-color: var(--secondary-color);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 25px;
+}
+
+@media (max-width: 768px) {
+    .dash-widget {
+        margin-bottom: 15px;
+    }
+
+    .page-wrapper {
+        width: 100%;
+        float: none;
+    }
+}

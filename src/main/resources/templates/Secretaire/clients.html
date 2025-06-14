@@ -1,10 +1,85 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <!-- Inclure vos styles et métadonnées comme dans vos autres templates -->
+    <title>قائمة العملاء - مكتب المحاماة</title>
+    <!-- Mêmes imports CSS que Dashboard.html -->
 </head>
 <body>
-$END$
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar (même que Dashboard.html) -->
+        <div class="col-lg-2 p-0">
+            <div class="sidebar">
+                <!-- Contenu de la sidebar -->
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-lg-10">
+            <div class="main-content">
+                <h2 class="page-title">قائمة العملاء</h2>
+
+                <!-- Table des clients -->
+                <div class="table-container">
+                    <div class="table-header">
+                        <h5>العملاء</h5>
+                        <a href="#" class="btn-add-rdv">
+                            <i class="fas fa-plus"></i>
+                            عميل جديد
+                        </a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>المعرف</th>
+                                <th>الاسم</th>
+                                <th>اللقب</th>
+                                <th>البريد الإلكتروني</th>
+                                <th>الهاتف</th>
+                                <th>العنوان</th>
+                                <th>عدد الملفات</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="client : ${clients}">
+                                <td th:text="${client.id}"></td>
+                                <td th:text="${client.firstName != null ? client.firstName : '-'}"></td>
+                                <td th:text="${client.lastName != null ? client.lastName : '-'}"></td>
+                                <td th:text="${client.email != null ? client.email : '-'}"></td>
+                                <td th:text="${client.telephone != null ? client.telephone : '-'}"></td>
+                                <td th:text="${client.adresse != null ? client.adresse : '-'}"></td>
+                                <td th:text="${client.dossiers != null ? client.dossiers.size() : '0'}"></td>
+                                <td class="text-center">
+                                    <a th:href="@{/Secretaire/client/details/{id}(id=${client.id})}" class="btn-action btn-view" title="عرض التفاصيل">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a th:href="@{/Secretaire/client/edit/{id}(id=${client.id})}" class="btn-action btn-edit" title="تعديل">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <!-- Message si aucun client -->
+                            <tr th:if="${clients == null || clients.isEmpty()}">
+                                <td colspan="8">
+                                    <div class="empty-state">
+                                        <i class="fas fa-users"></i>
+                                        <h5>لا يوجد عملاء</h5>
+                                        <p>لم يتم العثور على أي عملاء. يمكنك إضافة عميل جديد من خلال النقر على زر "عميل جديد".</p>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts JS (même que Dashboard.html) -->
 </body>
 </html>
